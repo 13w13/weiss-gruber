@@ -3,70 +3,51 @@ import Link from 'next/link'
 import { ChevronRight, Globe } from 'lucide-react'
 import { useState } from 'react'
 
-// Type definitions
-type Language = 'fr' | 'en';
-
-interface Nav {
-  biography: string;
-  catalogue: string;
-  exhibitions: string;
-}
-
-interface TimelineEvent {
-  year: string;
-  event: string;
-}
-
-interface FeaturedWork {
-  title: string;
-}
-
-interface Section {
-  title: string;
-  description: string;
-  link: string;
-}
-
-interface Hero {
-  subtitle: string;
-}
-
-interface Intro {
-  title: string;
-  text: string;
-}
-
-interface FamilyLegacy {
-  title: string;
-  text: string;
-}
-
-interface Timeline {
-  title: string;
-  events: TimelineEvent[];
-}
-
-interface Footer {
-  rights: string;
-}
+type Language = 'fr';
 
 interface ContentStructure {
-  nav: Nav;
-  hero: Hero;
-  intro: Intro;
+  nav: {
+    biography: string;
+    catalogue: string;
+    exhibitions: string;
+  };
+  hero: {
+    subtitle: string;
+  };
+  intro: {
+    title: string;
+    text: string;
+  };
   featuredWorks: {
     title: string;
-    works: FeaturedWork[];
+    works: Array<{
+      title: string;
+      description: string;
+    }>;
   };
-  sections: Section[];
-  timeline: Timeline;
-  familyLegacy: FamilyLegacy;
-  footer: Footer;
+  sections: Array<{
+    title: string;
+    description: string;
+    link: string;
+  }>;
+  timeline: {
+    title: string;
+    events: Array<{
+      year: string;
+      event: string;
+    }>;
+  };
+  familyLegacy: {
+    title: string;
+    text: string;
+  };
+  footer: {
+    rights: string;
+  };
 }
 
 interface Content {
   fr: ContentStructure;
-  en: ContentStructure;
 }
 
 export default function LandingPage() {
@@ -80,103 +61,76 @@ export default function LandingPage() {
         exhibitions: "Expositions",
       },
       hero: {
-        subtitle: "Artiste française renommée du vitrail (1934 - présent)"
+        subtitle: "Peintre-verrier française (1934 - présent), créatrice de vitraux monumentaux"
       },
       intro: {
-        title: "Un Héritage de Lumière et de Couleur",
-        text: "Née le 1er juillet 1934 à Paris, Jeannette Weiss Gruber perpétue l'héritage artistique de sa famille. Fille de Jean-Jacques Gruber et petite-fille de Jacques Gruber, elle a apporté des contributions significatives à l'art du vitrail, créant des œuvres qui s'harmonisent avec leur environnement architectural tout en évitant le pastiche."
+        title: "Une Vision Contemporaine du Vitrail",
+        text: "Jeannette Weiss Gruber, peintre-verrier française née en 1934 à Paris, représente la troisième génération d'une lignée d'artistes verriers. Son œuvre se caractérise par une approche novatrice de l'intégration architecturale et une maîtrise exceptionnelle des techniques traditionnelles du vitrail, enrichies par une vision résolument contemporaine."
       },
       featuredWorks: {
-        title: "Œuvres Phares",
+        title: "Œuvres Majeures",
         works: [
-          { title: "Cathédrale Primatiale Saint Jean de Lyon (1969)" },
-          { title: "Cathédrale de Beauvais (1985)" },
-          { title: "Église Abbatiale de Saint Jean de Saverne (2001)" }
+          {
+            title: "Cathédrale Primatiale Saint Jean de Lyon (1969)",
+            description: "Création de la baie est de la chapelle de la Vierge, illustrant l'harmonie entre tradition et modernité."
+          },
+          {
+            title: "Cathédrale de Beauvais (1985)",
+            description: "Réalisation d'une verrière monumentale de 25 m² dans le transept sud, dialogue subtil avec le patrimoine existant."
+          },
+          {
+            title: "Église Abbatiale de Saint Jean de Saverne (2001)",
+            description: "Ensemble remarquable de dix-huit vitraux, témoignage de la maturité artistique de la peintre-verrier."
+          }
         ]
       },
       sections: [
-        { 
-          title: "Catalogue Raisonné", 
-          description: "Explorez l'œuvre étendue de Jeannette Weiss Gruber, de ses premières créations en 1955 à ses chefs-d'œuvre ultérieurs",
-          link: "En savoir plus"
+        {
+          title: "Catalogue Raisonné",
+          description: "Documentation exhaustive de l'œuvre de Jeannette Weiss Gruber, de ses premières créations en 1955 à ses réalisations contemporaines, illustrant l'évolution de sa pratique artistique.",
+          link: "Explorer le catalogue"
         },
-        { 
-          title: "Historique des Expositions", 
-          description: "Découvrez le parcours de l'artiste à travers ses expositions, y compris son séjour au Québec et son retour à Paris",
-          link: "En savoir plus"
+        {
+          title: "Parcours d'Expositions",
+          description: "Chronologie des expositions et installations majeures, incluant la période d'expérimentation au Québec (1969-1973) et les réalisations monumentales en France.",
+          link: "Découvrir le parcours"
         }
       ],
       timeline: {
-        title: "Parcours Artistique",
+        title: "Jalons d'une Carrière Exceptionnelle",
         events: [
-          { year: "1934", event: "Naissance à Paris, France" },
-          { year: "1955", event: "Première création de vitrail à l'Église Saint Jean Baptiste de Sceaux" },
-          { year: "1959", event: "Mariage avec Bernard Weiss et début de signature des œuvres sous JWG" },
-          { year: "1969", event: "Déménagement au Québec pour une période d'exploration artistique" },
-          { year: "1973", event: "Retour à Paris et enseignement de l'histoire de l'art à l'École américaine" },
-          { year: "1980", event: "Établissement de son atelier à la Villa d'Alésia" },
-          { year: "2001", event: "Réception de la Médaille de la Restauration de l'Académie d'Architecture" }
+          {
+            year: "1934",
+            event: "Naissance à Paris dans une famille de maîtres-verriers"
+          },
+          {
+            year: "1955",
+            event: "Première création majeure : vitraux de l'Église Saint Jean Baptiste de Sceaux"
+          },
+          {
+            year: "1959",
+            event: "Adoption de la signature JWG, marquant le début d'une identité artistique distinctive"
+          },
+          {
+            year: "1969-1973",
+            event: "Période d'innovation au Québec, développement des aluchromies"
+          },
+          {
+            year: "1980",
+            event: "Établissement de l'atelier personnel à la Villa d'Alésia, Paris"
+          },
+          {
+            year: "2001",
+            event: "Médaille de la Restauration de l'Académie d'Architecture, reconnaissance de l'excellence de son œuvre"
+          }
         ]
       },
       familyLegacy: {
-        title: "L'Héritage Artistique Weiss-Gruber",
-        text: "Découvrez l'histoire d'une famille d'artistes exceptionnels, dont Jeannette Weiss Gruber est une représentante éminente."
+        title: "Un Héritage Artistique Perpétué",
+        text: "L'œuvre de Jeannette Weiss Gruber s'inscrit dans la continuité de l'excellence artistique familiale, tout en apportant une contribution unique à l'art du vitrail contemporain. Sa pratique témoigne d'une parfaite maîtrise des techniques traditionnelles, enrichie par une vision moderne et personnelle de cet art séculaire."
       },
       footer: {
         rights: "Tous droits réservés."
-      }
-    },
-    en: {
-      nav: {
-        biography: "Biography",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Exhibitions",
-      },
-      hero: {
-        subtitle: "Renowned French stained glass artist (1934 - present)"
-      },
-      intro: {
-        title: "A Legacy of Light and Color",
-        text: "Born on July 1, 1934, in Paris, Jeannette Weiss Gruber carries on her family's artistic legacy. Daughter of Jean-Jacques Gruber and granddaughter of Jacques Gruber, she has made significant contributions to the art of stained glass, creating works that harmonize with their architectural environment while avoiding pastiche."
-      },
-      featuredWorks: {
-        title: "Featured Works",
-        works: [
-          { title: "Primatial Cathedral of Saint John in Lyon (1969)" },
-          { title: "Beauvais Cathedral (1985)" },
-          { title: "Abbey Church of Saint John in Saverne (2001)" }
-        ]
-      },
-      sections: [
-        { 
-          title: "Catalogue Raisonné", 
-          description: "Explore Jeannette Weiss Gruber's extensive body of work, from her early creations in 1955 to her later masterpieces",
-          link: "Learn more"
-        },
-        { 
-          title: "Exhibition History", 
-          description: "Discover the artist's journey through her exhibitions, including her time in Quebec and return to Paris",
-          link: "Learn more"
-        }
-      ],
-      timeline: {
-        title: "Artistic Journey",
-        events: [
-          { year: "1934", event: "Born in Paris, France" },
-          { year: "1955", event: "First stained glass creation at Saint John the Baptist Church in Sceaux" },
-          { year: "1959", event: "Marriage to Bernard Weiss and began signing works as JWG" },
-          { year: "1969", event: "Moved to Quebec for a period of artistic exploration" },
-          { year: "1973", event: "Return to Paris and teaching art history at the American School" },
-          { year: "1980", event: "Establishment of her workshop at Villa d'Alésia" },
-          { year: "2001", event: "Received the Restoration Medal from the Academy of Architecture" }
-        ]
-      },
-      familyLegacy: {
-        title: "The Weiss-Gruber Artistic Legacy",
-        text: "Discover the story of an exceptional family of artists, of which Jeannette Weiss Gruber is a prominent representative."
-      },
-      footer: {
-        rights: "All rights reserved."
       }
     }
   }
@@ -195,9 +149,9 @@ export default function LandingPage() {
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
             <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
+              <button className="flex items-center hover:text-blue-600 transition-colors">
                 <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
+                FR
               </button>
             </li>
           </ul>
@@ -209,7 +163,7 @@ export default function LandingPage() {
           <div className="relative h-full w-full bg-gray-200">
             <Image
               src="/api/placeholder/1200/800"
-              alt="Signature stained glass work by Jeannette Weiss Gruber"
+              alt="Œuvre majeure de Jeannette Weiss Gruber"
               width={1200}
               height={800}
               className="object-cover"
@@ -245,15 +199,16 @@ export default function LandingPage() {
                   <div className="aspect-w-3 aspect-h-4 bg-gray-200 rounded-lg overflow-hidden">
                     <Image
                       src={`/api/placeholder/400/500`}
-                      alt={`Œuvre ${index + 1}`}
+                      alt={work.title}
                       width={400}
                       height={500}
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity flex items-center justify-center">
-                      <span className="text-white text-lg font-semibold opacity-0 group-hover:opacity-100 transition-opacity text-center px-4">
-                        {work.title}
-                      </span>
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity flex items-center justify-center p-4">
+                      <div className="text-white text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <h3 className="text-lg font-semibold mb-2">{work.title}</h3>
+                        <p className="text-sm">{work.description}</p>
+                      </div>
                     </div>
                   </div>
                 </div>

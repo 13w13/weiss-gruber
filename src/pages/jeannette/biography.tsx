@@ -3,8 +3,7 @@ import Link from 'next/link'
 import { ChevronDown, Globe } from 'lucide-react'
 import { useState } from 'react'
 
-// Add type definitions
-type Language = 'fr' | 'en';
+type Language = 'fr';
 
 interface Section {
   title: string;
@@ -45,7 +44,6 @@ interface ContentStructure {
 
 interface Content {
   fr: ContentStructure;
-  en: ContentStructure;
 }
 
 export default function BiographyPage() {
@@ -69,82 +67,52 @@ export default function BiographyPage() {
       title: "Biographie de Jeannette Weiss Gruber",
       sections: [
         {
-          title: "Jeunesse et Famille",
+          title: "Biographie",
           content: [
-            "Née le 1er juillet 1934 à Paris, Jeannette Weiss Gruber était destinée à une vie dans l'art. Elle est la fille de Jean-Jacques Gruber et la petite-fille de Jacques Gruber, tous deux maîtres verriers renommés. Ce riche héritage artistique allait façonner sa future carrière et sa vision artistique.",
-            "En 1959, Jeannette épouse Bernard Weiss, après quoi elle commence à signer ses œuvres JWG, devenant professionnellement connue sous le nom de Jeannette Weiss Gruber."
+            "Jeannette Weiss Gruber (née le 1er juillet 1934 à Paris) est une peintre-verrier française. Issue d'une lignée d'artistes verriers, elle perpétue une tradition familiale d'excellence dans l'art du vitrail.",
+            "Fille du peintre-verrier Jean-Jacques Gruber et petite-fille de Jacques Gruber, figure majeure de l'École de Nancy, elle s'inscrit dans la continuité d'un savoir-faire familial tout en développant son propre langage artistique."
           ]
         },
         {
-          title: "Parcours Artistique",
+          title: "Formation et Carrière",
           content: [
-            "La carrière de Jeannette dans le vitrail commence en 1955 lorsqu'elle crée sa première œuvre pour l'Église Saint Jean Baptiste de Sceaux. De 1954 à 1969, elle travaille dans l'atelier Jacques Gruber, perfectionnant ses compétences et développant son style unique.",
-            "En 1969, Jeannette fait un détour créatif au Québec, où elle explore de nouvelles expressions artistiques, notamment avec ses peintures sur aluminium, connues sous le nom d'\"aluchromies\". Cette période d'expérimentation dure jusqu'en 1973.",
-            "À son retour à Paris en 1973, Jeannette commence à enseigner l'histoire de l'art à l'École américaine tout en poursuivant son travail dans le vitrail. En 1980, elle établit son propre atelier à la Villa d'Alésia, où elle créera nombre de ses œuvres les plus importantes."
+            "De 1954 à 1969, Jeannette Weiss Gruber exerce son art au sein de l'atelier Jacques Gruber, où elle développe sa technique et affine sa vision artistique. En 1959, suite à son mariage avec Bernard Weiss, elle adopte la signature JWG qui caractérisera désormais ses œuvres.",
+            "De 1969 à 1973, l'artiste effectue un séjour au Québec, période durant laquelle elle explore de nouvelles expressions artistiques, notamment à travers ses 'aluchromies' (peintures sur aluminium). Cette expérience enrichit sa pratique du vitrail et influence son approche de la lumière.",
+            "À son retour à Paris en 1973, elle conjugue création et transmission en enseignant l'histoire de l'art à l'École américaine. En 1980, elle établit son propre atelier à la Villa d'Alésia, lieu de création de nombreuses œuvres majeures."
           ]
         },
         {
-          title: "Style Artistique et Technique",
+          title: "Technique et Approche Artistique",
           content: [
-            "Jeannette Weiss Gruber est connue pour ses techniques innovantes et sa capacité à intégrer harmonieusement ses œuvres dans leur cadre architectural. Elle est connue pour utiliser des peignes et des éponges (depuis 1958) ou des pinceaux, selon les circonstances. Cette technique a notamment été utilisée dans la création de deux vitraux pour la chapelle Saint Joseph de la cathédrale primatiale Saint Jean de Lyon en 1978.",
-            "Le blanc et le bleu sont ses couleurs préférées dans le vitrail. Fait intéressant, elle utilise des jumelles à l'envers pour imaginer le résultat final dans le bâtiment.",
-            "Selon Aymerick Zublena, qui lui a remis la Médaille de la Restauration en 2001, \"Son objectif est d'insérer ses créations dans différents édifices en s'imprégnant du cadre architectural et de la lumière, avec une recherche d'harmonie et d'équilibre avec les autres vitraux lorsqu'ils existent, tout en évitant les pastiches.\""
+            "La pratique de Jeannette Weiss Gruber se caractérise par une recherche constante d'innovation technique au service de l'intégration architecturale. Dès 1958, elle développe une technique distinctive utilisant peignes et éponges, parfois complétée par l'usage de blaireaux et de pinceaux selon les projets.",
+            "Sa méthodologie inclut une approche unique de visualisation : l'utilisation de jumelles à l'envers pour anticiper l'effet final des vitraux dans leur contexte architectural. Cette technique originale lui permet d'optimiser l'intégration de ses œuvres dans leur environnement.",
+            "Comme le souligne Aymerick Zublena lors de la remise de la Médaille de la Restauration en 2001 : 'Son objectif est d'insérer ses créations dans les différents édifices en s'imprégnant du cadre architectural et de la lumière, avec une recherche d'harmonie et d'équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches.'"
+          ]
+        },
+        {
+          title: "Œuvres Majeures",
+          content: [
+            "Ses réalisations les plus significatives comprennent :",
+            "• 1960 : Collégiale de Mantes (Yvelines) - Création du triplet de la façade sous la rosace du XIIIe siècle",
+            "• 1969 : Cathédrale Primatiale Saint Jean de Lyon (Rhône) - Réalisation de la baie est de la chapelle de la Vierge",
+            "• 1985 : Cathédrale de Beauvais (Oise) - Création d'une verrière de 25 m² dans une chapelle sud du transept",
+            "• 1991 : Église Notre-Dame de Niort (Deux-Sèvres) - Restauration et création de compléments pour un arbre de Jessé du XVe siècle",
+            "• 2001 : Église Abbatiale de Saint Jean de Saverne (Bas-Rhin) - Ensemble de dix-huit vitraux dans les nefs nord et sud"
+          ]
+        },
+        {
+          title: "Reconnaissance",
+          content: [
+            "En 2001, la Fondation Académie d'Architecture lui décerne la Médaille de la Restauration, reconnaissant l'excellence de son travail dans la création et la restauration de vitraux. Cette distinction souligne sa contribution exceptionnelle à la préservation et au renouvellement de l'art du vitrail en France."
           ]
         }
       ],
       familyLegacy: {
         title: "L'Héritage Artistique Weiss-Gruber",
-        content: "Jeannette Weiss Gruber fait partie d'une lignée d'artistes talentueux. Sa famille comprend également Frédéric Weiss, un peintre renommé, et Camille Weiss, une sculptrice accomplie. Chacun a contribué de manière unique au monde de l'art, perpétuant un héritage créatif exceptionnel."
+        content: "Jeannette Weiss Gruber s'inscrit dans une lignée d'artistes d'exception. Son œuvre témoigne de la perpétuation et du renouvellement d'une tradition familiale dans l'art du vitrail, tout en apportant une vision contemporaine à cet art séculaire."
       },
       footer: {
         rights: "Tous droits réservés."
-      }
-    },
-    en: {
-      nav: {
-        home: "Home",
-        biography: "Biography",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Exhibitions",
-      },
-      familyMembers: {
-        title: "Family Artists",
-        jeannette: "Jeannette Weiss Gruber",
-        frederic: "Frédéric Weiss",
-        camille: "Camille Weiss"
-      },
-      title: "Biography of Jeannette Weiss Gruber",
-      sections: [
-        {
-          title: "Youth and Family",
-          content: [
-            "Born on July 1, 1934, in Paris, Jeannette Weiss Gruber was destined for a life in art. She is the daughter of Jean-Jacques Gruber and the granddaughter of Jacques Gruber, both renowned master glassmakers. This rich artistic heritage would shape her future career and artistic vision.",
-            "In 1959, Jeannette married Bernard Weiss, after which she began signing her works as JWG, becoming professionally known as Jeannette Weiss Gruber."
-          ]
-        },
-        {
-          title: "Artistic Journey",
-          content: [
-            "Jeannette's career in stained glass began in 1955 when she created her first work for the Church of Saint John the Baptist in Sceaux. From 1954 to 1969, she worked in the Jacques Gruber workshop, honing her skills and developing her unique style.",
-            "In 1969, Jeannette took a creative detour to Quebec, where she explored new artistic expressions, notably with her paintings on aluminum, known as \"aluchromies\". This period of experimentation lasted until 1973.",
-            "Upon her return to Paris in 1973, Jeannette began teaching art history at the American School while continuing her work in stained glass. In 1980, she established her own workshop at Villa d'Alésia, where she would create many of her most important works."
-          ]
-        },
-        {
-          title: "Artistic Style and Technique",
-          content: [
-            "Jeannette Weiss Gruber is known for her innovative techniques and ability to harmoniously integrate her works into their architectural setting. She is known to use combs and sponges (since 1958) or brushes, depending on the circumstances. This technique was notably used in the creation of two stained glass windows for the Saint Joseph chapel of the Primatial Cathedral of Saint John in Lyon in 1978.",
-            "White and blue are her favorite colors in stained glass. Interestingly, she uses binoculars backwards to imagine the final result in the building.",
-            "According to Aymerick Zublena, who presented her with the Restoration Medal in 2001, \"Her goal is to insert her creations into different buildings by immersing herself in the architectural setting and light, seeking harmony and balance with other stained glass windows when they exist, while avoiding pastiches.\""
-          ]
-        }
-      ],
-      familyLegacy: {
-        title: "The Weiss-Gruber Artistic Legacy",
-        content: "Jeannette Weiss Gruber is part of a lineage of talented artists. Her family also includes Frédéric Weiss, a renowned painter, and Camille Weiss, an accomplished sculptor. Each has contributed uniquely to the art world, perpetuating an exceptional creative heritage."
-      },
-      footer: {
-        rights: "All rights reserved."
       }
     }
   }
@@ -188,9 +156,9 @@ export default function BiographyPage() {
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
             <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
+              <button onClick={() => setLanguage(language === 'fr' ? 'fr' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
                 <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
+                FR
               </button>
             </li>
           </ul>
@@ -207,7 +175,7 @@ export default function BiographyPage() {
                 <section key={index} className="mb-12">
                   <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
                   {section.content.map((paragraph, pIndex) => (
-                    <p key={pIndex} className="mb-4">
+                    <p key={pIndex} className="mb-4 text-justify">
                       {paragraph}
                     </p>
                   ))}
@@ -215,7 +183,7 @@ export default function BiographyPage() {
               ))}
               <section className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">{t.familyLegacy.title}</h2>
-                <p className="mb-4">{t.familyLegacy.content}</p>
+                <p className="mb-4 text-justify">{t.familyLegacy.content}</p>
               </section>
             </div>
             <div className="md:col-span-1">
@@ -225,10 +193,10 @@ export default function BiographyPage() {
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="relative aspect-w-4 aspect-h-3 bg-gray-200 rounded-lg overflow-hidden">
                       <Image
-                        src={`/api/placeholder/${400}/${320}`}
+                        src={`/api/placeholder/400/300`}
                         alt={`Œuvre ${i}`}
                         width={400}
-                        height={320}
+                        height={300}
                         className="object-cover"
                       />
                     </div>
