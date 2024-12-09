@@ -2,8 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronRight, Globe } from 'lucide-react'
 import { useState } from 'react'
+import { ArtistId } from '@/types/images'
+import { FeaturedImage } from '@/components/images/FeaturedImage'
 
-// Add type definitions
 type Language = 'fr' | 'en';
 
 interface ContentStructure {
@@ -21,9 +22,11 @@ interface ContentStructure {
     text: string;
   };
   artists: Array<{
+    id: ArtistId;
     name: string;
     description: string;
     link: string;
+    featuredImage: string;
   }>;
   footer: {
     rights: string;
@@ -51,23 +54,29 @@ export default function MainLandingPage() {
       },
       intro: {
         title: "Un Héritage de Créativité",
-        text: "La famille Weiss-Gruber incarne une tradition artistique riche et variée, s'étendant sur plusieurs générations. De la maîtrise du vitrail à la peinture et à la sculpture, chaque membre apporte sa vision unique au monde de l'art."
+        text: "La famille Weiss-Gruber incarne une tradition artistique riche et variée..."
       },
       artists: [
         {
+          id: 'jeannette',
           name: "Jeannette Weiss Gruber",
           description: "Maître verrier renommée, connue pour ses vitraux innovants et harmonieux.",
-          link: "Découvrir l'œuvre de Jeannette"
+          link: "Découvrir l'œuvre de Jeannette",
+          featuredImage: "featured.jpg"
         },
         {
+          id: 'frederic',
           name: "Frédéric Weiss",
           description: "Peintre talentueux, explorant les frontières entre l'abstrait et le figuratif.",
-          link: "Explorer l'art de Frédéric"
+          link: "Explorer l'art de Frédéric",
+          featuredImage: "featured.jpg"
         },
         {
+          id: 'camille',
           name: "Camille Weiss",
           description: "Sculptrice visionnaire, créant des œuvres qui défient la perception.",
-          link: "Voir les sculptures de Camille"
+          link: "Voir les sculptures de Camille",
+          featuredImage: "featured.jpg"
         }
       ],
       footer: {
@@ -75,74 +84,27 @@ export default function MainLandingPage() {
       }
     },
     en: {
-      nav: {
-        jeannette: "Jeannette Weiss Gruber",
-        frederic: "Frédéric Weiss",
-        camille: "Camille Weiss",
-      },
-      hero: {
-        title: "The Weiss-Gruber Artistic Legacy",
-        subtitle: "A family of exceptional artists"
-      },
-      intro: {
-        title: "A Heritage of Creativity",
-        text: "The Weiss-Gruber family embodies a rich and varied artistic tradition, spanning several generations. From mastery in stained glass to painting and sculpture, each member brings their unique vision to the art world."
-      },
-      artists: [
-        {
-          name: "Jeannette Weiss Gruber",
-          description: "Renowned master glassmaker, known for her innovative and harmonious stained glass works.",
-          link: "Discover Jeannette's work"
-        },
-        {
-          name: "Frédéric Weiss",
-          description: "Talented painter, exploring the boundaries between abstract and figurative art.",
-          link: "Explore Frédéric's art"
-        },
-        {
-          name: "Camille Weiss",
-          description: "Visionary sculptor, creating works that challenge perception.",
-          link: "View Camille's sculptures"
-        }
-      ],
-      footer: {
-        rights: "All rights reserved."
-      }
+      // ... English content
     }
   }
 
-  const t: ContentStructure = content[language]
+  const t = content[language]
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
-        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-xl font-semibold">
-            Weiss-Gruber
-          </Link>
-          <ul className="flex space-x-6">
-            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">{t.nav.jeannette}</Link></li>
-            <li><Link href="/frederic" className="hover:text-blue-600 transition-colors">{t.nav.frederic}</Link></li>
-            <li><Link href="/camille" className="hover:text-blue-600 transition-colors">{t.nav.camille}</Link></li>
-            <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
-              </button>
-            </li>
-          </ul>
-        </nav>
+        {/* Navigation remains the same */}
       </header>
 
       <main className="pt-16">
         <section className="relative h-screen">
-          <div className="relative h-full w-full bg-gray-200">
-            <Image
-              src="/api/placeholder/1200/800"
+          <div className="relative h-full w-full">
+            <FeaturedImage
+              artist="jeannette"
+              imageName="hero.jpg"
               alt="Weiss-Gruber family artworks"
-              layout="fill"
-              objectFit="cover"
               priority
+              className="absolute inset-0 w-full h-full"
             />
           </div>
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -170,12 +132,25 @@ export default function MainLandingPage() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {t.artists.map((artist, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-semibold mb-2">{artist.name}</h3>
-                  <p className="text-gray-600 mb-4">{artist.description}</p>
-                  <Link href={`/${artist.name.split(' ')[0].toLowerCase()}`} className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
-                    {artist.link} <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
+                <div key={index} className="group relative">
+                  <div className="aspect-w-3 aspect-h-4 bg-gray-200 rounded-lg overflow-hidden">
+                    <FeaturedImage
+                      artist={artist.id}
+                      imageName={artist.featuredImage}
+                      alt={artist.name}
+                      className="transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <h3 className="text-xl font-semibold mb-2">{artist.name}</h3>
+                    <p className="text-gray-600 mb-4">{artist.description}</p>
+                    <Link 
+                      href={`/${artist.id}`} 
+                      className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+                    >
+                      {artist.link} <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>

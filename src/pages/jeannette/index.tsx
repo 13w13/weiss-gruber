@@ -2,8 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronRight, Globe } from 'lucide-react'
 import { useState } from 'react'
+import { FeaturedImage } from '@/components/images/FeaturedImage'
 
-type Language = 'fr';
+type Language = 'fr' | 'en';
 
 interface ContentStructure {
   nav: {
@@ -23,6 +24,7 @@ interface ContentStructure {
     works: Array<{
       title: string;
       description: string;
+      image: string;
     }>;
   };
   sections: Array<{
@@ -48,9 +50,10 @@ interface ContentStructure {
 
 interface Content {
   fr: ContentStructure;
+  en: ContentStructure;
 }
 
-export default function LandingPage() {
+export default function JeannetteLandingPage() {
   const [language, setLanguage] = useState<Language>('fr')
 
   const content: Content = {
@@ -72,15 +75,18 @@ export default function LandingPage() {
         works: [
           {
             title: "Cathédrale Primatiale Saint Jean de Lyon (1969)",
-            description: "Création de la baie est de la chapelle de la Vierge, illustrant l'harmonie entre tradition et modernité."
+            description: "Création de la baie est de la chapelle de la Vierge, illustrant l'harmonie entre tradition et modernité.",
+            image: "lyon-cathedral.jpg"
           },
           {
             title: "Cathédrale de Beauvais (1985)",
-            description: "Réalisation d'une verrière monumentale de 25 m² dans le transept sud, dialogue subtil avec le patrimoine existant."
+            description: "Réalisation d'une verrière monumentale de 25 m² dans le transept sud, dialogue subtil avec le patrimoine existant.",
+            image: "beauvais-cathedral.jpg"
           },
           {
             title: "Église Abbatiale de Saint Jean de Saverne (2001)",
-            description: "Ensemble remarquable de dix-huit vitraux, témoignage de la maturité artistique de la peintre-verrier."
+            description: "Ensemble remarquable de dix-huit vitraux, témoignage de la maturité artistique de la peintre-verrier.",
+            image: "saverne-abbey.jpg"
           }
         ]
       },
@@ -99,30 +105,12 @@ export default function LandingPage() {
       timeline: {
         title: "Jalons d'une Carrière Exceptionnelle",
         events: [
-          {
-            year: "1934",
-            event: "Naissance à Paris dans une famille de maîtres-verriers"
-          },
-          {
-            year: "1955",
-            event: "Première création majeure : vitraux de l'Église Saint Jean Baptiste de Sceaux"
-          },
-          {
-            year: "1959",
-            event: "Adoption de la signature JWG, marquant le début d'une identité artistique distinctive"
-          },
-          {
-            year: "1969-1973",
-            event: "Période d'innovation au Québec, développement des aluchromies"
-          },
-          {
-            year: "1980",
-            event: "Établissement de l'atelier personnel à la Villa d'Alésia, Paris"
-          },
-          {
-            year: "2001",
-            event: "Médaille de la Restauration de l'Académie d'Architecture, reconnaissance de l'excellence de son œuvre"
-          }
+          { year: "1934", event: "Naissance à Paris dans une famille de maîtres-verriers" },
+          { year: "1955", event: "Première création majeure : vitraux de l'Église Saint Jean Baptiste de Sceaux" },
+          { year: "1959", event: "Adoption de la signature JWG, marquant le début d'une identité artistique distinctive" },
+          { year: "1969-1973", event: "Période d'innovation au Québec, développement des aluchromies" },
+          { year: "1980", event: "Établissement de l'atelier personnel à la Villa d'Alésia, Paris" },
+          { year: "2001", event: "Médaille de la Restauration de l'Académie d'Architecture, reconnaissance de l'excellence de son œuvre" }
         ]
       },
       familyLegacy: {
@@ -132,10 +120,74 @@ export default function LandingPage() {
       footer: {
         rights: "Tous droits réservés."
       }
+    },
+    en: {
+      nav: {
+        biography: "Biography",
+        catalogue: "Catalogue Raisonné",
+        exhibitions: "Exhibitions",
+      },
+      hero: {
+        subtitle: "French stained glass artist (1934 - present), creator of monumental stained glass works"
+      },
+      intro: {
+        title: "A Contemporary Vision of Stained Glass",
+        text: "Jeannette Weiss Gruber, a French stained glass artist born in 1934 in Paris, represents the third generation of a lineage of glass artists. Her work is characterized by an innovative approach to architectural integration and exceptional mastery of traditional stained glass techniques, enriched by a resolutely contemporary vision."
+      },
+      featuredWorks: {
+        title: "Major Works",
+        works: [
+          {
+            title: "Primatial Cathedral of Saint John of Lyon (1969)",
+            description: "Creation of the east bay of the Virgin's Chapel, illustrating the harmony between tradition and modernity.",
+            image: "lyon-cathedral.jpg"
+          },
+          {
+            title: "Beauvais Cathedral (1985)",
+            description: "Creation of a monumental 25 m² stained glass window in the south transept, a subtle dialogue with the existing heritage.",
+            image: "beauvais-cathedral.jpg"
+          },
+          {
+            title: "Abbey Church of Saint John of Saverne (2001)",
+            description: "Remarkable set of eighteen stained glass windows, testament to the artistic maturity of the glass painter.",
+            image: "saverne-abbey.jpg"
+          }
+        ]
+      },
+      sections: [
+        {
+          title: "Catalogue Raisonné",
+          description: "Comprehensive documentation of Jeannette Weiss Gruber's work, from her first creations in 1955 to her contemporary achievements, illustrating the evolution of her artistic practice.",
+          link: "Explore the catalogue"
+        },
+        {
+          title: "Exhibition Journey",
+          description: "Chronology of major exhibitions and installations, including the experimental period in Quebec (1969-1973) and monumental achievements in France.",
+          link: "Discover the journey"
+        }
+      ],
+      timeline: {
+        title: "Milestones of an Exceptional Career",
+        events: [
+          { year: "1934", event: "Born in Paris into a family of master glassmakers" },
+          { year: "1955", event: "First major creation: stained glass windows for the Church of Saint John the Baptist in Sceaux" },
+          { year: "1959", event: "Adoption of the JWG signature, marking the beginning of a distinctive artistic identity" },
+          { year: "1969-1973", event: "Period of innovation in Quebec, development of aluchromies" },
+          { year: "1980", event: "Establishment of personal studio at Villa d'Alésia, Paris" },
+          { year: "2001", event: "Medal of Restoration from the Academy of Architecture, recognition of the excellence of her work" }
+        ]
+      },
+      familyLegacy: {
+        title: "A Perpetuated Artistic Heritage",
+        text: "Jeannette Weiss Gruber's work is a continuation of the family's artistic excellence, while making a unique contribution to contemporary stained glass art. Her practice demonstrates perfect mastery of traditional techniques, enriched by a modern and personal vision of this secular art."
+      },
+      footer: {
+        rights: "All rights reserved."
+      }
     }
   }
 
-  const t: ContentStructure = content[language]
+  const t = content[language]
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -149,9 +201,9 @@ export default function LandingPage() {
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
             <li>
-              <button className="flex items-center hover:text-blue-600 transition-colors">
+              <button onClick={() => setLanguage(lang => lang === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
                 <Globe className="w-4 h-4 mr-1" />
-                FR
+                {language.toUpperCase()}
               </button>
             </li>
           </ul>
@@ -160,13 +212,13 @@ export default function LandingPage() {
 
       <main className="pt-16">
         <section className="relative h-screen">
-          <div className="relative h-full w-full bg-gray-200">
-            <Image
-              src="/api/placeholder/1200/800"
+          <div className="relative h-full w-full">
+            <FeaturedImage
+              artist="jeannette"
+              imageName="hero.jpg"
               alt="Œuvre majeure de Jeannette Weiss Gruber"
-              width={1200}
-              height={800}
-              className="object-cover"
+              priority
+              className="absolute inset-0 w-full h-full"
             />
           </div>
           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
@@ -197,12 +249,11 @@ export default function LandingPage() {
               {t.featuredWorks.works.map((work, index) => (
                 <div key={index} className="group relative">
                   <div className="aspect-w-3 aspect-h-4 bg-gray-200 rounded-lg overflow-hidden">
-                    <Image
-                      src={`/api/placeholder/400/500`}
+                    <FeaturedImage
+                      artist="jeannette"
+                      imageName={work.image}
                       alt={work.title}
-                      width={400}
-                      height={500}
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity flex items-center justify-center p-4">
                       <div className="text-white text-center opacity-0 group-hover:opacity-100 transition-opacity">
