@@ -2,138 +2,80 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronDown, Globe, Search } from 'lucide-react'
+import { GetStaticProps } from 'next';
+import fs from 'fs';
+import path from 'path';
+import Papa from 'papaparse';
 
-// Type definitions
+// Définitions des types
 type Language = 'fr' | 'en';
 
-interface Nav {
-  home: string;
-  biography: string;
-  catalogue: string;
-  exhibitions: string;
-}
-
-interface FamilyMembers {
-  title: string;
-  jeannette: string;
-  frederic: string;
-  camille: string;
-}
-
-interface Work {
-  id: number;
-  title: string;
-  year: number;
-  location: string;
-  image: string;
-}
-
-interface Filters {
-  all: string;
+// Type correspondant aux colonnes du fichier CSV
+interface Vitrail {
+  id: string;
   year: string;
-  location: string;
+  building_name: string;
+  building_type: string;
+  city: string;
+  department: string;
+  location_in_building: string;
+  title_fr: string;
+  type_of_work: string;
+  theme: string;
+  main_image: string;
+  photo_status: string;
+  description_fr: string;
 }
 
-interface Footer {
-  rights: string;
-}
+// ... (autres types pour le contenu statique de l'interface)
+interface Nav { home: string; biography: string; catalogue: string; exhibitions: string; }
+interface FamilyMembers { title: string; jeannette: string; frederic: string; camille: string; }
+interface Filters { all: string; year: string; location: string; }
+interface Footer { rights: string; }
+interface ContentStructure { nav: Nav; familyMembers: FamilyMembers; title: string; search: string; filters: Filters; footer: Footer; }
+interface Content { fr: ContentStructure; en: ContentStructure; }
 
-interface ContentStructure {
-  nav: Nav;
-  familyMembers: FamilyMembers;
-  title: string;
-  search: string;
-  filters: Filters;
-  works: Work[];
-  footer: Footer;
-}
 
-interface Content {
-  fr: ContentStructure;
-  en: ContentStructure;
-}
-
-export default function CatalogueRaisonne() {
+// Le composant reçoit maintenant 'works' en tant que prop
+export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
   const [language, setLanguage] = useState<Language>('fr')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
 
+  // Le contenu statique pour les textes de l'interface est conservé
   const content: Content = {
     fr: {
-      nav: {
-        home: "Accueil",
-        biography: "Biographie",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Expositions",
-      },
-      familyMembers: {
-        title: "Artistes de la famille",
-        jeannette: "Jeannette Weiss Gruber",
-        frederic: "Frédéric Weiss",
-        camille: "Camille Weiss"
-      },
+      nav: { home: "Accueil", biography: "Biographie", catalogue: "Catalogue Raisonné", exhibitions: "Expositions" },
+      familyMembers: { title: "Artistes de la famille", jeannette: "Jeannette Weiss Gruber", frederic: "Frédéric Weiss", camille: "Camille Weiss" },
       title: "Catalogue Raisonné de Jeannette Weiss Gruber",
       search: "Rechercher une œuvre...",
-      filters: {
-        all: "Toutes les œuvres",
-        year: "Année",
-        location: "Lieu"
-      },
-      works: [
-        { id: 1, title: "Vitrail de la Cathédrale Saint-Jean", year: 1969, location: "Lyon, France", image: "/api/placeholder/400/300" },
-        { id: 2, title: "Rosace de l'Église Saint-Pierre", year: 1975, location: "Paris, France", image: "/api/placeholder/400/300" },
-        { id: 3, title: "Vitraux de la Chapelle Notre-Dame", year: 1982, location: "Strasbourg, France", image: "/api/placeholder/400/300" },
-        { id: 4, title: "Ensemble de la Cathédrale de Beauvais", year: 1985, location: "Beauvais, France", image: "/api/placeholder/400/300" },
-        { id: 5, title: "Vitraux de l'Abbatiale Saint-Jean", year: 2001, location: "Saverne, France", image: "/api/placeholder/400/300" },
-      ],
-      footer: {
-        rights: "Tous droits réservés."
-      }
+      filters: { all: "Toutes les œuvres", year: "Année", location: "Lieu" },
+      footer: { rights: "Tous droits réservés." }
     },
     en: {
-      nav: {
-        home: "Home",
-        biography: "Biography",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Exhibitions",
-      },
-      familyMembers: {
-        title: "Family Artists",
-        jeannette: "Jeannette Weiss Gruber",
-        frederic: "Frédéric Weiss",
-        camille: "Camille Weiss"
-      },
+      nav: { home: "Home", biography: "Biography", catalogue: "Catalogue Raisonné", exhibitions: "Exhibitions" },
+      familyMembers: { title: "Family Artists", jeannette: "Jeannette Weiss Gruber", frederic: "Frédéric Weiss", camille: "Camille Weiss" },
       title: "Catalogue Raisonné of Jeannette Weiss Gruber",
       search: "Search for a work...",
-      filters: {
-        all: "All works",
-        year: "Year",
-        location: "Location"
-      },
-      works: [
-        { id: 1, title: "Stained Glass of Saint John's Cathedral", year: 1969, location: "Lyon, France", image: "/api/placeholder/400/300" },
-        { id: 2, title: "Rose Window of Saint Peter's Church", year: 1975, location: "Paris, France", image: "/api/placeholder/400/300" },
-        { id: 3, title: "Stained Glass of Notre-Dame Chapel", year: 1982, location: "Strasbourg, France", image: "/api/placeholder/400/300" },
-        { id: 4, title: "Beauvais Cathedral Ensemble", year: 1985, location: "Beauvais, France", image: "/api/placeholder/400/300" },
-        { id: 5, title: "Stained Glass of Saint John's Abbey", year: 2001, location: "Saverne, France", image: "/api/placeholder/400/300" },
-      ],
-      footer: {
-        rights: "All rights reserved."
-      }
+      filters: { all: "All works", year: "Year", location: "Location" },
+      footer: { rights: "All rights reserved." }
     }
-  }
+  };
 
-  const t: ContentStructure = content[language]
+  const t: ContentStructure = content[language];
 
-  const filteredWorks = t.works.filter(work =>
-    work.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    work.year.toString().includes(searchTerm) ||
-    work.location.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  // La logique de filtrage utilise maintenant la prop 'works'
+  const filteredWorks = works.filter(work =>
+    (work.title_fr && work.title_fr.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (work.year && work.year.toString().includes(searchTerm)) ||
+    (work.city && work.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (work.building_name && work.building_name.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
+        {/* Le code de la navigation reste identique */}
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
             <Link href="/" className="text-xl font-semibold mr-6">
@@ -149,15 +91,9 @@ export default function CatalogueRaisonne() {
               </button>
               {isDropdownOpen && (
                 <div className="absolute top-full left-0 bg-white shadow-md rounded-md py-2 mt-1">
-                  <Link href="/jeannette" className="block px-4 py-2 hover:bg-gray-100">
-                    {t.familyMembers.jeannette}
-                  </Link>
-                  <Link href="/frederic" className="block px-4 py-2 hover:bg-gray-100">
-                    {t.familyMembers.frederic}
-                  </Link>
-                  <Link href="/camille" className="block px-4 py-2 hover:bg-gray-100">
-                    {t.familyMembers.camille}
-                  </Link>
+                  <Link href="/jeannette" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.jeannette}</Link>
+                  <Link href="/frederic" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.frederic}</Link>
+                  <Link href="/camille" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.camille}</Link>
                 </div>
               )}
             </div>
@@ -197,19 +133,21 @@ export default function CatalogueRaisonne() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredWorks.map((work) => (
               <div key={work.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="relative h-64">
+                <div className="relative h-64 bg-gray-200">
+                  {/* L'image sera connectée dans une prochaine étape */}
                   <Image
-                    src={work.image}
-                    alt={work.title}
+                    src={`https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`}
+                    alt={work.title_fr}
                     width={400}
                     height={300}
-                    className="object-cover"
+                    className="object-cover w-full h-full"
+                    onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300.png?text=Image+non+disponible'; }}
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-2">{work.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2">{work.title_fr}</h3>
                   <p className="text-gray-600">{work.year}</p>
-                  <p className="text-gray-600">{work.location}</p>
+                  <p className="text-gray-600">{`${work.building_name}, ${work.city}`}</p>
                 </div>
               </div>
             ))}
@@ -225,3 +163,20 @@ export default function CatalogueRaisonne() {
     </div>
   )
 }
+
+// getStaticProps lit les données du fichier CSV au moment de la construction
+export const getStaticProps: GetStaticProps = async () => {
+  const csvFilePath = path.join(process.cwd(), 'vitraux_metadata.csv');
+  const csvFileContent = fs.readFileSync(csvFilePath, 'utf-8');
+  
+  const result = Papa.parse(csvFileContent, {
+    header: true,
+    skipEmptyLines: true,
+  });
+
+  return {
+    props: {
+      works: result.data,
+    },
+  };
+};

@@ -1,20 +1,16 @@
 import Image from 'next/image'
-import { ArtistId } from '@/types/images'
 
 interface FeaturedImageProps {
-  artist: ArtistId
-  imageName: string
+  src: string
   alt: string
   priority?: boolean
   className?: string
 }
 
-export function FeaturedImage({ artist, imageName, alt, priority = false, className = '' }: FeaturedImageProps) {
-  const imagePath = `/images/${artist}/${imageName}`
-
+export function FeaturedImage({ src, alt, priority = false, className = '' }: FeaturedImageProps) {
   return (
     <Image
-      src={imagePath}
+      src={src}
       alt={alt}
       fill
       priority={priority}

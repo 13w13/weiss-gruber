@@ -31,6 +31,7 @@ interface ContentStructure {
     title: string;
     description: string;
     link: string;
+    href: string;
   }>;
   timeline: {
     title: string;
@@ -52,6 +53,8 @@ interface Content {
   fr: ContentStructure;
   en: ContentStructure;
 }
+
+const imageBaseUrl = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com';
 
 export default function JeannetteLandingPage() {
   const [language, setLanguage] = useState<Language>('fr')
@@ -94,12 +97,14 @@ export default function JeannetteLandingPage() {
         {
           title: "Catalogue Raisonné",
           description: "Documentation exhaustive de l'œuvre de Jeannette Weiss Gruber, de ses premières créations en 1955 à ses réalisations contemporaines, illustrant l'évolution de sa pratique artistique.",
-          link: "Explorer le catalogue"
+          link: "Explorer le catalogue",
+          href: "/jeannette/catalogue"
         },
         {
           title: "Parcours d'Expositions",
           description: "Chronologie des expositions et installations majeures, incluant la période d'expérimentation au Québec (1969-1973) et les réalisations monumentales en France.",
-          link: "Découvrir le parcours"
+          link: "Découvrir le parcours",
+          href: "/jeannette/exhibitions"
         }
       ],
       timeline: {
@@ -158,12 +163,14 @@ export default function JeannetteLandingPage() {
         {
           title: "Catalogue Raisonné",
           description: "Comprehensive documentation of Jeannette Weiss Gruber's work, from her first creations in 1955 to her contemporary achievements, illustrating the evolution of her artistic practice.",
-          link: "Explore the catalogue"
+          link: "Explore the catalogue",
+          href: "/jeannette/catalogue"
         },
         {
           title: "Exhibition Journey",
           description: "Chronology of major exhibitions and installations, including the experimental period in Quebec (1969-1973) and monumental achievements in France.",
-          link: "Discover the journey"
+          link: "Discover the journey",
+          href: "/jeannette/exhibitions"
         }
       ],
       timeline: {
@@ -214,8 +221,7 @@ export default function JeannetteLandingPage() {
         <section className="relative h-screen">
           <div className="relative h-full w-full">
             <FeaturedImage
-              artist="jeannette"
-              imageName="hero.jpg"
+              src={`${imageBaseUrl}/hero.jpg`}
               alt="Œuvre majeure de Jeannette Weiss Gruber"
               priority
               className="absolute inset-0 w-full h-full"
@@ -250,8 +256,7 @@ export default function JeannetteLandingPage() {
                 <div key={index} className="group relative">
                   <div className="aspect-w-3 aspect-h-4 bg-gray-200 rounded-lg overflow-hidden">
                     <FeaturedImage
-                      artist="jeannette"
-                      imageName={work.image}
+                      src={`${imageBaseUrl}/${work.image}`}
                       alt={work.title}
                       className="transition-transform duration-300 group-hover:scale-105"
                     />
@@ -274,7 +279,7 @@ export default function JeannetteLandingPage() {
               <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-gray-600 mb-4">{item.description}</p>
-                <Link href={`/${item.title.toLowerCase().replace(' ', '-')}`} className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+                <Link href={item.href} className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
                   {item.link} <ChevronRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
