@@ -1,6 +1,5 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronRight, Globe } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import { ArtistId } from '@/types/images'
 import { FeaturedImage } from '@/components/images/FeaturedImage'
@@ -39,7 +38,7 @@ interface Content {
 }
 
 export default function MainLandingPage() {
-  const [language, setLanguage] = useState<Language>('fr')
+    const [language] = useState<Language>('fr')
 
   const content: Content = {
     fr: {
@@ -84,7 +83,45 @@ export default function MainLandingPage() {
       }
     },
     en: {
-      // ... English content
+      nav: {
+        jeannette: "Jeannette Weiss Gruber",
+        frederic: "Frédéric Weiss",
+        camille: "Camille Weiss",
+      },
+      hero: {
+        title: "The Weiss-Gruber Artistic Legacy",
+        subtitle: "A family of exceptional artists"
+      },
+      intro: {
+        title: "A Legacy of Creativity",
+        text: "The Weiss-Gruber family embodies a rich and varied artistic tradition..."
+      },
+      artists: [
+        {
+          id: 'jeannette',
+          name: "Jeannette Weiss Gruber",
+          description: "Renowned master glass artist, known for her innovative and harmonious stained glass.",
+          link: "Discover Jeannette's work",
+          featuredImage: "featured.jpg"
+        },
+        {
+          id: 'frederic',
+          name: "Frédéric Weiss",
+          description: "Talented painter, exploring the boundaries between abstract and figurative.",
+          link: "Explore Frédéric's art",
+          featuredImage: "featured.jpg"
+        },
+        {
+          id: 'camille',
+          name: "Camille Weiss",
+          description: "Visionary sculptor, creating works that challenge perception.",
+          link: "See Camille's sculptures",
+          featuredImage: "featured.jpg"
+        }
+      ],
+      footer: {
+        rights: "All rights reserved."
+      }
     }
   }
 
@@ -100,8 +137,7 @@ export default function MainLandingPage() {
         <section className="relative h-screen">
           <div className="relative h-full w-full">
             <FeaturedImage
-              artist="jeannette"
-              imageName="hero.jpg"
+              src={`/images/jeannette/hero.jpg`}
               alt="Weiss-Gruber family artworks"
               priority
               className="absolute inset-0 w-full h-full"
@@ -135,8 +171,7 @@ export default function MainLandingPage() {
                 <div key={index} className="group relative">
                   <div className="aspect-w-3 aspect-h-4 bg-gray-200 rounded-lg overflow-hidden">
                     <FeaturedImage
-                      artist={artist.id}
-                      imageName={artist.featuredImage}
+                      src={`/images/${artist.id}/${artist.featuredImage}`}
                       alt={artist.name}
                       className="transition-transform duration-300 group-hover:scale-105"
                     />

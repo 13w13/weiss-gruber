@@ -35,3 +35,4 @@ next-env.d.ts
 *.tar.gz
 deploy.sh
 sync-from-vps.sh
+*.pdf

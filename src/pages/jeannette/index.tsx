@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronRight, Globe } from 'lucide-react'
 import { useState } from 'react'
@@ -54,7 +53,7 @@ interface Content {
   en: ContentStructure;
 }
 
-const imageBaseUrl = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com';
+const imageBaseUrl = 'https://xrarrp4wrvauwge7.public.blob.vercel-storage.com';
 
 export default function JeannetteLandingPage() {
   const [language, setLanguage] = useState<Language>('fr')

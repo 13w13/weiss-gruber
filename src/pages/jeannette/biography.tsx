@@ -47,7 +47,7 @@ interface Content {
 }
 
 export default function BiographyPage() {
-  const [language, setLanguage] = useState<Language>('fr')
+  const [language] = useState<Language>('fr')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const content: Content = {
@@ -69,24 +69,24 @@ export default function BiographyPage() {
         {
           title: "Biographie",
           content: [
-            "Jeannette Weiss Gruber (née le 1er juillet 1934 à Paris) est une peintre-verrier française. Issue d'une lignée d'artistes verriers, elle perpétue une tradition familiale d'excellence dans l'art du vitrail.",
-            "Fille du peintre-verrier Jean-Jacques Gruber et petite-fille de Jacques Gruber, figure majeure de l'École de Nancy, elle s'inscrit dans la continuité d'un savoir-faire familial tout en développant son propre langage artistique."
+            "Jeannette Weiss Gruber (née le 1er juillet 1934 à Paris) est une peintre-verrier française. Issue d&apos;une lignée d&apos;artistes verriers, elle perpétue une tradition familiale d&apos;excellence dans l&apos;art du vitrail.",
+            "Fille du peintre-verrier Jean-Jacques Gruber et petite-fille de Jacques Gruber, figure majeure de l&apos;École de Nancy, elle s&apos;inscrit dans la continuité d&apos;un savoir-faire familial tout en développant son propre langage artistique."
           ]
         },
         {
           title: "Formation et Carrière",
           content: [
-            "De 1954 à 1969, Jeannette Weiss Gruber exerce son art au sein de l'atelier Jacques Gruber, où elle développe sa technique et affine sa vision artistique. En 1959, suite à son mariage avec Bernard Weiss, elle adopte la signature JWG qui caractérisera désormais ses œuvres.",
-            "De 1969 à 1973, l'artiste effectue un séjour au Québec, période durant laquelle elle explore de nouvelles expressions artistiques, notamment à travers ses 'aluchromies' (peintures sur aluminium). Cette expérience enrichit sa pratique du vitrail et influence son approche de la lumière.",
-            "À son retour à Paris en 1973, elle conjugue création et transmission en enseignant l'histoire de l'art à l'École américaine. En 1980, elle établit son propre atelier à la Villa d'Alésia, lieu de création de nombreuses œuvres majeures."
+            "De 1954 à 1969, Jeannette Weiss Gruber exerce son art au sein de l&apos;atelier Jacques Gruber, où elle développe sa technique et affine sa vision artistique. En 1959, suite à son mariage avec Bernard Weiss, elle adopte la signature JWG qui caractérisera désormais ses œuvres.",
+            "De 1969 à 1973, l&apos;artiste effectue un séjour au Québec, période durant laquelle elle explore de nouvelles expressions artistiques, notamment à travers ses &apos;aluchromies&apos; (peintures sur aluminium). Cette expérience enrichit sa pratique du vitrail et influence son approche de la lumière.",
+            "À son retour à Paris en 1973, elle conjugue création et transmission en enseignant l&apos;histoire de l&apos;art à l&apos;École américaine. En 1980, elle établit son propre atelier à la Villa d&apos;Alésia, lieu de création de nombreuses œuvres majeures."
           ]
         },
         {
           title: "Technique et Approche Artistique",
           content: [
-            "La pratique de Jeannette Weiss Gruber se caractérise par une recherche constante d'innovation technique au service de l'intégration architecturale. Dès 1958, elle développe une technique distinctive utilisant peignes et éponges, parfois complétée par l'usage de blaireaux et de pinceaux selon les projets.",
-            "Sa méthodologie inclut une approche unique de visualisation : l'utilisation de jumelles à l'envers pour anticiper l'effet final des vitraux dans leur contexte architectural. Cette technique originale lui permet d'optimiser l'intégration de ses œuvres dans leur environnement.",
-            "Comme le souligne Aymerick Zublena lors de la remise de la Médaille de la Restauration en 2001 : 'Son objectif est d'insérer ses créations dans les différents édifices en s'imprégnant du cadre architectural et de la lumière, avec une recherche d'harmonie et d'équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches.'"
+            "La pratique de Jeannette Weiss Gruber se caractérise par une recherche constante d&apos;innovation technique au service de l&apos;intégration architecturale. Dès 1958, elle développe une technique distinctive utilisant peignes et éponges, parfois complétée par l&apos;usage de blaireaux et de pinceaux selon les projets.",
+            "Sa méthodologie inclut une approche unique de visualisation : l&apos;utilisation de jumelles à l&apos;envers pour anticiper l&apos;effet final des vitraux dans leur contexte architectural. Cette technique originale lui permet d&apos;optimiser l&apos;intégration de ses œuvres dans leur environnement.",
+            "Comme le souligne Aymerick Zublena lors de la remise de la Médaille de la Restauration en 2001 : &apos;Son objectif est d&apos;insérer ses créations dans les différents édifices en s&apos;imprégnant du cadre architectural et de la lumière, avec une recherche d&apos;harmonie et d&apos;équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches.&apos;"
           ]
         },
         {
@@ -103,13 +103,13 @@ export default function BiographyPage() {
         {
           title: "Reconnaissance",
           content: [
-            "En 2001, la Fondation Académie d'Architecture lui décerne la Médaille de la Restauration, reconnaissant l'excellence de son travail dans la création et la restauration de vitraux. Cette distinction souligne sa contribution exceptionnelle à la préservation et au renouvellement de l'art du vitrail en France."
+            "En 2001, la Fondation Académie d&apos;Architecture lui décerne la Médaille de la Restauration, reconnaissant l&apos;excellence de son travail dans la création et la restauration de vitraux. Cette distinction souligne sa contribution exceptionnelle à la préservation et au renouvellement de l&apos;art du vitrail en France."
           ]
         }
       ],
       familyLegacy: {
-        title: "L'Héritage Artistique Weiss-Gruber",
-        content: "Jeannette Weiss Gruber s'inscrit dans une lignée d'artistes d'exception. Son œuvre témoigne de la perpétuation et du renouvellement d'une tradition familiale dans l'art du vitrail, tout en apportant une vision contemporaine à cet art séculaire."
+        title: "L&apos;Héritage Artistique Weiss-Gruber",
+        content: "Jeannette Weiss Gruber s&apos;inscrit dans une lignée d&apos;artistes d&apos;exception. Son œuvre témoigne de la perpétuation et du renouvellement d&apos;une tradition familiale dans l&apos;art du vitrail, tout en apportant une vision contemporaine à cet art séculaire."
       },
       footer: {
         rights: "Tous droits réservés."
@@ -156,7 +156,7 @@ export default function BiographyPage() {
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
             <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'fr' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
+              <button className="flex items-center hover:text-blue-600 transition-colors">
                 <Globe className="w-4 h-4 mr-1" />
                 FR
               </button>
@@ -188,7 +188,7 @@ export default function BiographyPage() {
             </div>
             <div className="md:col-span-1">
               <div className="sticky top-24">
-                <h3 className="text-xl font-semibold mb-4">Galerie d'Œuvres</h3>
+                <h3 className="text-xl font-semibold mb-4">Galerie d&apos;Œuvres</h3>
                 <div className="space-y-4">
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="relative aspect-w-4 aspect-h-3 bg-gray-200 rounded-lg overflow-hidden">
