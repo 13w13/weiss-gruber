@@ -1,5 +1,5 @@
 // utils/artworks.ts
-import { ArtworkImage } from '@/types/images';
+import { ArtworkImage, ArtistId } from '@/types/images';
 
 export const getArtworkPath = (artwork: ArtworkImage, type: 'main' | 'detail' = 'main') => 
   `/images/${artwork.artist}/catalogue/${artwork.year}/${artwork.location}/${type}.jpg`;
