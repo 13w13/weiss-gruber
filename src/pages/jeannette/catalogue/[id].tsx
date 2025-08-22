@@ -5,7 +5,7 @@ import Papa from 'papaparse';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronDown, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import { useState } from 'react';
 
 // Le même type que dans la page du catalogue
@@ -80,10 +80,10 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
             <div className="prose max-w-none">
               <p>{work.description_fr}</p>
               <ul>
-                <li><strong>Type d'édifice:</strong> {work.building_type}</li>
+                <li><strong>Type d&apos;édifice:</strong> {work.building_type}</li>
                 <li><strong>Département:</strong> {work.department}</li>
                 <li><strong>Emplacement:</strong> {work.location_in_building}</li>
-                <li><strong>Type d'intervention:</strong> {work.type_of_work}</li>
+                <li><strong>Type d&apos;intervention:</strong> {work.type_of_work}</li>
                 <li><strong>Thème:</strong> {work.theme}</li>
               </ul>
             </div>
