@@ -7,6 +7,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Globe } from 'lucide-react';
 import { useState } from 'react';
+import Lightbox from 'yet-another-react-lightbox';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
+import 'yet-another-react-lightbox/styles.css';
 
 // Le même type que dans la page du catalogue
 interface Vitrail {
@@ -29,6 +32,7 @@ interface Vitrail {
 export default function VitrailDetail({ work }: { work: Vitrail }) {
   const router = useRouter();
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
+  const [open, setOpen] = useState(false);
 
   if (router.isFallback) {
     return <div>Chargement...</div>;
@@ -67,7 +71,7 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
             <h1 className="text-4xl md:text-5xl font-light mb-4">{work.title_fr}</h1>
             <p className="text-lg text-gray-600 mb-8">{work.year} - {work.building_name}, {work.city}</p>
             
-            <div className="relative h-96 md:h-[500px] mb-8 bg-gray-200 rounded-lg overflow-hidden">
+            <div className="relative h-96 md:h-[500px] mb-8 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => setOpen(true)}>
               <Image
                 src={`https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`}
                 alt={work.title_fr}
@@ -76,6 +80,18 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
                 onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/800x500.png?text=Image+non+disponible'; }}
               />
             </div>
+
+            <Lightbox
+              open={open}
+              close={() => setOpen(false)}
+              slides={[
+                {
+                  src: `https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`,
+                  alt: work.title_fr,
+                },
+              ]}
+              plugins={[Zoom]}
+            />
 
             <div className="prose max-w-none">
               <p>{work.description_fr}</p>
