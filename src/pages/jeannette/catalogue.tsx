@@ -132,7 +132,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredWorks.map((work) => (
-              <div key={work.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <Link key={work.id} href={`/jeannette/catalogue/${work.id}`} className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-64 bg-gray-200">
                   {/* L'image sera connectée dans une prochaine étape */}
                   <Image
@@ -149,7 +149,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
                   <p className="text-gray-600">{work.year}</p>
                   <p className="text-gray-600">{`${work.building_name}, ${work.city}`}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
