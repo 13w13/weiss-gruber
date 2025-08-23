@@ -147,7 +147,7 @@ const getWorks = () => {
     if (work.gallery_images && work.gallery_images.trim().startsWith('[')) {
       try {
         gallery_images = JSON.parse(work.gallery_images);
-      } catch (_e) {
+      } catch {
         console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
       }
     }
