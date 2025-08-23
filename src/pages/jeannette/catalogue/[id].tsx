@@ -10,23 +10,7 @@ import { useState } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import 'yet-another-react-lightbox/styles.css';
-
-// Le même type que dans la page du catalogue
-interface Vitrail {
-  id: string;
-  year: string;
-  building_name: string;
-  building_type: string;
-  city: string;
-  department: string;
-  location_in_building: string;
-  title_fr: string;
-  type_of_work: string;
-  theme: string;
-  main_image: string;
-  photo_status: string;
-  description_fr: string;
-}
+import { Vitrail } from '@/types/images';
 
 // Le composant pour la page de détail
 export default function VitrailDetail({ work }: { work: Vitrail }) {
@@ -37,6 +21,19 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
   if (router.isFallback) {
     return <div>Chargement...</div>;
   }
+
+  const slides = [
+    { 
+      src: `https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`,
+      alt: work.title_fr,
+      title: work.title_fr
+    },
+    ...(work.gallery_images?.map(img => ({
+      src: `https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${img.url}`,
+      alt: img.alt_fr || work.title_fr,
+      title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`
+    })) || [])
+  ];
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -84,16 +81,11 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
             <Lightbox
               open={open}
               close={() => setOpen(false)}
-              slides={[
-                {
-                  src: `https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`,
-                  alt: work.title_fr,
-                },
-              ]}
+              slides={slides}
               plugins={[Zoom]}
             />
 
-            <div className="prose max-w-none">
+            <div className="prose max-w-none mb-12">
               <p>{work.description_fr}</p>
               <ul>
                 <li><strong>Type d&apos;édifice:</strong> {work.building_type}</li>
@@ -103,6 +95,30 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
                 <li><strong>Thème:</strong> {work.theme}</li>
               </ul>
             </div>
+
+            {work.gallery_images && work.gallery_images.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-light mb-4">Galerie</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {work.gallery_images.map((image, index) => (
+                    <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                      <Image
+                        src={`https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${image.url}`}
+                        alt={image.alt_fr || work.title_fr}
+                        width={200}
+                        height={150}
+                        className="object-cover w-full h-32 cursor-pointer"
+                        onClick={() => setOpen(true)} // Ouvre la lightbox sur l'image cliquée
+                      />
+                      <div className="p-2 text-sm bg-gray-50">
+                        <p className="font-semibold">{image.type}</p>
+                        {image.credit && <p className="text-gray-500 italic">{image.credit}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>
@@ -124,7 +140,21 @@ const getWorks = () => {
     header: true,
     skipEmptyLines: true,
   });
-  return result.data as Vitrail[];
+
+  // Traitement pour parser la colonne gallery_images
+  const works = (result.data as any[]).map(work => {
+    let gallery_images = [];
+    if (work.gallery_images && work.gallery_images.trim().startsWith('[')) {
+      try {
+        gallery_images = JSON.parse(work.gallery_images);
+      } catch (e) {
+        console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
+      }
+    }
+    return { ...work, gallery_images };
+  });
+
+  return works as Vitrail[];
 };
 
 // Génère les chemins pour chaque œuvre

@@ -6,26 +6,10 @@ import { GetStaticProps } from 'next';
 import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
+import { Vitrail } from '@/types/images';
 
 // Définitions des types
 type Language = 'fr' | 'en';
-
-// Type correspondant aux colonnes du fichier CSV
-interface Vitrail {
-  id: string;
-  year: string;
-  building_name: string;
-  building_type: string;
-  city: string;
-  department: string;
-  location_in_building: string;
-  title_fr: string;
-  type_of_work: string;
-  theme: string;
-  main_image: string;
-  photo_status: string;
-  description_fr: string;
-}
 
 // ... (autres types pour le contenu statique de l'interface)
 interface Nav { home: string; biography: string; catalogue: string; exhibitions: string; }
@@ -168,15 +152,32 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
 export const getStaticProps: GetStaticProps = async () => {
   const csvFilePath = path.join(process.cwd(), 'vitraux_metadata.csv');
   const csvFileContent = fs.readFileSync(csvFilePath, 'utf-8');
-  
+
   const result = Papa.parse(csvFileContent, {
     header: true,
     skipEmptyLines: true,
   });
 
+  // Traitement pour parser la colonne gallery_images
+  const works = (result.data as any[]).map(work => {
+    let gallery_images = [];
+    if (work.gallery_images && work.gallery_images.trim().startsWith('[')) {
+      try {
+        gallery_images = JSON.parse(work.gallery_images);
+      } catch (e) {
+        console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
+        // Laisser gallery_images comme un tableau vide en cas d'erreur
+      }
+    }
+    return {
+      ...work,
+      gallery_images,
+    };
+  });
+
   return {
     props: {
-      works: result.data,
+      works: works,
     },
   };
 };

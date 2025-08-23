@@ -2,6 +2,31 @@
 export type ArtistId = 'jeannette' | 'frederic' | 'camille';
 export type ArtworkCategory = 'vitrail' | 'peinture' | 'sculpture';
 
+export interface GalleryImage {
+  url: string;
+  type: 'Détail' | 'Carton' | 'Vue d\'ensemble' | 'Autre';
+  credit?: string;
+  alt_fr?: string;
+  alt_en?: string;
+}
+
+export interface Vitrail {
+  id: string;
+  year: string;
+  building_name: string;
+  building_type: string;
+  city: string;
+  department: string;
+  location_in_building: string;
+  title_fr: string;
+  type_of_work: string;
+  theme: string;
+  main_image: string;
+  photo_status: string;
+  description_fr: string;
+  gallery_images?: GalleryImage[];
+}
+
 export interface ArtworkImage {
   id: string;
   artist: ArtistId;
