@@ -159,12 +159,12 @@ export const getStaticProps: GetStaticProps = async () => {
   });
 
   // Traitement pour parser la colonne gallery_images
-  const works = (result.data as any[]).map(work => {
+  const works = (result.data as Record<string, string>[]).map(work => {
     let gallery_images = [];
     if (work.gallery_images && work.gallery_images.trim().startsWith('[')) {
       try {
         gallery_images = JSON.parse(work.gallery_images);
-      } catch (e) {
+      } catch (_e) {
         console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
         // Laisser gallery_images comme un tableau vide en cas d'erreur
       }
