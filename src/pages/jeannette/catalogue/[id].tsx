@@ -112,7 +112,7 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
                       />
                       <div className="p-2 text-sm bg-gray-50">
                         <p className="font-semibold">{image.type}</p>
-                        {image.credit && <p className="mt-1 text-xs text-gray-400">{image.credit}</p>}
+                        {image.credit && <p className="mt-1 text-xs text-gray-400">Crédit photo : {image.credit}</p>}
                       </div>
                     </div>
                   ))}
