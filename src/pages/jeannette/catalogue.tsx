@@ -163,7 +163,9 @@ export const getStaticProps: GetStaticProps = async () => {
     let gallery_images = [];
     if (work.gallery_images && work.gallery_images.trim().startsWith('[')) {
       try {
-        gallery_images = JSON.parse(work.gallery_images);
+        // Remplacer les doubles guillemets échappés par des guillemets simples pour un parsing JSON correct
+        const cleanedJsonString = work.gallery_images.replace(/""/g, '"');
+        gallery_images = JSON.parse(cleanedJsonString);
       } catch {
         console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
         // Laisser gallery_images comme un tableau vide en cas d'erreur
