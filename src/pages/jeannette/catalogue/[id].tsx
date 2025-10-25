@@ -5,18 +5,30 @@ import Papa from 'papaparse';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Globe } from 'lucide-react';
-import { useState } from 'react';
+import { Globe, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import 'yet-another-react-lightbox/styles.css';
 import { Vitrail } from '@/types/images';
 
 // Le composant pour la page de détail
-export default function VitrailDetail({ work }: { work: Vitrail }) {
+export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail; prevId?: string | null; nextId?: string | null }) {
   const router = useRouter();
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' && prevId) {
+        router.push(`/jeannette/catalogue/${prevId}`);
+      } else if (e.key === 'ArrowRight' && nextId) {
+        router.push(`/jeannette/catalogue/${nextId}`);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [prevId, nextId, router]);
 
   if (router.isFallback) {
     return <div>Chargement...</div>;
@@ -66,9 +78,26 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-light mb-4">{work.title_fr}</h1>
-            <p className="text-lg text-gray-600 mb-8">{work.year} - {work.building_name}, {work.city}</p>
-            
-            <div className="relative h-96 md:h-[500px] mb-8 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => setOpen(true)}>
+            <p className="text-lg text-gray-600 mb-4">{work.year} - {work.building_name}, {work.city}</p>
+
+            <div className="mb-6 flex justify-between items-center">
+              {prevId ? (
+                <Link href={`/jeannette/catalogue/${prevId}`} className="inline-flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Précédent
+                </Link>
+              ) : (
+                <span />
+              )}
+              {nextId && (
+                <Link href={`/jeannette/catalogue/${nextId}`} className="inline-flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+                  Suivant
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Link>
+              )}
+            </div>
+
+            <div className="relative h-96 md:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => setOpen(true)}>
               <Image
                 src={`https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`}
                 alt={work.title_fr}
@@ -85,15 +114,32 @@ export default function VitrailDetail({ work }: { work: Vitrail }) {
               plugins={[Zoom]}
             />
 
-            <div className="prose max-w-none mb-12">
-              <p>{work.description_fr}</p>
-              <ul>
-                <li><strong>Type d&apos;édifice:</strong> {work.building_type}</li>
-                <li><strong>Département:</strong> {work.department}</li>
-                <li><strong>Emplacement:</strong> {work.location_in_building}</li>
-                <li><strong>Type d&apos;intervention:</strong> {work.type_of_work}</li>
-                <li><strong>Thème:</strong> {work.theme}</li>
-              </ul>
+            {work.caption_fr && (
+              <p className="mb-8 text-base text-gray-700 leading-relaxed">
+                {work.caption_fr}
+              </p>
+            )}
+
+            <div className="space-y-4 mb-12">
+              {work.description_fr && (
+                <p className="text-gray-800 leading-relaxed">
+                  {work.description_fr}
+                </p>
+              )}
+              <dl className="grid grid-cols-1 gap-y-3">
+                <div>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">Type d&apos;édifice</dt>
+                  <dd className="text-gray-800">{work.building_type}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">Département</dt>
+                  <dd className="text-gray-800">{work.department}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">Emplacement</dt>
+                  <dd className="text-gray-800">{work.location_in_building}</dd>
+                </div>
+              </dl>
             </div>
 
             {work.gallery_images && work.gallery_images.length > 0 && (
@@ -175,17 +221,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // Récupère les données pour une œuvre spécifique
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const works = getWorks();
-  const work = works.find(w => w.id === params?.id);
+  const index = works.findIndex(w => w.id === params?.id);
+  const work = index >= 0 ? works[index] : undefined;
 
   if (!work) {
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
+
+  const prevId = index > 0 ? works[index - 1].id : null;
+  const nextId = index < works.length - 1 ? works[index + 1].id : null;
 
   return {
     props: {
       work,
+      prevId,
+      nextId,
     },
   };
 };

@@ -19,9 +19,8 @@ export interface Vitrail {
   department: string;
   location_in_building: string;
   title_fr: string;
-  type_of_work: string;
-  theme: string;
   main_image: string;
+  caption_fr?: string;
   photo_status: string;
   description_fr: string;
   gallery_images?: GalleryImage[];
