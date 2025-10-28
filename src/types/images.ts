@@ -23,6 +23,9 @@ export interface Vitrail {
   caption_fr?: string;
   photo_status: string;
   description_fr: string;
+  maps_url?: string;
+  lat?: string;
+  lng?: string;
   gallery_images?: GalleryImage[];
 }
 

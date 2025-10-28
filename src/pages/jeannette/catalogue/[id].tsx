@@ -5,7 +5,7 @@ import Papa from 'papaparse';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Globe, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Globe, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
@@ -127,6 +127,19 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
                 </p>
               )}
               <dl className="grid grid-cols-1 gap-y-3">
+                <div>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">Lieu</dt>
+                  <dd className="text-gray-800">
+                    {work.maps_url ? (
+                      <a href={work.maps_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-blue-700 hover:text-blue-900 underline underline-offset-2">
+                        <MapPin className="w-4 h-4 mr-1" />
+                        {work.building_name}, {work.city}
+                      </a>
+                    ) : (
+                      <span>{work.building_name}, {work.city}</span>
+                    )}
+                  </dd>
+                </div>
                 <div>
                   <dt className="text-xs uppercase tracking-wide text-gray-500">Type d&apos;édifice</dt>
                   <dd className="text-gray-800">{work.building_type}</dd>
