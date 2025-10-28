@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ComponentType } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, Polyline } from 'react-leaflet';
+import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
 
 function PopupContent({ work }: { work: Vitrail }) {
@@ -30,10 +31,12 @@ function PopupContent({ work }: { work: Vitrail }) {
       {hasImages && (
         <div>
           <div className="relative w-full h-36 bg-gray-100 rounded overflow-hidden">
-            <img
+            <Image
               src={images[idx].src}
               alt={images[idx].alt}
-              className="object-cover w-full h-full"
+              fill
+              sizes="256px"
+              className="object-cover"
             />
           </div>
           {images.length > 1 && (
@@ -67,30 +70,30 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   const polyline: [number, number][] = points.map(p => [p.lat, p.lng]);
 
-  const AnyMapContainer: any = MapContainer as any;
-  const AnyTileLayer: any = TileLayer as any;
-  const AnyCircleMarker: any = CircleMarker as any;
-  const AnyPopup: any = Popup as any;
-  const AnyPolyline: any = Polyline as any;
+  const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
+  const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
+  const CM = CircleMarker as unknown as ComponentType<Record<string, unknown>>;
+  const PP = Popup as unknown as ComponentType<Record<string, unknown>>;
+  const PL = Polyline as unknown as ComponentType<Record<string, unknown>>;
 
   return (
-    <AnyMapContainer center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
-      <AnyTileLayer
+    <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+      <TL
         attribution='&copy; OpenStreetMap'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
       {polyline.length >= 2 && (
-        <AnyPolyline positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.6 }} />
+        <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.6 }} />
       )}
 
       {points.map(({ work, lat, lng }) => (
-        <AnyCircleMarker key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.9 }}>
-          <AnyPopup>
+        <CM key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.9 }}>
+          <PP>
             <PopupContent work={work} />
-          </AnyPopup>
-        </AnyCircleMarker>
+          </PP>
+        </CM>
       ))}
-    </AnyMapContainer>
+    </MC>
   );
 }
