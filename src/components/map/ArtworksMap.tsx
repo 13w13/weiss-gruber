@@ -168,14 +168,14 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         })}
       </MC>
 
-      <div className="absolute top-3 right-3 z-50 flex flex-col items-end gap-2">
-        <div className="bg-white border border-gray-300 rounded shadow-lg px-3 py-2 text-xs flex items-center gap-2">
+      <div className="absolute top-3 right-3 z-[4000] flex flex-col items-end gap-2 pointer-events-auto">
+        <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs flex items-center gap-2">
           <span className="text-gray-700 font-medium">Fond</span>
           <button onClick={() => setBasemap('osm')} className={`px-2 py-0.5 rounded ${basemap==='osm' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>OSM</button>
           <button onClick={() => setBasemap('light')} className={`px-2 py-0.5 rounded ${basemap==='light' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>Light</button>
         </div>
         {decades.length > 0 && (
-          <div className="bg-white border border-gray-300 rounded shadow-lg px-3 py-2 text-xs">
+          <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs">
             <div className="font-medium text-gray-800 mb-1">Décennies</div>
             <ul className="space-y-1">
               {decades.map(d => (
