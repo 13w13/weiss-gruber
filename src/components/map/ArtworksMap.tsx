@@ -1,5 +1,5 @@
 import { useMemo, useState, type ComponentType, useEffect } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap } from 'react-leaflet';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
 import L from 'leaflet';
@@ -65,11 +65,11 @@ function PopupContent({ work }: { work: Vitrail }) {
         </div>
       )}
       <div className="mt-3 flex items-center">
-        <a href={`/jeannette/catalogue/${work.id}`} className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition">Voir la fiche</a>
+        <a href={`/jeannette/catalogue/${work.id}`} className="text-xs bg-white border border-blue-600 text-blue-700 px-2 py-1 rounded hover:bg-blue-50 transition">Voir la fiche</a>
         {mapsHref && (
           <>
             <span className="mx-2 text-gray-300">•</span>
-            <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs bg-gray-800 text-white px-2 py-1 rounded hover:bg-black transition">Ouvrir dans Maps</a>
+            <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs bg-white border border-gray-800 text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition">Ouvrir dans Maps</a>
           </>
         )}
       </div>
@@ -124,7 +124,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const CM = CircleMarker as unknown as ComponentType<Record<string, unknown>>;
   const PP = Popup as unknown as ComponentType<Record<string, unknown>>;
   const PL = Polyline as unknown as ComponentType<Record<string, unknown>>;
-  const TT = Tooltip as unknown as ComponentType<Record<string, unknown>>;
 
   function FitToBounds({ positions }: { positions: [number, number][] }) {
     const map = useMap();
@@ -157,13 +156,10 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
         )}
 
-        {points.map(({ work, lat, lng, yearNum }, i) => {
+        {points.map(({ work, lat, lng, yearNum }) => {
           const color = decadeColor(yearNum);
           return (
             <CM key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color, weight: 1, fillColor: color, fillOpacity: 0.95 }}>
-              <TT permanent direction="top" offset={[0, -8]} className="!bg-white/90 !text-gray-800 !border !border-gray-300 !rounded !px-1 !py-0.5 !text-[10px]">
-                {i + 1}
-              </TT>
               <PP>
                 <PopupContent work={work} />
               </PP>
@@ -172,14 +168,14 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         })}
       </MC>
 
-      <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
-        <div className="bg-white/90 backdrop-blur border border-gray-200 rounded shadow px-2 py-1 text-xs flex items-center gap-1">
+      <div className="absolute top-3 right-3 z-50 flex flex-col items-end gap-2">
+        <div className="bg-white border border-gray-300 rounded shadow-lg px-2 py-1 text-xs flex items-center gap-1">
           <button onClick={() => setBasemap('osm')} className={`px-2 py-0.5 rounded ${basemap==='osm' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>OSM</button>
           <button onClick={() => setBasemap('light')} className={`px-2 py-0.5 rounded ${basemap==='light' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>Light</button>
         </div>
         {decades.length > 0 && (
-          <div className="bg-white/90 backdrop-blur border border-gray-200 rounded shadow px-2 py-1 text-xs">
-            <div className="font-medium mb-1">Décennies</div>
+          <div className="bg-white border border-gray-300 rounded shadow-lg px-3 py-2 text-xs">
+            <div className="font-medium text-gray-800 mb-1">Décennies</div>
             <ul className="space-y-1">
               {decades.map(d => (
                 <li key={d} className="flex items-center gap-2">
