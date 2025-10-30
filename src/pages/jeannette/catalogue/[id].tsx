@@ -63,6 +63,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
             <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Accueil</Link></li>
             <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
             <li><Link href="/jeannette/catalogue" className="text-blue-600">Catalogue Raisonné</Link></li>
+            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">Expositions</Link></li>
             <li>
               <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">

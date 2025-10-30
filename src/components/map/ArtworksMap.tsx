@@ -1,7 +1,8 @@
-import { useMemo, useState, type ComponentType } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline } from 'react-leaflet';
+import { useMemo, useState, type ComponentType, useEffect } from 'react';
+import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap } from 'react-leaflet';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
+import L from 'leaflet';
 
 function PopupContent({ work }: { work: Vitrail }) {
   const images = useMemo(() => {
@@ -76,6 +77,16 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const PP = Popup as unknown as ComponentType<Record<string, unknown>>;
   const PL = Polyline as unknown as ComponentType<Record<string, unknown>>;
 
+  function FitToBounds({ positions }: { positions: [number, number][] }) {
+    const map = useMap();
+    useEffect(() => {
+      if (!positions.length) return;
+      const bounds = L.latLngBounds(positions.map(([lat, lng]) => L.latLng(lat, lng)));
+      map.fitBounds(bounds, { padding: [40, 40] });
+    }, [map, positions]);
+    return null;
+  }
+
   return (
     <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
       <TL
@@ -83,12 +94,14 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
+      <FitToBounds positions={polyline} />
+
       {polyline.length >= 2 && (
         <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.6 }} />
       )}
 
       {points.map(({ work, lat, lng }) => (
-        <CM key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.9 }}>
+        <CM key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color: '#ef4444', weight: 1, fillColor: '#ef4444', fillOpacity: 0.95 }}>
           <PP>
             <PopupContent work={work} />
           </PP>

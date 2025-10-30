@@ -205,6 +205,7 @@ export default function JeannetteLandingPage() {
           <ul className="flex space-x-6">
             <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">{t.nav.biography}</Link></li>
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
+            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
             <li>
               <button onClick={() => setLanguage(lang => lang === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">

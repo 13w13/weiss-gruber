@@ -38,12 +38,21 @@ export default function Carte({ works }: { works: Vitrail[] }) {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="fixed top-0 left-0 right-0 bg-white bg-opacity-90 backdrop-blur border-b z-50">
-        <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="text-xl font-light tracking-wide">Weiss‑Gruber</Link>
-          <ul className="flex items-center space-x-6 text-sm text-gray-600">
-            <li><Link href="/jeannette" className="hover:text-gray-900">Jeannette</Link></li>
-            <li><Link href="/jeannette/catalogue" className="hover:text-gray-900">Catalogue</Link></li>
-            <li><span className="text-gray-900">Carte</span></li>
+        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center">
+            <Link href="/" className="text-xl font-semibold mr-6">
+              Weiss-Gruber
+            </Link>
+            <Link href="/jeannette" className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+              Jeannette Weiss Gruber
+            </Link>
+          </div>
+          <ul className="flex space-x-6">
+            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Accueil</Link></li>
+            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
+            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue Raisonné</Link></li>
+            <li><span className="text-blue-600">Carte</span></li>
+            <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">Expositions</Link></li>
           </ul>
         </nav>
       </header>

@@ -21,6 +21,7 @@ interface Nav {
   home: string;
   biography: string;
   catalogue: string;
+  carte: string;
   exhibitions: string;
 }
 
@@ -56,6 +57,7 @@ export default function BiographyPage() {
         home: "Accueil",
         biography: "Biographie",
         catalogue: "Catalogue Raisonné",
+        carte: "Carte",
         exhibitions: "Expositions",
       },
       familyMembers: {
@@ -154,6 +156,7 @@ export default function BiographyPage() {
             <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">{t.nav.home}</Link></li>
             <li><Link href="/jeannette/biography" className="text-blue-600">{t.nav.biography}</Link></li>
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
+            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">{t.nav.carte}</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
             <li>
               <button className="flex items-center hover:text-blue-600 transition-colors">
