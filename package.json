@@ -22,6 +22,7 @@
     "@types/node": "^20",
     "@types/papaparse": "^5.3.16",
     "@types/react": "19.2.2",
+    "@types/leaflet": "^1.9.13",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "postcss": "^8",
