@@ -136,8 +136,9 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   }
 
   return (
-    <div className="relative">
-      <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+    <div className="grid md:grid-cols-[minmax(0,1fr)_260px] gap-4 items-start">
+      <div className="relative">
+        <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
         {basemap === 'osm' ? (
           <TL
             attribution='&copy; OpenStreetMap contributors'
@@ -166,27 +167,31 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             </CM>
           );
         })}
-      </MC>
-
-      <div className="fixed bottom-6 right-6 z-[1000] flex flex-col items-end gap-3 pointer-events-auto">
-        <div className="bg-white border border-gray-300 rounded shadow-xl px-2 py-1 text-xs flex items-center gap-1">
-          <button onClick={() => setBasemap('osm')} className={`px-2 py-0.5 rounded ${basemap==='osm' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>OSM</button>
-          <button onClick={() => setBasemap('light')} className={`px-2 py-0.5 rounded ${basemap==='light' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>Light</button>
-        </div>
-        {decades.length > 0 && (
-          <div className="bg-white border border-gray-300 rounded shadow-xl px-3 py-2 text-xs">
-            <div className="font-medium text-gray-800 mb-1">Décennies</div>
-            <ul className="space-y-1">
-              {decades.map(d => (
-                <li key={d} className="flex items-center gap-2">
-                  <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: decadeColor(d) }} />
-                  <span>{d}s</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        </MC>
       </div>
+
+      <aside className="sticky top-24 self-start">
+        <div className="space-y-3">
+          <div className="bg-white border border-gray-300 rounded shadow-md px-3 py-2 text-xs flex items-center gap-2">
+            <span className="text-gray-700 font-medium">Fond</span>
+            <button onClick={() => setBasemap('osm')} className={`px-2 py-0.5 rounded ${basemap==='osm' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>OSM</button>
+            <button onClick={() => setBasemap('light')} className={`px-2 py-0.5 rounded ${basemap==='light' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>Light</button>
+          </div>
+          {decades.length > 0 && (
+            <div className="bg-white border border-gray-300 rounded shadow-md px-3 py-2 text-xs">
+              <div className="font-medium text-gray-800 mb-1">Décennies</div>
+              <ul className="space-y-1">
+                {decades.map(d => (
+                  <li key={d} className="flex items-center gap-2">
+                    <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: decadeColor(d) }} />
+                    <span>{d}s</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </aside>
     </div>
   );
 }
