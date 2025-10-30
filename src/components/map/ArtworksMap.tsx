@@ -33,7 +33,16 @@ function PopupContent({ work }: { work: Vitrail }) {
     <div className="w-64">
       <div className="mb-2">
         <p className="text-sm text-gray-800 mb-1 font-medium">{work.building_name}</p>
-        <p className="text-xs text-gray-600">{work.title_fr} - {work.year}</p>
+        <div className="flex flex-wrap gap-1 items-center text-[11px] text-gray-600">
+          <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5">{work.city}</span>
+          {work.department && (
+            <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5">{work.department}</span>
+          )}
+          {work.year && (
+            <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5">{work.year}</span>
+          )}
+        </div>
+        <p className="text-xs text-gray-600 mt-1">{work.title_fr}</p>
       </div>
       {hasImages && (
         <div>
@@ -55,12 +64,12 @@ function PopupContent({ work }: { work: Vitrail }) {
           )}
         </div>
       )}
-      <div className="mt-3">
-        <a href={`/jeannette/catalogue/${work.id}`} className="text-xs text-blue-700 hover:underline">Voir la fiche</a>
+      <div className="mt-3 flex items-center">
+        <a href={`/jeannette/catalogue/${work.id}`} className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition">Voir la fiche</a>
         {mapsHref && (
           <>
             <span className="mx-2 text-gray-300">•</span>
-            <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs text-blue-700 hover:underline">Ouvrir dans Maps</a>
+            <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs bg-gray-800 text-white px-2 py-1 rounded hover:bg-black transition">Ouvrir dans Maps</a>
           </>
         )}
       </div>
@@ -86,6 +95,30 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   const polyline: [number, number][] = points.map(p => [p.lat, p.lng]);
 
+  const [basemap, setBasemap] = useState<'osm' | 'light'>('osm');
+
+  const decadeColor = (y?: number) => {
+    if (!y || !Number.isFinite(y)) return '#ef4444';
+    const d = Math.floor(y / 10) * 10;
+    const map: Record<number, string> = {
+      1950: '#2563eb',
+      1960: '#059669',
+      1970: '#a855f7',
+      1980: '#f59e0b',
+      1990: '#dc2626',
+      2000: '#0ea5e9',
+    };
+    return map[d] || '#6b7280';
+  };
+
+  const decades = useMemo(() => {
+    const s = new Set<number>();
+    for (const p of points) {
+      if (Number.isFinite(p.yearNum)) s.add(Math.floor(p.yearNum / 10) * 10);
+    }
+    return Array.from(s).sort((a, b) => a - b);
+  }, [points]);
+
   const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
   const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
   const CM = CircleMarker as unknown as ComponentType<Record<string, unknown>>;
@@ -104,28 +137,60 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   }
 
   return (
-    <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
-      <TL
-        attribution='&copy; OpenStreetMap'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <div className="relative">
+      <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+        {basemap === 'osm' ? (
+          <TL
+            attribution='&copy; OpenStreetMap contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+        ) : (
+          <TL
+            attribution='&copy; OpenStreetMap contributors &copy; CARTO'
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          />
+        )}
 
-      <FitToBounds positions={polyline} />
+        <FitToBounds positions={polyline} />
 
-      {polyline.length >= 2 && (
-        <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
-      )}
+        {polyline.length >= 2 && (
+          <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
+        )}
 
-      {points.map(({ work, lat, lng }, i) => (
-        <CM key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color: '#ef4444', weight: 1, fillColor: '#ef4444', fillOpacity: 0.95 }}>
-          <TT permanent direction="top" offset={[0, -8]} className="!bg-white/90 !text-gray-800 !border !border-gray-300 !rounded !px-1 !py-0.5 !text-[10px]">
-            {i + 1}
-          </TT>
-          <PP>
-            <PopupContent work={work} />
-          </PP>
-        </CM>
-      ))}
-    </MC>
+        {points.map(({ work, lat, lng, yearNum }, i) => {
+          const color = decadeColor(yearNum);
+          return (
+            <CM key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color, weight: 1, fillColor: color, fillOpacity: 0.95 }}>
+              <TT permanent direction="top" offset={[0, -8]} className="!bg-white/90 !text-gray-800 !border !border-gray-300 !rounded !px-1 !py-0.5 !text-[10px]">
+                {i + 1}
+              </TT>
+              <PP>
+                <PopupContent work={work} />
+              </PP>
+            </CM>
+          );
+        })}
+      </MC>
+
+      <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
+        <div className="bg-white/90 backdrop-blur border border-gray-200 rounded shadow px-2 py-1 text-xs flex items-center gap-1">
+          <button onClick={() => setBasemap('osm')} className={`px-2 py-0.5 rounded ${basemap==='osm' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>OSM</button>
+          <button onClick={() => setBasemap('light')} className={`px-2 py-0.5 rounded ${basemap==='light' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>Light</button>
+        </div>
+        {decades.length > 0 && (
+          <div className="bg-white/90 backdrop-blur border border-gray-200 rounded shadow px-2 py-1 text-xs">
+            <div className="font-medium mb-1">Décennies</div>
+            <ul className="space-y-1">
+              {decades.map(d => (
+                <li key={d} className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: decadeColor(d) }} />
+                  <span>{d}s</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
