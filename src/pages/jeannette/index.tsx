@@ -41,10 +41,10 @@ export default function JeannetteFrontPage() {
         {/* Citations */}
         <section className="bg-white py-16 md:py-24">
           <div className="max-w-3xl mx-auto px-4 space-y-12 text-center">
-            <blockquote className="italic text-3xl text-gray-800 leading-relaxed">
+            <blockquote className="italic text-2xl text-gray-800 leading-relaxed">
               « J&apos;ai beaucoup admiré la lumière que mon grand-père obtenait avec trois superpositions de verre et la gravure. Contrai­rement à lui, amoureuse du vitrail, j&apos;ai cherché la lumière avec mon travail de la grisaille. »
             </blockquote>
-            <blockquote className="italic text-3xl text-gray-800 leading-relaxed">
+            <blockquote className="italic text-2xl text-gray-800 leading-relaxed">
               « À 11 ans, j&apos;ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »
             </blockquote>
           </div>
