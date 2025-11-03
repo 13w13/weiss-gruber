@@ -42,10 +42,10 @@ export default function JeannetteFrontPage() {
         <section className="bg-white py-16 md:py-24">
           <div className="max-w-3xl mx-auto px-4 space-y-12 text-center">
             <blockquote className="italic text-3xl text-gray-800 leading-relaxed">
-              « J'ai beaucoup admiré la lumière que mon grand-père obtenait avec trois superpositions de verre et la gravure. Contrai­rement à lui, amoureuse du vitrail, j'ai cherché la lumière avec mon travail de la grisaille. »
+              « J&apos;ai beaucoup admiré la lumière que mon grand-père obtenait avec trois superpositions de verre et la gravure. Contrai­rement à lui, amoureuse du vitrail, j&apos;ai cherché la lumière avec mon travail de la grisaille. »
             </blockquote>
             <blockquote className="italic text-3xl text-gray-800 leading-relaxed">
-              « À 11 ans, j'ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »
+              « À 11 ans, j&apos;ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »
             </blockquote>
           </div>
         </section>
@@ -68,7 +68,7 @@ export default function JeannetteFrontPage() {
         <section className="bg-gray-50 py-16 md:py-24">
           <div className="container mx-auto px-4 text-center">
             <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto mb-10">
-              A réalisé des vitraux dans l'atelier familial d'après ses maquettes, ses cartons colorés et la peinture à la grisaille toujours à la lumière du jour. Ses créations ont été recensées par Jean Taralon :
+              A réalisé des vitraux dans l&apos;atelier familial d&apos;après ses maquettes, ses cartons colorés et la peinture à la grisaille toujours à la lumière du jour. Ses créations ont été recensées par Jean Taralon :
             </p>
             <div className="flex justify-center gap-8">
               <button onClick={() => setLightboxImage(taralonRecto.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
@@ -88,7 +88,7 @@ export default function JeannetteFrontPage() {
               Dès 1958, Jeannette Weiss-Gruber utilise, selon les besoins, peignes et éponges, blaireaux et pinceaux — un ensemble de techniques qu’elle mobilise notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon, achevées en 1978.
             </p>
             <p>Le blanc et le bleu sont ses couleurs de prédilection dans le vitrail.</p>
-            <p>Pour anticiper l’effet in situ, elle observe ses œuvres avec des jumelles à l'envers, afin d’en imaginer la lecture à distance dans l’édifice.</p>
+            <p>Pour anticiper l’effet in situ, elle observe ses œuvres avec des jumelles à l&apos;envers, afin d’en imaginer la lecture à distance dans l’édifice.</p>
           </div>
         </section>
 
@@ -97,10 +97,10 @@ export default function JeannetteFrontPage() {
           <div className="bg-white border border-gray-200 rounded-lg shadow-md p-8 md:p-12 max-w-3xl mx-auto">
             <blockquote className="italic text-xl text-gray-800 space-y-4">
               <p>
-                « Son objectif est d'insérer ses créations dans les différents édifices en s'imprégnant du cadre architectural et de la lumière, avec une recherche d'harmonie et d'équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches. »
+                « Son objectif est d&apos;insérer ses créations dans les différents édifices en s&apos;imprégnant du cadre architectural et de la lumière, avec une recherche d&apos;harmonie et d&apos;équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches. »
               </p>
               <p>
-                « Depuis ses premières créations en 1955 et jusqu'à maintenant, Jeannette Weiss Gruber a toujours, suivant l'environnement et sa propre sensibilité, été alternativement figurative, allusive ou abstraite, privilégiant son interprétation de l'insertion dans le contexte et le dialogue avec les utilisateurs. »
+                « Depuis ses premières créations en 1955 et jusqu&apos;à maintenant, Jeannette Weiss Gruber a toujours, suivant l&apos;environnement et sa propre sensibilité, été alternativement figurative, allusive ou abstraite, privilégiant son interprétation de l&apos;insertion dans le contexte et le dialogue avec les utilisateurs. »
               </p>
               <footer className="mt-4 text-right font-medium">— Aymerick Zublena, 2001</footer>
             </blockquote>
@@ -109,7 +109,7 @@ export default function JeannetteFrontPage() {
 
         {/* CTA */}
         <section className="py-16 md:py-24 bg-gray-100 text-center">
-          <h2 className="text-3xl md:text-4xl font-light mb-8">Explorer l'œuvre de Jeannette Weiss Gruber</h2>
+          <h2 className="text-3xl md:text-4xl font-light mb-8">Explorer l&apos;œuvre de Jeannette Weiss Gruber</h2>
           <div className="flex flex-col sm:flex-row justify-center gap-6">
             <Link href="/jeannette/catalogue" className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
               Catalogue Raisonné <ChevronRight className="ml-2 w-4 h-4" />
