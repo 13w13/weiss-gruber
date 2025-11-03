@@ -1,325 +1,153 @@
 import Link from 'next/link'
-import { ChevronRight, Globe } from 'lucide-react'
+import Image from 'next/image'
+import { ChevronRight, X } from 'lucide-react'
 import { useState } from 'react'
-import { FeaturedImage } from '@/components/images/FeaturedImage'
 
-type Language = 'fr' | 'en';
+// Static images (relative to project root)
+import heroImg from '../../../images/frontpage/main.jpg'
+import beauvaisImg from '../../../images/frontpage/1985_beauvais_cathedrale_principal.png'
+import taralonRecto from '../../../images/frontpage/taralon-recto.jpg'
+import taralonVerso from '../../../images/frontpage/taralon-verso.jpg'
 
-interface ContentStructure {
-  nav: {
-    biography: string;
-    catalogue: string;
-    exhibitions: string;
-  };
-  hero: {
-    subtitle: string;
-  };
-  intro: {
-    title: string;
-    text: string;
-  };
-  featuredWorks: {
-    title: string;
-    works: Array<{
-      title: string;
-      description: string;
-      image: string;
-    }>;
-  };
-  sections: Array<{
-    title: string;
-    description: string;
-    link: string;
-    href: string;
-  }>;
-  timeline: {
-    title: string;
-    events: Array<{
-      year: string;
-      event: string;
-    }>;
-  };
-  familyLegacy: {
-    title: string;
-    text: string;
-  };
-  footer: {
-    rights: string;
-  };
-}
-
-interface Content {
-  fr: ContentStructure;
-  en: ContentStructure;
-}
-
-const imageBaseUrl = 'https://xrarrp4wrvauwge7.public.blob.vercel-storage.com';
-
-export default function JeannetteLandingPage() {
-  const [language, setLanguage] = useState<Language>('fr')
-
-  const content: Content = {
-    fr: {
-      nav: {
-        biography: "Biographie",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Expositions",
-      },
-      hero: {
-        subtitle: "Peintre-verrier française (1934 - présent), créatrice de vitraux monumentaux"
-      },
-      intro: {
-        title: "Une Vision Contemporaine du Vitrail",
-        text: "Jeannette Weiss Gruber, peintre-verrier française née en 1934 à Paris, représente la troisième génération d'une lignée d'artistes verriers. Son œuvre se caractérise par une approche novatrice de l'intégration architecturale et une maîtrise exceptionnelle des techniques traditionnelles du vitrail, enrichies par une vision résolument contemporaine."
-      },
-      featuredWorks: {
-        title: "Œuvres Majeures",
-        works: [
-          {
-            title: "Cathédrale Primatiale Saint Jean de Lyon (1969)",
-            description: "Création de la baie est de la chapelle de la Vierge, illustrant l'harmonie entre tradition et modernité.",
-            image: "lyon-cathedral.jpg"
-          },
-          {
-            title: "Cathédrale de Beauvais (1985)",
-            description: "Réalisation d'une verrière monumentale de 25 m² dans le transept sud, dialogue subtil avec le patrimoine existant.",
-            image: "beauvais-cathedral.jpg"
-          },
-          {
-            title: "Église Abbatiale de Saint Jean de Saverne (2001)",
-            description: "Ensemble remarquable de dix-huit vitraux, témoignage de la maturité artistique de la peintre-verrier.",
-            image: "saverne-abbey.jpg"
-          }
-        ]
-      },
-      sections: [
-        {
-          title: "Catalogue Raisonné",
-          description: "Documentation exhaustive de l'œuvre de Jeannette Weiss Gruber, de ses premières créations en 1955 à ses réalisations contemporaines, illustrant l'évolution de sa pratique artistique.",
-          link: "Explorer le catalogue",
-          href: "/jeannette/catalogue"
-        },
-        {
-          title: "Parcours d'Expositions",
-          description: "Chronologie des expositions et installations majeures, incluant la période d'expérimentation au Québec (1969-1973) et les réalisations monumentales en France.",
-          link: "Découvrir le parcours",
-          href: "/jeannette/exhibitions"
-        }
-      ],
-      timeline: {
-        title: "Jalons d'une Carrière Exceptionnelle",
-        events: [
-          { year: "1934", event: "Naissance à Paris dans une famille de maîtres-verriers" },
-          { year: "1955", event: "Première création majeure : vitraux de l'Église Saint Jean Baptiste de Sceaux" },
-          { year: "1959", event: "Adoption de la signature JWG, marquant le début d'une identité artistique distinctive" },
-          { year: "1969-1973", event: "Période d'innovation au Québec, développement des aluchromies" },
-          { year: "1980", event: "Établissement de l'atelier personnel à la Villa d'Alésia, Paris" },
-          { year: "2001", event: "Médaille de la Restauration de l'Académie d'Architecture, reconnaissance de l'excellence de son œuvre" }
-        ]
-      },
-      familyLegacy: {
-        title: "Un Héritage Artistique Perpétué",
-        text: "L'œuvre de Jeannette Weiss Gruber s'inscrit dans la continuité de l'excellence artistique familiale, tout en apportant une contribution unique à l'art du vitrail contemporain. Sa pratique témoigne d'une parfaite maîtrise des techniques traditionnelles, enrichie par une vision moderne et personnelle de cet art séculaire."
-      },
-      footer: {
-        rights: "Tous droits réservés."
-      }
-    },
-    en: {
-      nav: {
-        biography: "Biography",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Exhibitions",
-      },
-      hero: {
-        subtitle: "French stained glass artist (1934 - present), creator of monumental stained glass works"
-      },
-      intro: {
-        title: "A Contemporary Vision of Stained Glass",
-        text: "Jeannette Weiss Gruber, a French stained glass artist born in 1934 in Paris, represents the third generation of a lineage of glass artists. Her work is characterized by an innovative approach to architectural integration and exceptional mastery of traditional stained glass techniques, enriched by a resolutely contemporary vision."
-      },
-      featuredWorks: {
-        title: "Major Works",
-        works: [
-          {
-            title: "Primatial Cathedral of Saint John of Lyon (1969)",
-            description: "Creation of the east bay of the Virgin's Chapel, illustrating the harmony between tradition and modernity.",
-            image: "lyon-cathedral.jpg"
-          },
-          {
-            title: "Beauvais Cathedral (1985)",
-            description: "Creation of a monumental 25 m² stained glass window in the south transept, a subtle dialogue with the existing heritage.",
-            image: "beauvais-cathedral.jpg"
-          },
-          {
-            title: "Abbey Church of Saint John of Saverne (2001)",
-            description: "Remarkable set of eighteen stained glass windows, testament to the artistic maturity of the glass painter.",
-            image: "saverne-abbey.jpg"
-          }
-        ]
-      },
-      sections: [
-        {
-          title: "Catalogue Raisonné",
-          description: "Comprehensive documentation of Jeannette Weiss Gruber's work, from her first creations in 1955 to her contemporary achievements, illustrating the evolution of her artistic practice.",
-          link: "Explore the catalogue",
-          href: "/jeannette/catalogue"
-        },
-        {
-          title: "Exhibition Journey",
-          description: "Chronology of major exhibitions and installations, including the experimental period in Quebec (1969-1973) and monumental achievements in France.",
-          link: "Discover the journey",
-          href: "/jeannette/exhibitions"
-        }
-      ],
-      timeline: {
-        title: "Milestones of an Exceptional Career",
-        events: [
-          { year: "1934", event: "Born in Paris into a family of master glassmakers" },
-          { year: "1955", event: "First major creation: stained glass windows for the Church of Saint John the Baptist in Sceaux" },
-          { year: "1959", event: "Adoption of the JWG signature, marking the beginning of a distinctive artistic identity" },
-          { year: "1969-1973", event: "Period of innovation in Quebec, development of aluchromies" },
-          { year: "1980", event: "Establishment of personal studio at Villa d'Alésia, Paris" },
-          { year: "2001", event: "Medal of Restoration from the Academy of Architecture, recognition of the excellence of her work" }
-        ]
-      },
-      familyLegacy: {
-        title: "A Perpetuated Artistic Heritage",
-        text: "Jeannette Weiss Gruber's work is a continuation of the family's artistic excellence, while making a unique contribution to contemporary stained glass art. Her practice demonstrates perfect mastery of traditional techniques, enriched by a modern and personal vision of this secular art."
-      },
-      footer: {
-        rights: "All rights reserved."
-      }
-    }
-  }
-
-  const t = content[language]
-
+export default function JeannetteFrontPage() {
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="text-xl font-semibold">
             Jeannette Weiss Gruber
           </Link>
           <ul className="flex space-x-6">
-            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">{t.nav.biography}</Link></li>
-            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
+            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
+            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
-            <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
-            <li>
-              <button onClick={() => setLanguage(lang => lang === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
-              </button>
-            </li>
+            <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">Expositions</Link></li>
           </ul>
         </nav>
       </header>
 
       <main className="pt-16">
-        <section className="relative h-screen">
-          <div className="relative h-full w-full">
-            <FeaturedImage
-              src={`${imageBaseUrl}/hero.jpg`}
-              alt="Œuvre majeure de Jeannette Weiss Gruber"
-              priority
-              className="absolute inset-0 w-full h-full"
-            />
+        {/* Hero */}
+        <section className="relative h-[90vh]">
+          <Image src={heroImg} alt="Jeannette peignant" fill priority className="object-cover" />
+          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
+            <h1 className="text-5xl md:text-7xl text-white font-light mb-6">Jeannette Weiss Gruber</h1>
+            <p className="text-lg md:text-2xl text-white font-light">Peintre-verrier née en 1934</p>
           </div>
-          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-5xl md:text-7xl text-white font-light mb-6">
-                Jeannette Weiss Gruber
-              </h1>
-              <p className="text-lg md:text-xl text-white font-light max-w-2xl mx-auto">
-                {t.hero.subtitle}
+        </section>
+
+        {/* Citations */}
+        <section className="bg-white py-16 md:py-24">
+          <div className="max-w-3xl mx-auto px-4 space-y-12 text-center">
+            <blockquote className="italic text-3xl text-gray-800 leading-relaxed">
+              « J'ai beaucoup admiré la lumière que mon grand-père obtenait avec trois superpositions de verre et la gravure. Contrai­rement à lui, amoureuse du vitrail, j'ai cherché la lumière avec mon travail de la grisaille. »
+            </blockquote>
+            <blockquote className="italic text-3xl text-gray-800 leading-relaxed">
+              « À 11 ans, j'ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »
+            </blockquote>
+          </div>
+        </section>
+
+        {/* Oeuvre Beauvais */}
+        <section className="bg-black py-16 md:py-24">
+          <div className="container mx-auto px-4 flex justify-center">
+            <div className="w-full max-w-4xl group relative rounded-lg overflow-hidden shadow-2xl">
+              <Image 
+                src={beauvaisImg} 
+                alt="Baie Beauvais 1985" 
+                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 80vw"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Recensement Taralon */}
+        <section className="bg-gray-50 py-16 md:py-24">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto mb-10">
+              A réalisé des vitraux dans l'atelier familial d'après ses maquettes, ses cartons colorés et la peinture à la grisaille toujours à la lumière du jour. Ses créations ont été recensées par Jean Taralon :
+            </p>
+            <div className="flex justify-center gap-8">
+              <button onClick={() => setLightboxImage(taralonRecto.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
+                <Image src={taralonRecto} alt="Taralon recto" className="rounded shadow-lg" width={400} height={560} />
+              </button>
+              <button onClick={() => setLightboxImage(taralonVerso.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
+                <Image src={taralonVerso} alt="Taralon verso" className="rounded shadow-lg" width={400} height={560} />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Technique & inspirations */}
+        <section className="bg-blue-50 py-16 md:py-24">
+          <div className="max-w-4xl mx-auto px-4 text-2xl text-gray-800 leading-relaxed space-y-6">
+            <p>
+              Dès 1958, Jeannette Weiss-Gruber utilise, selon les besoins, peignes et éponges, blaireaux et pinceaux — un ensemble de techniques qu’elle mobilise notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon, achevées en 1978.
+            </p>
+            <p>Le blanc et le bleu sont ses couleurs de prédilection dans le vitrail.</p>
+            <p>Pour anticiper l’effet in situ, elle observe ses œuvres avec des jumelles à l'envers, afin d’en imaginer la lecture à distance dans l’édifice.</p>
+          </div>
+        </section>
+
+        {/* Citation Zublena */}
+        <section className="container mx-auto px-4 py-16 md:py-24">
+          <div className="bg-white border border-gray-200 rounded-lg shadow-md p-8 md:p-12 max-w-3xl mx-auto">
+            <blockquote className="italic text-xl text-gray-800 space-y-4">
+              <p>
+                « Son objectif est d'insérer ses créations dans les différents édifices en s'imprégnant du cadre architectural et de la lumière, avec une recherche d'harmonie et d'équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches. »
               </p>
-            </div>
+              <p>
+                « Depuis ses premières créations en 1955 et jusqu'à maintenant, Jeannette Weiss Gruber a toujours, suivant l'environnement et sa propre sensibilité, été alternativement figurative, allusive ou abstraite, privilégiant son interprétation de l'insertion dans le contexte et le dialogue avec les utilisateurs. »
+              </p>
+              <footer className="mt-4 text-right font-medium">— Aymerick Zublena, 2001</footer>
+            </blockquote>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-light mb-6">{t.intro.title}</h2>
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
-              {t.intro.text}
-            </p>
-          </div>
-        </section>
-
-        <section className="bg-gray-50 py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-light mb-12 text-center">{t.featuredWorks.title}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {t.featuredWorks.works.map((work, index) => (
-                <div key={index} className="group relative">
-                  <div className="aspect-w-3 aspect-h-4 bg-gray-200 rounded-lg overflow-hidden">
-                    <FeaturedImage
-                      src={`${imageBaseUrl}/${work.image}`}
-                      alt={work.title}
-                      className="transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity flex items-center justify-center p-4">
-                      <div className="text-white text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <h3 className="text-lg font-semibold mb-2">{work.title}</h3>
-                        <p className="text-sm">{work.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="container mx-auto px-4 py-16 md:py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {t.sections.map((item, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600 mb-4">{item.description}</p>
-                <Link href={item.href} className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
-                  {item.link} <ChevronRight className="ml-1 h-4 w-4" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="bg-gray-50 py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-light mb-12 text-center">{t.timeline.title}</h2>
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gray-200"></div>
-              {t.timeline.events.map((item, index) => (
-                <div key={index} className={`flex items-center mb-8 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                  <div className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-4' : 'text-left pl-4'}`}>
-                    <h3 className="text-xl font-semibold">{item.year}</h3>
-                    <p className="text-gray-600">{item.event}</p>
-                  </div>
-                  <div className="w-2 h-2 bg-blue-600 rounded-full z-10"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="container mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-light mb-6">{t.familyLegacy.title}</h2>
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
-              {t.familyLegacy.text}
-            </p>
+        {/* CTA */}
+        <section className="py-16 md:py-24 bg-gray-100 text-center">
+          <h2 className="text-3xl md:text-4xl font-light mb-8">Explorer l'œuvre de Jeannette Weiss Gruber</h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-6">
+            <Link href="/jeannette/catalogue" className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+              Catalogue Raisonné <ChevronRight className="ml-2 w-4 h-4" />
+            </Link>
+            <Link href="/jeannette/carte" className="inline-flex items-center justify-center px-6 py-3 bg-white border border-blue-600 text-blue-700 rounded hover:bg-blue-50 transition">
+              Parcours sur la Carte <ChevronRight className="ml-2 w-4 h-4" />
+            </Link>
           </div>
         </section>
       </main>
 
-      <footer className="bg-gray-100 py-8">
-        <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss-Gruber Family Art. {t.footer.rights}</p>
-        </div>
+      {/* Footer */}
+      <footer className="bg-gray-100 py-8 text-center text-gray-600 text-sm">
+        &copy; {new Date().getFullYear()} Weiss-Gruber Family Art. Tous droits réservés.
       </footer>
+
+      {lightboxImage && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button 
+            className="absolute top-4 right-4 text-white hover:text-gray-300"
+            onClick={() => setLightboxImage(null)}
+          >
+            <X size={32} />
+          </button>
+          <div className="relative max-w-full max-h-full">
+            <Image 
+              src={lightboxImage} 
+              alt="Fiche Taralon en grand" 
+              width={800} 
+              height={1100} 
+              className="object-contain max-w-full max-h-[90vh]"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
