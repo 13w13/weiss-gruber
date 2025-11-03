@@ -36,12 +36,12 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
 
   const slides = [
     { 
-      src: `https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`,
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
       alt: work.title_fr,
       title: work.title_fr
     },
     ...(work.gallery_images?.map(img => ({
-      src: `https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${img.url}`,
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || work.title_fr,
       title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`
     })) || [])
@@ -100,7 +100,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
 
             <div className="relative h-96 md:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => setOpen(true)}>
               <Image
-                src={`https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`}
+                src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`}
                 alt={work.title_fr}
                 layout="fill"
                 className="object-contain"
@@ -163,7 +163,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
                   {work.gallery_images.map((image, index) => (
                     <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                       <Image
-                        src={`https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${image.url}`}
+                        src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${image.url}`}
                         alt={image.alt_fr || work.title_fr}
                         width={200}
                         height={150}

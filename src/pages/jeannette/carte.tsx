@@ -19,6 +19,9 @@ function getWorks(): Vitrail[] {
       try {
         const cleanedJsonString = work.gallery_images.replace(/""/g, '"');
         gallery_images = JSON.parse(cleanedJsonString) as GalleryImage[];
+        gallery_images.forEach((image) => {
+          image.url = `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${image.url}`;
+        });
       } catch {
         console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
       }

@@ -121,7 +121,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
                 <div className="relative h-64 bg-gray-200">
                   {/* L'image sera connectée dans une prochaine étape */}
                   <Image
-                    src={`https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/${work.main_image}`}
+                    src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`}
                     alt={work.title_fr}
                     width={400}
                     height={300}

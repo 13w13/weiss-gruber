@@ -94,8 +94,9 @@ export default function JeannetteFrontPage() {
 
         {/* Citation Zublena */}
         <section className="container mx-auto px-4 py-16 md:py-24">
-          <div className="bg-white border border-gray-200 rounded-lg shadow-md p-8 md:p-12 max-w-3xl mx-auto">
-            <blockquote className="italic text-xl text-gray-800 space-y-4">
+          <div className="bg-white border border-gray-200 rounded-lg shadow-md p-8 md:p-12 max-w-3xl mx-auto text-center">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-6">Médaille de la restauration 2001 - Fondation Académie d&apos;Architecture</h3>
+            <blockquote className="italic text-xl text-gray-800 space-y-4 text-left">
               <p>
                 « Son objectif est d&apos;insérer ses créations dans les différents édifices en s&apos;imprégnant du cadre architectural et de la lumière, avec une recherche d&apos;harmonie et d&apos;équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches. »
               </p>
@@ -104,6 +105,54 @@ export default function JeannetteFrontPage() {
               </p>
               <footer className="mt-4 text-right font-medium">— Aymerick Zublena, 2001</footer>
             </blockquote>
+          </div>
+        </section>
+
+        {/* Timeline */}
+        <section className="bg-gray-50 py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-light text-center mb-16">Son Chemin</h2>
+            <div className="relative max-w-2xl mx-auto">
+              <div className="absolute left-2.5 top-2 h-full w-0.5 bg-gray-300" aria-hidden="true"></div>
+              <div className="space-y-12">
+                {/* Item 1 */}
+                <div className="relative pl-10">
+                  <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
+                  <p className="text-xl font-bold text-gray-800">1934</p>
+                  <p className="text-lg text-gray-600">Naissance</p>
+                </div>
+                {/* Item 2 */}
+                <div className="relative pl-10">
+                  <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
+                  <p className="text-xl font-bold text-gray-800">1952</p>
+                  <p className="text-lg text-gray-600">Début de carrière dans l&apos;atelier familial</p>
+                </div>
+                {/* Item 3 */}
+                <div className="relative pl-10">
+                  <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
+                  <p className="text-xl font-bold text-gray-800">1969</p>
+                  <p className="text-lg text-gray-600">Départ au Québec</p>
+                </div>
+                {/* Item 4 */}
+                <div className="relative pl-10">
+                  <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
+                  <p className="text-xl font-bold text-gray-800">1973</p>
+                  <p className="text-lg text-gray-600">Retour à Paris</p>
+                </div>
+                {/* Item 5 */}
+                <div className="relative pl-10">
+                  <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
+                  <p className="text-xl font-bold text-gray-800">1980</p>
+                  <p className="text-lg text-gray-600">Ouverture de l&apos;atelier au 10 Villa d&apos;Alésia</p>
+                </div>
+                {/* Item 6 */}
+                <div className="relative pl-10">
+                  <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
+                  <p className="text-xl font-bold text-gray-800">2001</p>
+                  <p className="text-lg text-gray-600">Fermeture de l&apos;atelier suite aux appels d&apos;offres sur Saint-Étienne de Beauvais</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
