@@ -182,37 +182,17 @@ export default function BiographyPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-light mb-8 text-center">{t.title}</h1>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-              {t.sections.map((section, index) => (
-                <section key={index} className="mb-12">
-                  <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
-                  {section.content.map((paragraph, pIndex) => (
-                    <p key={pIndex} className="mb-4 text-justify">
-                      {paragraph}
-                    </p>
-                  ))}
-                </section>
-              ))}
-            </div>
-            <div className="md:col-span-1">
-              <div className="sticky top-24">
-                <h3 className="text-xl font-semibold mb-4">Galerie d&apos;Œuvres</h3>
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="relative aspect-w-4 aspect-h-3 bg-gray-200 rounded-lg overflow-hidden">
-                      <Image
-                        src={`/api/placeholder/400/300`}
-                        alt={`Œuvre ${i}`}
-                        width={400}
-                        height={300}
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="max-w-4xl mx-auto">
+            {t.sections.map((section, index) => (
+              <section key={index} className="mb-12">
+                <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
+                {section.content.map((paragraph, pIndex) => (
+                  <p key={pIndex} className="mb-4 text-justify">
+                    {paragraph}
+                  </p>
+                ))}
+              </section>
+            ))}
           </div>
         </div>
       </main>
