@@ -71,41 +71,51 @@ export default function BiographyPage() {
         {
           title: "Biographie",
           content: [
-            "Jeannette Weiss Gruber (née le 1er juillet 1934 à Paris) est une peintre-verrier française. Issue d&apos;une lignée d&apos;artistes verriers, elle perpétue une tradition familiale d&apos;excellence dans l&apos;art du vitrail.",
-            "Fille du peintre-verrier Jean-Jacques Gruber et petite-fille de Jacques Gruber, figure majeure de l&apos;École de Nancy, elle s&apos;inscrit dans la continuité d&apos;un savoir-faire familial tout en développant son propre langage artistique."
+            "Jeannette Weiss-Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrière française. Elle est la fille du maître-verrier Jean-Jacques Gruber et petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
           ]
         },
         {
-          title: "Formation et Carrière",
+          title: "Formation et carrière",
           content: [
-            "De 1954 à 1969, Jeannette Weiss Gruber exerce son art au sein de l&apos;atelier Jacques Gruber, où elle développe sa technique et affine sa vision artistique. En 1959, suite à son mariage avec Bernard Weiss, elle adopte la signature JWG qui caractérisera désormais ses œuvres.",
-            "De 1969 à 1973, l&apos;artiste effectue un séjour au Québec, période durant laquelle elle explore de nouvelles expressions artistiques, notamment à travers ses &apos;aluchromies&apos; (peintures sur aluminium). Cette expérience enrichit sa pratique du vitrail et influence son approche de la lumière.",
-            "À son retour à Paris en 1973, elle conjugue création et transmission en enseignant l&apos;histoire de l&apos;art à l&apos;École américaine. En 1980, elle établit son propre atelier à la Villa d&apos;Alésia, lieu de création de nombreuses œuvres majeures."
+            "Dans l’atelier paternel, elle commence à peindre enfant. À 11 ans, une pierre de 30 kg écrase sa main droite, réimplantée après douze heures de train ; cela n’entame pas sa vocation : « para-artiste », dit-elle, elle forge une gestuelle singulière.",
+            "De 1954 à 1969, elle travaille à l’atelier de son père, où elle affine sa technique. En 1959, à la suite de son mariage avec Bernard Weiss, elle adopte la signature JWG. La reconnaissance lui est d’abord difficile au sein de l’atelier familial, dominé par la figure du père et du frère.",
+            "En 1969, elle part au Québec avec son mari et ses enfants (1969-1973) et développe ses recherches dans la compréhension de la lumière. Invitée par les usines Alcan, elle expérimente l’aluminium oxydé et des pigments issus de la teinture lainière : naissent ses aluchromies (peintures sur aluminium).",
+            "De retour à Paris en 1973, elle enseigne l’histoire de l’art à l’École américaine. En 1980, elle reprend une partie de l’atelier familial à la Villa d’Alésia, d’où sortent de nombreuses œuvres."
           ]
         },
         {
-          title: "Technique et Approche Artistique",
+          title: "Technique, éthique de travail et approche",
           content: [
-            "La pratique de Jeannette Weiss Gruber se caractérise par une recherche constante d&apos;innovation technique au service de l&apos;intégration architecturale. Dès 1958, elle développe une technique distinctive utilisant peignes et éponges, parfois complétée par l&apos;usage de blaireaux et de pinceaux selon les projets.",
-            "Sa méthodologie inclut une approche unique de visualisation : l&apos;utilisation de jumelles à l&apos;envers pour anticiper l&apos;effet final des vitraux dans leur contexte architectural. Cette technique originale lui permet d&apos;optimiser l&apos;intégration de ses œuvres dans leur environnement.",
-            "Comme le souligne Aymerick Zublena lors de la remise de la Médaille de la Restauration en 2001 : &apos;Son objectif est d&apos;insérer ses créations dans les différents édifices en s&apos;imprégnant du cadre architectural et de la lumière, avec une recherche d&apos;harmonie et d&apos;équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches.&apos;"
+            "Dès 1958, elle met au point une méthode combinant peignes et éponges, complétée selon les projets par blaireaux et pinceaux — procédé employé notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon (1978). Le blanc et le bleu sont ses couleurs de prédilection.",
+            "Contrairement à son père, qui travaillait à la lampe en intérieur, elle tient à travailler à la lumière du jour, seule condition — selon elle — pour juger honnêtement la matière et la vibration chromatique du verre. Elle privilégie le haut des vitraux, travaillant volontiers en tête d’échafaudage, là où l’œil se libère des contraintes narratives et où la composition respire davantage.",
+            "Elle pratique aussi une visualisation originale : regarder ses cartons avec des jumelles à l’envers pour anticiper l’effet à distance in situ et optimiser l’insertion des vitraux dans l’édifice.",
+            "Aymerick Zublena (Médaille de la Restauration, 2001) résume son intention : « Insérer ses créations en s’imprégnant du cadre architectural et de la lumière, dans une recherche d’harmonie avec les vitraux existants, en évitant tout pastiche. » Selon lui encore, de 1955 à aujourd’hui, elle navigue entre figuration, allusion et abstraction, privilégiant toujours le dialogue avec le contexte et les usagers.",
+            "Jeannette dit: « Le vitrail est dans ma peau ; quand je fais mes cartons grandeur, la mise en plomb est déjà là. »"
           ]
         },
         {
-          title: "Œuvres Majeures",
+          title: "Œuvres majeures",
           content: [
-            "Ses réalisations les plus significatives comprennent :",
-            "• 1960 : Collégiale de Mantes (Yvelines) - Création du triplet de la façade sous la rosace du XIIIe siècle",
-            "• 1969 : Cathédrale Primatiale Saint Jean de Lyon (Rhône) - Réalisation de la baie est de la chapelle de la Vierge",
-            "• 1985 : Cathédrale de Beauvais (Oise) - Création d'une verrière de 25 m² dans une chapelle sud du transept",
-            "• 1991 : Église Notre-Dame de Niort (Deux-Sèvres) - Restauration et création de compléments pour un arbre de Jessé du XVe siècle",
-            "• 2001 : Église Abbatiale de Saint Jean de Saverne (Bas-Rhin) - Ensemble de dix-huit vitraux dans les nefs nord et sud"
+            "1960 — Collégiale de Mantes (Yvelines) : triplet de la façade sous la rosace du XIIIᵉ siècle.",
+            "1969 — Cathédrale primatiale Saint-Jean de Lyon (Rhône) : baie est de la chapelle de la Vierge.",
+            "1985 — Cathédrale de Beauvais (Oise) : verrière de 25 m² dans une chapelle sud du transept.",
+            "1991 — Église Notre-Dame de Niort (Deux-Sèvres) : restauration et compléments d’un Arbre de Jessé du XVe siècle.",
+            "2001 — Église abbatiale Saint-Jean de Saverne (Bas-Rhin) : ensemble de dix-huit vitraux dans les nefs nord et sud."
           ]
         },
         {
-          title: "Reconnaissance",
+          title: "Donations et archives",
           content: [
-            "En 2001, la Fondation Académie d&apos;Architecture lui décerne la Médaille de la Restauration, reconnaissant l&apos;excellence de son travail dans la création et la restauration de vitraux. Cette distinction souligne sa contribution exceptionnelle à la préservation et au renouvellement de l&apos;art du vitrail en France."
+            "Elle a procédé à de nombreuses donations liées à l’œuvre de son grand-père Jacques Gruber et à son propre atelier (cartons, maquettes, dossiers de restauration) à la Médiathèque de l’Architecture et du Patrimoine (Ministère de la Culture, 2005).",
+            "Elle a également fait restaurer à ses frais le vitrail bombé situé au-dessus de la porte de l’atelier (ancien atelier Jacques Gruber) et l’a donné au Musée des Arts décoratifs (Paris). En 2022, elle y a déposé le vitrail des Mouettes.",
+            "En 2012, une publication de Chantal Bouchon a contribué à documenter son corpus au sein des travaux sur le vitrail."
+          ]
+        },
+        {
+          title: "Réception et reconnaissance",
+          content: [
+            "Si son œuvre est saluée par des commanditaires et ses pairs, la reconnaissance institutionnelle et collégiale lui a longtemps semblé incomplète. Cette difficulté à se faire reconnaître — héritée en partie de sa place dans l’atelier familial et du contexte d’un milieu majoritairement masculin — a constitué une souffrance tout au long de sa vie. À plus de 90 ans, elle se réveille parfois la nuit de chagrin, occupée à ces sujets.",
+            "En 2001, la Fondation de l’Académie d’Architecture lui décerne la Médaille de la Restauration, qui salue l’excellence de son œuvre en création et en restauration ainsi que sa contribution au renouvellement de l’art du vitrail en France."
           ]
         }
       ],
@@ -184,10 +194,6 @@ export default function BiographyPage() {
                   ))}
                 </section>
               ))}
-              <section className="mb-12">
-                <h2 className="text-2xl font-semibold mb-4">{t.familyLegacy.title}</h2>
-                <p className="mb-4 text-justify">{t.familyLegacy.content}</p>
-              </section>
             </div>
             <div className="md:col-span-1">
               <div className="sticky top-24">

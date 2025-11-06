@@ -53,13 +53,19 @@ export default function JeannetteFrontPage() {
         {/* Oeuvre Beauvais */}
         <section className="bg-black py-16 md:py-24">
           <div className="container mx-auto px-4 flex justify-center">
-            <div className="w-full max-w-4xl group relative rounded-lg overflow-hidden shadow-2xl">
+            <div className="w-full max-w-4xl text-center">
+              <div className="group relative rounded-lg overflow-hidden shadow-2xl mb-4">
               <Image 
                 src={beauvaisImg} 
                 alt="Baie Beauvais 1985" 
                 className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 80vw"
               />
+              </div>
+              <div className="text-gray-300 text-lg">
+                <p>Une baie dans une chapelle sud du transept</p>
+                <p className="text-base text-gray-400">1985 - Cathédrale Saint-Pierre de Beauvais, Beauvais</p>
+              </div>
             </div>
           </div>
         </section>
