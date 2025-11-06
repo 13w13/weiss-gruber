@@ -186,7 +186,7 @@ export default function BiographyPage() {
               <section key={index} className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
                 {section.content.map((paragraph, pIndex) => (
-                  <p key={pIndex} className="mb-4 text-justify">
+                  <p key={pIndex} className="mb-4 text-left">
                     {paragraph}
                   </p>
                 ))}
