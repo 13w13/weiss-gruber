@@ -16,7 +16,8 @@ import { Vitrail } from '@/types/images';
 export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail; prevId?: string | null; nextId?: string | null }) {
   const router = useRouter();
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -36,12 +37,12 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
 
   const slides = [
     { 
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${work.main_image}`,
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${work.main_image.startsWith('alu/') ? '' : 'vitraux/'}${work.main_image}`,
       alt: work.title_fr,
       title: work.title_fr
     },
     ...(work.gallery_images?.map(img => ({
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${img.url}`,
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${img.url.startsWith('alu/') ? '' : 'vitraux/'}${img.url}`,
       alt: img.alt_fr || work.title_fr,
       title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`
     })) || [])
@@ -98,9 +99,9 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
               )}
             </div>
 
-            <div className="relative h-96 md:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => setOpen(true)}>
+                        <div className="relative h-96 md:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => { setIndex(0); setOpen(true); }}>
               <Image
-                src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${work.main_image}`}
+                src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${work.main_image.startsWith('alu/') ? '' : 'vitraux/'}${work.main_image}`}
                 alt={work.title_fr}
                 layout="fill"
                 className="object-contain"
@@ -109,10 +110,11 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
             </div>
 
             <Lightbox
-              open={open}
+                            open={open}
               close={() => setOpen(false)}
               slides={slides}
               plugins={[Zoom]}
+              index={index}
             />
 
             {work.caption_fr && (
@@ -163,12 +165,12 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
                   {work.gallery_images.map((image, index) => (
                     <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                       <Image
-                        src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${image.url}`}
+                        src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/${image.url.startsWith('alu/') ? '' : 'vitraux/'}${image.url}`}
                         alt={image.alt_fr || work.title_fr}
                         width={200}
                         height={150}
-                        className="object-cover w-full h-32 cursor-pointer"
-                        onClick={() => setOpen(true)} // Ouvre la lightbox sur l'image cliquée
+                                                className="object-cover w-full h-32 cursor-pointer"
+                        onClick={() => { setIndex(index + 1); setOpen(true); }}
                       />
                       <div className="p-2 text-sm bg-gray-50">
                         <p className="font-semibold">{image.type}</p>
