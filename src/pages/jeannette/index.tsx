@@ -131,7 +131,7 @@ export default function JeannetteFrontPage() {
                 <div className="relative pl-10">
                   <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
                   <p className="text-xl font-bold text-gray-800">1952</p>
-                  <p className="text-lg text-gray-600">Début de carrière dans l&apos;atelier familial, Villa d'Alesia</p>
+                  <p className="text-lg text-gray-600">Début de carrière dans l&apos;atelier familial, Villa d&#39;Alesia</p>
                 </div>
                 {/* Item 3 */}
                 <div className="relative pl-10">
