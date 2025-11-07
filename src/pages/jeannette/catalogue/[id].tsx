@@ -204,7 +204,7 @@ const getWorks = () => {
   });
 
   // Traitement pour parser la colonne gallery_images
-  const works = (result.data as any[]).map(work => {
+    const works = (result.data as Record<string, any>[]).map(work => {
     let gallery_images = [];
     if (typeof work.gallery_images === 'string' && work.gallery_images.trim().startsWith('[')) {
       try {
