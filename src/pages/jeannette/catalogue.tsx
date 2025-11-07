@@ -160,22 +160,17 @@ export const getStaticProps: GetStaticProps = async () => {
   });
 
   // Traitement pour parser la colonne gallery_images
-  const works = (result.data as Record<string, string>[]).map(work => {
+  const works = (result.data as any[]).map(work => {
     let gallery_images = [];
-    if (work.gallery_images && work.gallery_images.trim().startsWith('[')) {
+    if (typeof work.gallery_images === 'string' && work.gallery_images.trim().startsWith('[')) {
       try {
-        // Remplacer les doubles guillemets échappés par des guillemets simples pour un parsing JSON correct
-        const cleanedJsonString = work.gallery_images.replace(/""/g, '"');
-        gallery_images = JSON.parse(cleanedJsonString);
-      } catch {
-        console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
-        // Laisser gallery_images comme un tableau vide en cas d'erreur
+        gallery_images = JSON.parse(work.gallery_images);
+      } catch (e) {
+        console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, e);
+        gallery_images = [];
       }
     }
-    return {
-      ...work,
-      gallery_images,
-    };
+    return { ...work, gallery_images };
   });
 
   return {
