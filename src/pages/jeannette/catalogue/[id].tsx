@@ -31,10 +31,6 @@ interface CsvRow {
   lng: string;
 }
 
-// Type pour les données brutes parsées du CSV
-interface ParsedWork {
-  [key: string]: string;
-}
 
 // Le composant pour la page de détail
 export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail; prevId?: string | null; nextId?: string | null }) {
