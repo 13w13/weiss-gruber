@@ -4,7 +4,7 @@ export type ArtworkCategory = 'vitrail' | 'peinture' | 'sculpture';
 
 export interface GalleryImage {
   url: string;
-  type: 'Détail' | 'Carton' | 'Vue d\'ensemble' | 'Autre';
+  type: string;
   credit?: string;
   alt_fr?: string;
   alt_en?: string;

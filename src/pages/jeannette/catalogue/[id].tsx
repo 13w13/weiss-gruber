@@ -12,6 +12,30 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import 'yet-another-react-lightbox/styles.css';
 import { Vitrail } from '@/types/images';
 
+interface CsvRow {
+  id: string;
+  year: string;
+  building_name: string;
+  building_type: string;
+  city: string;
+  department: string;
+  location_in_building: string;
+  title_fr: string;
+  main_image: string;
+  caption_fr: string;
+  photo_status: string;
+  description_fr: string;
+  gallery_images: string;
+  maps_url: string;
+  lat: string;
+  lng: string;
+}
+
+// Type pour les données brutes parsées du CSV
+interface ParsedWork {
+  [key: string]: string;
+}
+
 // Le composant pour la page de détail
 export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail; prevId?: string | null; nextId?: string | null }) {
   const router = useRouter();
@@ -198,13 +222,13 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
 const getWorks = () => {
   const csvFilePath = path.join(process.cwd(), 'vitraux_metadata.csv');
   const csvFileContent = fs.readFileSync(csvFilePath, 'utf-8');
-  const result = Papa.parse(csvFileContent, {
+  const result = Papa.parse<CsvRow>(csvFileContent, {
     header: true,
     skipEmptyLines: true,
   });
 
   // Traitement pour parser la colonne gallery_images
-    const works = (result.data as Record<string, any>[]).map(work => {
+          const works = result.data.map(work => {
     let gallery_images = [];
     if (typeof work.gallery_images === 'string' && work.gallery_images.trim().startsWith('[')) {
       try {

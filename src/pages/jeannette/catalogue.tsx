@@ -6,7 +6,7 @@ import { GetStaticProps } from 'next';
 import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
-import { Vitrail } from '@/types/images';
+import { Vitrail, GalleryImage } from '@/types/images';
 
 // Définitions des types
 type Language = 'fr' | 'en';
@@ -19,6 +19,27 @@ interface Footer { rights: string; }
 interface ContentStructure { nav: Nav; familyMembers: FamilyMembers; title: string; search: string; filters: Filters; footer: Footer; }
 interface Content { fr: ContentStructure; en: ContentStructure; }
 
+
+
+// Interface représentant une ligne brute du CSV (champs sous forme de chaînes)
+interface CsvRow {
+  id: string;
+  year: string;
+  building_name: string;
+  building_type: string;
+  city: string;
+  department: string;
+  location_in_building: string;
+  title_fr: string;
+  main_image: string;
+  caption_fr: string;
+  photo_status: string;
+  description_fr: string;
+  gallery_images: string;
+  maps_url: string;
+  lat: string;
+  lng: string;
+}
 
 // Le composant reçoit maintenant 'works' en tant que prop
 export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
@@ -154,28 +175,30 @@ export const getStaticProps: GetStaticProps = async () => {
   const csvFilePath = path.join(process.cwd(), 'vitraux_metadata.csv');
   const csvFileContent = fs.readFileSync(csvFilePath, 'utf-8');
 
-  const result = Papa.parse(csvFileContent, {
+  const result = Papa.parse<CsvRow>(csvFileContent, {
     header: true,
     skipEmptyLines: true,
   });
 
   // Traitement pour parser la colonne gallery_images
-    const works = (result.data as Record<string, any>[]).map(work => {
-    let gallery_images = [];
-    if (typeof work.gallery_images === 'string' && work.gallery_images.trim().startsWith('[')) {
+    const works: Vitrail[] = result.data.map((row: CsvRow) => {
+    let gallery_images: GalleryImage[] = [];
+    if (row.gallery_images && row.gallery_images.trim().startsWith('[')) {
       try {
-        gallery_images = JSON.parse(work.gallery_images);
+        gallery_images = JSON.parse(row.gallery_images);
       } catch (e) {
-        console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, e);
-        gallery_images = [];
+        console.error(`Erreur de parsing JSON pour l'œuvre ${row.id}:`, e);
       }
     }
-    return { ...work, gallery_images };
+    return {
+      ...row,
+      gallery_images,
+    };
   });
 
   return {
     props: {
-      works: works,
+      works,
     },
   };
 };
