@@ -76,7 +76,7 @@ export default function BiographyPage() {
         {
           title: "Formation et carrière",
           content: [
-            "Dans l’atelier paternel, elle commence à peindre enfant. À 11 ans, une pierre de 30 kg écrase sa main droite, réimplantée après douze heures de train ; cela n’entame pas sa vocation : « para-artiste », dit-elle, elle forge une gestuelle singulière.",
+            "Dans l’atelier paternel, elle côtoie les vitraux anciens et commence à peindre enfant. Elle voit l’Arbre de Jessé, Le Prince, les vitraux de Chagall et la peinture de Francis Gruber : ses premiers contacts avec la beauté. À onze ans, une pierre de 30 kg écrase sa main droite. Réimplantée après douze heures de train, la main survit ; sa vocation aussi. « Para-artiste », se dit-elle, elle se forge une gestuelle singulière.",
             "De 1954 à 1969, elle travaille à l’atelier de son père, où elle affine sa technique. En 1959, à la suite de son mariage avec Bernard Weiss, elle adopte la signature JWG. La reconnaissance lui est d’abord difficile au sein de l’atelier familial, dominé par la figure du père et du frère.",
             "En 1969, elle part au Québec avec son mari et ses enfants (1969-1973) et développe ses recherches dans la compréhension de la lumière. Invitée par les usines Alcan, elle expérimente l’aluminium oxydé et des pigments issus de la teinture lainière : naissent ses aluchromies (peintures sur aluminium).",
             "De retour à Paris en 1973, elle enseigne l’histoire de l’art à l’École américaine. En 1980, elle reprend une partie de l’atelier familial à la Villa d’Alésia, d’où sortent de nombreuses œuvres."
