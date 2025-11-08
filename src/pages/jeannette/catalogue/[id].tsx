@@ -41,6 +41,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      if (open) return; // Ne pas interférer avec la navigation interne du Lightbox
       if (e.key === 'ArrowLeft' && prevId) {
         router.push(`/jeannette/catalogue/${prevId}`);
       } else if (e.key === 'ArrowRight' && nextId) {
@@ -49,7 +50,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [prevId, nextId, router]);
+  }, [prevId, nextId, router, open]);
 
   if (router.isFallback) {
     return <div>Chargement...</div>;
