@@ -179,9 +179,9 @@ export default function JeannetteFrontPage() {
         {/* À propos */}
         <section className="py-12 md:py-16 bg-white text-center">
           <div className="container mx-auto px-4 space-y-6 text-lg text-gray-800 leading-relaxed max-w-4xl">
-            <p>Jeannette Weiss&nbsp;Gruber a consacré sa vie à son art avec une énergie inlassable. Ce site a pour vocation de présenter ses œuvres préférées dans un catalogue raisonné.</p>
+            <p>Jeannette Weiss&nbsp;Gruber a consacré sa vie à son art avec une énergie inlassable. Elle peignait sur le verre. Ce site a pour vocation de présenter ses œuvres préférées dans un catalogue raisonné.</p>
             <p>Certaines réalisations manquent de documentation photographique&nbsp;– par exemple celles de Champagne-sur-Oise.</p>
-            <p>Le site s’appuie également sur le remarquable travail photographique de Denis&nbsp;Krieger et sur [son site](https://www.mesvitrauxfavoris.fr/index.htm).</p>
+            <p>Le site s’appuie également sur le remarquable travail photographique de Denis&nbsp;Krieger&nbsp;— visible sur <a href="https://www.mesvitrauxfavoris.fr/index.htm" className="underline" target="_blank" rel="noopener noreferrer">son site dédié</a>&nbsp;— qui contribue à pallier au déficit de documentation numérique autour de l’art du vitrail en France.</p>
             <p className="mt-4 text-sm text-gray-600"> Son petit-fils. Contact&nbsp;: <a href="mailto:siweiss@proton.me" className="underline">siweiss@proton.me</a></p>
           </div>
         </section>
