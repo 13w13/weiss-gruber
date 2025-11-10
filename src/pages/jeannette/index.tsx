@@ -177,8 +177,8 @@ export default function JeannetteFrontPage() {
         </section>
 
         {/* À propos */}
-        <section className="py-12 md:py-16 bg-white text-center">
-          <div className="container mx-auto px-4 space-y-6 text-lg text-gray-800 leading-relaxed max-w-4xl">
+        <section className="py-8 md:py-12 bg-gray-100 text-center border-t border-gray-200">
+          <div className="container mx-auto px-4 space-y-6 text-lg text-gray-800 leading-loose max-w-2xl">
             <p>Jeannette Weiss&nbsp;Gruber a consacré sa vie à son art avec une énergie inlassable. Elle peignait sur le verre. Ce site a pour vocation de présenter ses œuvres préférées dans un catalogue raisonné.</p>
             <p>Certaines réalisations manquent de documentation photographique&nbsp;– par exemple celles de Champagne-sur-Oise.</p>
             <p>Le site s’appuie également sur le remarquable travail photographique de Denis&nbsp;Krieger&nbsp;— visible sur <a href="https://www.mesvitrauxfavoris.fr/index.htm" className="underline" target="_blank" rel="noopener noreferrer">son site dédié</a>&nbsp;— qui contribue à pallier au déficit de documentation numérique autour de l’art du vitrail en France.</p>
