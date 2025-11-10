@@ -47,7 +47,7 @@ export default function JeannetteFrontPage() {
             <blockquote className="italic text-2xl text-gray-800 leading-relaxed">
               « À 11 ans, j&apos;ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »
             </blockquote>
-            <p className="text-lg text-gray-700 font-medium">— Jeannette Weiss Gruber</p>
+            <p className="text-lg text-gray-700 font-medium">Jeannette Weiss Gruber</p>
           </div>
         </section>
 
@@ -175,6 +175,17 @@ export default function JeannetteFrontPage() {
             </Link>
           </div>
         </section>
+
+        {/* À propos */}
+        <section className="py-12 md:py-16 bg-white text-center">
+          <div className="container mx-auto px-4 space-y-6 text-lg text-gray-800 leading-relaxed max-w-4xl">
+            <p>Jeannette Weiss&nbsp;Gruber a consacré sa vie à son art avec une énergie inlassable. Ce site a pour vocation de présenter ses œuvres préférées dans un catalogue raisonné.</p>
+            <p>Certaines réalisations manquent de documentation photographique&nbsp;– par exemple celles de Champagne-sur-Oise.</p>
+            <p>Le site s’appuie également sur le remarquable travail photographique de Denis&nbsp;Krieger et sur [son site](https://www.mesvitrauxfavoris.fr/index.htm).</p>
+            <p className="mt-4 text-sm text-gray-600"> Son petit-fils. Contact&nbsp;: <a href="mailto:siweiss@proton.me" className="underline">siweiss@proton.me</a></p>
+          </div>
+        </section>
+
       </main>
 
       {/* Footer */}
