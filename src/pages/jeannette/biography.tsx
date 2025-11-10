@@ -88,7 +88,6 @@ export default function BiographyPage() {
           title: "Technique et approche",
           content: [
             "Dès 1958, elle met au point une méthode combinant peignes et éponges, complétée selon les projets par blaireaux et pinceaux — procédé employé notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon (1978). Le blanc et le bleu sont ses couleurs de prédilection, avec un travail attentif de la grisaille.",
-            "Ses premiers vitraux datent de 1974.",
             "Contrairement à son père, qui travaillait à la lampe en intérieur, elle tient à travailler à la lumière du jour, seule condition — selon elle — pour juger honnêtement la matière et la vibration chromatique du verre. Elle privilégie le haut des vitraux, travaillant volontiers en tête d’échafaudage, là où l’œil se libère des contraintes narratives et où la composition respire davantage.",
             "Elle pratique aussi une visualisation originale : regarder ses vitraux avec des jumelles à l’envers pour anticiper l’effet à distance in situ et optimiser l’insertion des vitraux dans l’édifice.",
             "Pour elle, les trois quarts de son travail, c’étaient ses yeux.",
