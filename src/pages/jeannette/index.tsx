@@ -47,6 +47,7 @@ export default function JeannetteFrontPage() {
             <blockquote className="italic text-2xl text-gray-800 leading-relaxed">
               « À 11 ans, j&apos;ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »
             </blockquote>
+            <p className="text-lg text-gray-700 font-medium">— Jeannette Weiss Gruber</p>
           </div>
         </section>
 
