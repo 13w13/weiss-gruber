@@ -70,30 +70,34 @@ export default function BiographyPage() {
         {
           title: "Biographie",
           content: [
-            "Jeannette Weiss-Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrière française. Elle est la fille du maître-verrier Jean-Jacques Gruber et petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
+            "Jeannette Weiss-Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrière française. Elle est la fille du maître-verrier Jean-Jacques Gruber et la petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
           ]
         },
         {
           title: "Formation et carrière",
           content: [
-            "Dans l’atelier paternel, elle côtoie les vitraux anciens et commence à peindre enfant. Elle voit l’Arbre de Jessé, Le Prince, les vitraux de Chagall et la peinture de Francis Gruber : ses premiers contacts avec la beauté. À onze ans, une pierre de 30 kg écrase sa main droite. Réimplantée après douze heures de train, la main survit ; sa vocation aussi. « Para-artiste », se dit-elle, elle se forge une gestuelle singulière.",
-            "De 1954 à 1969, elle travaille à l’atelier de son père, où elle affine sa technique. En 1959, à la suite de son mariage avec Bernard Weiss, elle adopte la signature JWG. La reconnaissance lui est d’abord difficile au sein de l’atelier familial, dominé par la figure du père et du frère.",
-            "En 1969, elle part au Québec avec son mari et ses enfants (1969-1973) et développe ses recherches dans la compréhension de la lumière. Invitée par les usines Alcan, elle expérimente l’aluminium oxydé et des pigments issus de la teinture lainière : naissent ses aluchromies (peintures sur aluminium).",
-            "De retour à Paris en 1973, elle enseigne l’histoire de l’art à l’École américaine. En 1980, elle reprend une partie de l’atelier familial à la Villa d’Alésia, d’où sortent de nombreuses œuvres."
+            "Dans l’atelier familial, elle côtoie très tôt des vitraux anciens, cachés et conservés sous l’autorité de son père durant la guerre, puis déposés au château de Champs-sur-Marne à la Libération. Certains seront replacés sur site. À dix ans, elle se promet de faire « plus joli » que les vitraux de l’atelier.",
+            "À onze ans, une pierre de 30 kg écrase sa main droite : réimplantée après douze heures de train, la main est sauvée mais le poignet reste un peu de travers. « Para-artiste », dit-elle ; elle se forge une gestuelle singulière.",
+            "Après la guerre, elle assiste à la repose des vitraux de Chartres, non pollués, avec ses amies d’enfance ; à dix-huit ans, elle découvre l’Arbre de Jessé (Le Prince) au pavillon de Marsan, ainsi que des vitraux de Chagall à Hadassah. Elle admire les vitraux des grands peintres, particulièrement ceux de Miró à Senlis.",
+            "De 1954 à 1969, elle travaille dans l’atelier familial, où elle a le privilège de voir de près des vitraux anciens en restauration. En 1959, à la suite de son mariage avec Bernard Weiss, elle adopte la signature JWG. La reconnaissance lui est d’abord difficile au sein de l’atelier familial, dominé par la figure du père et du frère.",
+            "En 1969, elle part au Québec avec son mari et ses enfants (1969-1973) et travaille la lumière comme elle travaillait la grisaille sur ses vitraux. Invitée par les usines Alcan, elle expérimente l’aluminium oxydé et des pigments issus de la teinture lainière : naissent ses aluchromies (peintures sur aluminium).",
+            "De retour à Paris en 1973, elle enseigne l’histoire de l’art pour une école américaine. La même année, elle reçoit le diplôme des Arts et Métiers pour la coupe et le montage des vitraux. En 1980, elle reprend une partie de l’atelier familial à la villa d’Alésia."
           ]
         },
         {
-          title: "Technique, éthique de travail et approche",
+          title: "Technique et approche",
           content: [
-            "Dès 1958, elle met au point une méthode combinant peignes et éponges, complétée selon les projets par blaireaux et pinceaux — procédé employé notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon (1978). Le blanc et le bleu sont ses couleurs de prédilection.",
+            "Dès 1958, elle met au point une méthode combinant peignes et éponges, complétée selon les projets par blaireaux et pinceaux — procédé employé notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon (1978). Le blanc et le bleu sont ses couleurs de prédilection, avec un travail attentif de la grisaille.",
+            "Ses premiers vitraux datent de 1974.",
             "Contrairement à son père, qui travaillait à la lampe en intérieur, elle tient à travailler à la lumière du jour, seule condition — selon elle — pour juger honnêtement la matière et la vibration chromatique du verre. Elle privilégie le haut des vitraux, travaillant volontiers en tête d’échafaudage, là où l’œil se libère des contraintes narratives et où la composition respire davantage.",
-            "Elle pratique aussi une visualisation originale : regarder ses cartons avec des jumelles à l’envers pour anticiper l’effet à distance in situ et optimiser l’insertion des vitraux dans l’édifice.",
-            "Aymerick Zublena (Médaille de la Restauration, 2001) résume son intention : « Insérer ses créations en s’imprégnant du cadre architectural et de la lumière, dans une recherche d’harmonie avec les vitraux existants, en évitant tout pastiche. » Selon lui encore, de 1955 à aujourd’hui, elle navigue entre figuration, allusion et abstraction, privilégiant toujours le dialogue avec le contexte et les usagers.",
-            "Jeannette dit: « Le vitrail est dans ma peau ; quand je fais mes cartons grandeur, la mise en plomb est déjà là. »"
+            "Elle pratique aussi une visualisation originale : regarder ses vitraux avec des jumelles à l’envers pour anticiper l’effet à distance in situ et optimiser l’insertion des vitraux dans l’édifice.",
+            "Pour elle, les trois quarts de son travail, c’étaient ses yeux.",
+            "Aymeric Zublena (Médaille de la Restauration, 2001) résume son intention : « Insérer ses créations en s’imprégnant du cadre architectural et de la lumière, dans une recherche d’harmonie avec les vitraux existants, en évitant tout pastiche. » Selon lui encore, de 1955 à aujourd’hui, elle navigue entre figuration, allusion et abstraction, privilégiant toujours le dialogue avec le contexte et les usagers.",
+            "Jeannette dit : « Le vitrail est dans ma peau ; quand je fais mes cartons grandeur, la mise en plomb est déjà là (pour ma mise en place sur calque). »"
           ]
         },
         {
-          title: "Œuvres majeures",
+          title: "Travaux préférés",
           content: [
             "1960 — Collégiale de Mantes (Yvelines) : triplet de la façade sous la rosace du XIIIᵉ siècle.",
             "1969 — Cathédrale primatiale Saint-Jean de Lyon (Rhône) : baie est de la chapelle de la Vierge.",
@@ -106,14 +110,13 @@ export default function BiographyPage() {
           title: "Donations et archives",
           content: [
             "Elle a procédé à de nombreuses donations liées à l’œuvre de son grand-père Jacques Gruber et à son propre atelier (cartons, maquettes, dossiers de restauration) à la Médiathèque de l’Architecture et du Patrimoine (Ministère de la Culture, 2005).",
-            "Elle a également fait restaurer à ses frais le vitrail bombé situé au-dessus de la porte de l’atelier (ancien atelier Jacques Gruber) et l’a donné au Musée des Arts décoratifs (Paris). En 2022, elle y a déposé le vitrail des Mouettes.",
-            "En 2012, une publication de Chantal Bouchon a contribué à documenter son corpus au sein des travaux sur le vitrail."
+            "Elle a également fait restaurer le vitrail bombé situé au-dessus de la porte intérieure de l’atelier (ancien atelier Jacques Gruber) et l’a donné au Musée des Arts décoratifs (Paris). En 2022, elle y a déposé le vitrail des Mouettes."
           ]
         },
         {
           title: "Réception et reconnaissance",
           content: [
-            "Si son œuvre est saluée par des commanditaires et ses pairs, la reconnaissance institutionnelle et collégiale lui a longtemps semblé incomplète. Cette difficulté à se faire reconnaître — héritée en partie de sa place dans l’atelier familial et du contexte d’un milieu majoritairement masculin — a constitué une souffrance tout au long de sa vie. À plus de 90 ans, elle se réveille parfois la nuit de chagrin, occupée à ces sujets.",
+            "Si son œuvre est saluée par des commanditaires et ses pairs, la reconnaissance institutionnelle et collégiale lui a longtemps semblé incomplète. Cette difficulté à se faire reconnaître — héritée en partie de sa place dans l’atelier familial et du contexte d’un milieu majoritairement masculin — a constitué une souffrance tout au long de sa vie. À plus de 90 ans, il lui arrive encore de se réveiller la nuit, préoccupée par ces sujets.",
             "En 2001, la Fondation de l’Académie d’Architecture lui décerne la Médaille de la Restauration, qui salue l’excellence de son œuvre en création et en restauration ainsi que sa contribution au renouvellement de l’art du vitrail en France."
           ]
         }
