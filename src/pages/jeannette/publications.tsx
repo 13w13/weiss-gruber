@@ -58,13 +58,13 @@ export default function PublicationsPage() {
       title: 'Publications sur Jeannette Weiss Gruber',
       intro: "Sélection d'ouvrages et d'articles évoquant l'œuvre ou la carrière de Jeannette Weiss Gruber.",
       publications: [
-        'Le vitrail, revue des Métiers d\'art, novembre 1982',
-        'Un siècle de vitrail en Picardie, DRAC d\'Amiens, 1989',
+        'Le vitrail, revue des métiers d’art, novembre 1982',
+        'Un siècle de vitrail en Picardie, DRAC d’Amiens, 1989',
         'Le vitrail, Éditions du Cerf, Catherine Brissac, 1990',
-        'Mains et merveilles, les artisans de qualité à Paris, Clémence Vernet, 1992',
+        'Mains et merveilles : Les artisans de qualité à Paris, Clémence Vernet, 1992',
         'Les couleurs du ciel, Éditions Gaud, 2002',
-        'Amiens, les verrières de la cathédrale, Images du patrimoine de Picardie, 2003',
-        'Revue du Musée des Confluences, série d\'articles sur les travaux dans la cathédrale de Lyon : oct 1999, nov 1999, déc 1999, fév 2000 et été 2001',
+        'Amiens : Les verrières de la cathédrale, Images du patrimoine de Picardie, 2003',
+        'Revue du Musée des Confluences – série d’articles sur les travaux dans la cathédrale de Lyon : oct. 1999, nov. 1999, déc. 1999, fév. 2000 et été 2001',
       ],
       footer: { rights: 'Tous droits réservés.' },
     },
@@ -137,11 +137,11 @@ export default function PublicationsPage() {
 
       {/* Main */}
       <main className="pt-24 pb-16">
-        <div className="container mx-auto px-4 max-w-3xl">
+        <div className="container mx-auto px-6 md:px-4 max-w-xl">
           <h1 className="text-4xl md:text-5xl font-light mb-6 text-center">{t.title}</h1>
           <p className="text-center text-gray-700 mb-12">{t.intro}</p>
 
-          <ul className="space-y-4 list-disc list-inside text-gray-800">
+          <ul className="space-y-4 list-disc pl-5 text-gray-800">
             {t.publications.map((pub, idx) => (
               <li key={idx}>{pub}</li>
             ))}
