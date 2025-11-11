@@ -16,7 +16,7 @@ export default function JeannetteFrontPage() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-xl font-semibold">
+          <Link href="/jeannette" className="text-xl font-semibold">
             Jeannette Weiss Gruber
           </Link>
           <ul className="flex space-x-6">
