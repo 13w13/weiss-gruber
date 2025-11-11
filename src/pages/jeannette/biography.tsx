@@ -21,7 +21,7 @@ interface Nav {
   biography: string;
   catalogue: string;
   carte: string;
-  exhibitions: string;
+  publications: string;
 }
 
 interface FamilyLegacy {
@@ -57,7 +57,7 @@ export default function BiographyPage() {
         biography: "Biographie",
         catalogue: "Catalogue Raisonné",
         carte: "Carte",
-        exhibitions: "Expositions",
+        publications: "Publications",
       },
       familyMembers: {
         title: "Artistes de la famille",
@@ -168,7 +168,7 @@ export default function BiographyPage() {
             <li><Link href="/jeannette/biography" className="text-blue-600">{t.nav.biography}</Link></li>
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">{t.nav.carte}</Link></li>
-            <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
+            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">{t.nav.publications}</Link></li>
             <li>
               <button className="flex items-center hover:text-blue-600 transition-colors">
                 <Globe className="w-4 h-4 mr-1" />

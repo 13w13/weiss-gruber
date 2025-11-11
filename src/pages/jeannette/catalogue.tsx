@@ -12,7 +12,7 @@ import { Vitrail, GalleryImage } from '@/types/images';
 type Language = 'fr' | 'en';
 
 // ... (autres types pour le contenu statique de l'interface)
-interface Nav { home: string; biography: string; catalogue: string; exhibitions: string; }
+interface Nav { home: string; biography: string; catalogue: string; publications: string; }
 interface FamilyMembers { title: string; jeannette: string; frederic: string; camille: string; }
 interface Filters { all: string; year: string; location: string; }
 interface Footer { rights: string; }
@@ -50,7 +50,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
   // Le contenu statique pour les textes de l'interface est conservé
   const content: Content = {
     fr: {
-      nav: { home: "Accueil", biography: "Biographie", catalogue: "Catalogue Raisonné", exhibitions: "Expositions" },
+      nav: { home: "Accueil", biography: "Biographie", catalogue: "Catalogue Raisonné", publications: "Publications" },
       familyMembers: { title: "Artistes de la famille", jeannette: "Jeannette Weiss Gruber", frederic: "Frédéric Weiss", camille: "Camille Weiss" },
       title: "Catalogue Raisonné de Jeannette Weiss Gruber",
       search: "Rechercher une œuvre...",
@@ -58,7 +58,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
       footer: { rights: "Tous droits réservés." }
     },
     en: {
-      nav: { home: "Home", biography: "Biography", catalogue: "Catalogue Raisonné", exhibitions: "Exhibitions" },
+      nav: { home: "Home", biography: "Biography", catalogue: "Catalogue Raisonné", publications: "Publications" },
       familyMembers: { title: "Family Artists", jeannette: "Jeannette Weiss Gruber", frederic: "Frédéric Weiss", camille: "Camille Weiss" },
       title: "Catalogue Raisonné of Jeannette Weiss Gruber",
       search: "Search for a work...",
@@ -108,7 +108,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
             <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">{t.nav.biography}</Link></li>
             <li><Link href="/jeannette/catalogue" className="text-blue-600">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
-            <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
+            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">{t.nav.publications}</Link></li>
             <li>
               <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
                 <Globe className="w-4 h-4 mr-1" />
