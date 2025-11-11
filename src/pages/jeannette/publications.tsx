@@ -104,7 +104,7 @@ export default function PublicationsPage() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-semibold mr-6">Weiss-Gruber</Link>
+            <Link href="/jeannette" className="text-xl font-semibold mr-6">Weiss-Gruber</Link>
             <div className="relative">
               <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
                 Jeannette Weiss Gruber
