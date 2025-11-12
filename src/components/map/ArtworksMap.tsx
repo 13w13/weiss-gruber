@@ -1,7 +1,6 @@
 import { useMemo, useState, type ComponentType, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
-import MarkerClusterGroup from 'react-leaflet-cluster';
+import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
 import L from 'leaflet';
@@ -158,48 +157,16 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   // Drawer list & search
   const [showList, setShowList] = useState(false);
-  const [mapBounds, setMapBounds] = useState<L.LatLngBounds | null>(null);
-  const [search, setSearch] = useState('');
 
-  const filteredList = useMemo(() => {
-    let base = selectedDecades.length ? filteredPoints : points;
-    if (mapBounds) {
-      base = base.filter(p => mapBounds.contains([p.lat, p.lng]));
-    }
-    const list = base.map(p => p.work);
 
-    const q = search.trim().toLowerCase();
-    if (!q) return list;
-    return list.filter(w => (w.city || '').toLowerCase().includes(q) || (w.building_name || '').toLowerCase().includes(q) || (w.title_fr || '').toLowerCase().includes(q));
-  }, [filteredPoints, points, selectedDecades, search, mapBounds]);
-
-  function MapEvents() {
-    const map = useMap();
-    useEffect(() => {
-      const updateBounds = () => setMapBounds(map.getBounds());
-      map.on('moveend', updateBounds);
-      updateBounds(); // initial
-      return () => { map.off('moveend', updateBounds); };
-    }, [map]);
-    return null;
-  }
 
   const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
   const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
-  const MR = Marker as unknown as ComponentType<Record<string, unknown>>;
+  const CM = CircleMarker as unknown as ComponentType<Record<string, unknown>>;
   const PP = Popup as unknown as ComponentType<Record<string, unknown>>;
   const PL = Polyline as unknown as ComponentType<Record<string, unknown>>;
 
-  // Map ref to allow flyTo when clicking list
-  const mapRef = useRef<L.Map | null>(null);
 
-  // Custom pin icon with white border
-  const makeIcon = (color: string) => L.divIcon({
-    html: `<span class="wg-pin" style="--c:${color}"></span>`,
-    className: 'wg-pin-wrap',
-    iconSize: [16, 16],
-    iconAnchor: [8, 8],
-  });
 
   function FitToBounds({ positions }: { positions: [number, number][] }) {
     const map = useMap();
@@ -213,7 +180,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   return (
     <div className="relative">
-      <MC center={center} zoom={6} whenCreated={(m: L.Map)=>{mapRef.current=m;}} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+      <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
         {basemap === 'osm' ? (
           <TL
             attribution='&copy; OpenStreetMap contributors'
@@ -227,79 +194,30 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         )}
 
         <FitToBounds positions={(selectedDecades.length? filteredPoints : points).map(p=>[p.lat,p.lng])} />
-        <MapEvents />
 
         {polyline.length >= 2 && (
           <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
         )}
-        <MarkerClusterGroup
-          chunkedLoading
-          showCoverageOnHover={false}
-          spiderfyOnMaxZoom
-          iconCreateFunction={(cluster: { getChildCount: () => number }) => L.divIcon({
-            html: `<div class="wg-cluster">${cluster.getChildCount()}</div>`,
-            className: 'wg-cluster-wrap',
-            iconSize: [34, 34],
-          })}
-        >
-          {(selectedDecades.length? filteredPoints : points).map(({ work, lat, lng, yearNum }) => {
-            const color = decadeColor(yearNum);
-            return (
-              <MR
-                key={work.id}
-                position={[lat, lng]}
-                icon={makeIcon(color)}
-                ref={(r: L.Marker | null) => { markerRefs.current[work.id] = r; }}
-              >
-                <Tooltip direction="top" offset={[0, -4]} opacity={1}>
-                  {work.building_name} — {work.year}
-                </Tooltip>
-                <PP>
-                  <PopupContent work={work} />
-                </PP>
-              </MR>
-            );
-          })}
-        </MarkerClusterGroup>
+        {(selectedDecades.length ? filteredPoints : points).map(({ work, lat, lng, yearNum }) => {
+          const color = decadeColor(yearNum);
+          return (
+            <CM
+              key={work.id}
+              center={[lat, lng]}
+              radius={7}
+              pathOptions={{ color, weight: 1, fillColor: color, fillOpacity: 0.95 }}
+            >
+              <Tooltip direction="top" offset={[0, -4]} opacity={1}>
+                {work.building_name} — {work.year}
+              </Tooltip>
+              <PP>
+                <PopupContent work={work} />
+              </PP>
+            </CM>
+          );
+        })}
       </MC>
 
-      {/* Drawer liste */}
-      <div className="absolute top-3 left-3 z-[4000] pointer-events-auto">
-        <button onClick={() => setShowList((s) => !s)} className="bg-white border border-gray-300 rounded px-3 py-1 text-xs shadow hover:bg-gray-50">
-          {showList ? 'Fermer' : 'Liste'}
-        </button>
-        {showList && (
-          <div className="mt-2 bg-white border border-gray-300 rounded shadow-2xl w-72 max-h-[70vh] overflow-auto p-3 text-sm">
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Recherche (ville, lieu, titre)"
-              className="w-full mb-2 border rounded px-2 py-1 text-xs"
-            />
-            <ul className="space-y-2">
-              {filteredList.map((w) => (
-                <li key={w.id} className="flex items-start justify-between gap-2">
-                  <div>
-                    <div className="font-medium text-gray-800 leading-tight">{w.building_name}</div>
-                    <div className="text-[11px] text-gray-500">{w.city} • {w.year}</div>
-                  </div>
-                  <button
-                    onClick={() => {
-                      const p = points.find((p) => p.work.id === w.id);
-                      if (!p) return;
-                      mapRef.current?.flyTo([p.lat, p.lng], 12, { duration: 1 });
-                      markerRefs.current[w.id]?.openPopup();
-                    }}
-                    className="text-xs border px-2 py-0.5 rounded hover:bg-gray-50"
-                  >
-                    Voir
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
 
       <div className="absolute top-3 right-3 z-[4000] flex flex-col items-end gap-2 pointer-events-auto">
         <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs flex items-center gap-2">
@@ -330,8 +248,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           from { stroke-dashoffset: 1200; }
           to { stroke-dashoffset: 0; }
         }
-        .wg-pin { display:inline-block; width:14px; height:14px; background: var(--c); border:2px solid #fff; border-radius:50%; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
-        .wg-cluster { background:#2563eb; color:#fff; border-radius:9999px; border:2px solid #fff; padding:4px 8px; font-weight:600; }
       `}</style>
     </div>
   );
