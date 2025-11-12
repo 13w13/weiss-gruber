@@ -1,5 +1,6 @@
 import { useMemo, useState, type ComponentType, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
 import L from 'leaflet';
@@ -79,7 +80,7 @@ function PopupContent({ work }: { work: Vitrail }) {
 
 export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   // Map ref for controlling flyTo
-  const mapRef = useRef<L.Map | null>(null);
+  const markerRefs = useRef<Record<string, L.Marker | null>>({});
 
   const points = useMemo(() => {
     const raw = works
@@ -126,9 +127,17 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
   const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
-  const CM = CircleMarker as unknown as ComponentType<Record<string, unknown>>;
+  const MR = Marker as unknown as ComponentType<Record<string, unknown>>;
   const PP = Popup as unknown as ComponentType<Record<string, unknown>>;
   const PL = Polyline as unknown as ComponentType<Record<string, unknown>>;
+
+  // Custom pin icon with white border
+  const makeIcon = (color: string) => L.divIcon({
+    html: `<span class="wg-pin" style="--c:${color}"></span>`,
+    className: 'wg-pin-wrap',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+  });
 
   function FitToBounds({ positions }: { positions: [number, number][] }) {
     const map = useMap();
@@ -141,9 +150,9 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   }
 
   useEffect(() => {
-    if (!playing || points.length === 0 || !mapRef.current) return;
+    if (!playing || points.length === 0 || !markerRefs.current) return;
     const current = points[tourIdx % points.length];
-    mapRef.current.flyTo([current.lat, current.lng], 11, { duration: 1.5 });
+    markerRefs.current[current.work.id].setLatLng([current.lat, current.lng]);
     const timer = setTimeout(() => {
       setTourIdx((i) => {
         const next = i + 1;
@@ -167,7 +176,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   return (
     <div className="relative">
-      <MC center={center} zoom={6} whenCreated={(m: L.Map) => { mapRef.current = m; }} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+      <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
         {basemap === 'osm' ? (
           <TL
             attribution='&copy; OpenStreetMap contributors'
@@ -185,17 +194,35 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         {polyline.length >= 2 && (
           <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
         )}
-
-        {points.map(({ work, lat, lng, yearNum }) => {
-          const color = decadeColor(yearNum);
-          return (
-            <CM key={work.id} center={[lat, lng]} radius={7} pathOptions={{ color, weight: 1, fillColor: color, fillOpacity: 0.95 }}>
-              <PP>
-                <PopupContent work={work} />
-              </PP>
-            </CM>
-          );
-        })}
+        <MarkerClusterGroup
+          chunkedLoading
+          showCoverageOnHover={false}
+          spiderfyOnMaxZoom
+          iconCreateFunction={(cluster) => L.divIcon({
+            html: `<div class="wg-cluster">${cluster.getChildCount()}</div>`,
+            className: 'wg-cluster-wrap',
+            iconSize: [34, 34],
+          })}
+        >
+          {points.map(({ work, lat, lng, yearNum }) => {
+            const color = decadeColor(yearNum);
+            return (
+              <MR
+                key={work.id}
+                position={[lat, lng]}
+                icon={makeIcon(color)}
+                ref={(r:any)=>{ markerRefs.current[work.id] = r as unknown as L.Marker; }}
+              >
+                <Tooltip direction="top" offset={[0, -4]} opacity={1}>
+                  {work.building_name} — {work.year}
+                </Tooltip>
+                <PP>
+                  <PopupContent work={work} />
+                </PP>
+              </MR>
+            );
+          })}
+        </MarkerClusterGroup>
       </MC>
 
       {/* Play / Stop buttons */}
@@ -237,6 +264,18 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           </div>
         )}
       </div>
+      <style jsx global>{`
+        .leaflet-overlay-pane .animated-polyline {
+          stroke-dasharray: 1200;
+          animation: wg-dash 2.6s ease-out forwards;
+        }
+        @keyframes wg-dash {
+          from { stroke-dashoffset: 1200; }
+          to { stroke-dashoffset: 0; }
+        }
+        .wg-pin { display:inline-block; width:14px; height:14px; background: var(--c); border:2px solid #fff; border-radius:50%; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+        .wg-cluster { background:#2563eb; color:#fff; border-radius:9999px; border:2px solid #fff; padding:4px 8px; font-weight:600; }
+      `}</style>
     </div>
   );
 }
