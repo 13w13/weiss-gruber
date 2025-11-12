@@ -167,7 +167,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   return (
     <div className="relative">
-      <MC center={center} zoom={6} whenCreated={(m)=>{mapRef.current=m}} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+      <MC center={center} zoom={6} whenCreated={(m: L.Map) => { mapRef.current = m; }} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
         {basemap === 'osm' ? (
           <TL
             attribution='&copy; OpenStreetMap contributors'
