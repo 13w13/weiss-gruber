@@ -1,4 +1,5 @@
 import { useMemo, useState, type ComponentType, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import Image from 'next/image';
@@ -101,6 +102,30 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   const [basemap, setBasemap] = useState<'osm' | 'light'>('osm');
 
+  // Décennies sélectionnées via URL
+  const router = useRouter();
+  const [selectedDecades, setSelectedDecades] = useState<number[]>([]);
+  useEffect(() => {
+    const q = router.query.decades as string | undefined;
+    if (q) {
+      const arr = q.split(',').map((s)=>parseInt(s,10)).filter(n=>!Number.isNaN(n));
+      setSelectedDecades(arr);
+    } else {
+      setSelectedDecades([]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.decades]);
+
+  const toggleDecade = (d: number) => {
+    setSelectedDecades(prev => {
+      const next = prev.includes(d) ? prev.filter(x=>x!==d) : [...prev, d];
+      const query: Record<string,string> = { ...router.query } as any;
+      if (next.length) query.decades = next.sort().join(','); else delete query.decades;
+      router.push({ pathname: router.pathname, query }, undefined, { shallow: true });
+      return next;
+    });
+  };
+
   const decadeColor = (y?: number) => {
     if (!y || !Number.isFinite(y)) return '#ef4444';
     const d = Math.floor(y / 10) * 10;
@@ -122,6 +147,14 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     }
     return Array.from(s).sort((a, b) => a - b);
   }, [points]);
+
+  const filteredPoints = useMemo(() => {
+    if (selectedDecades.length === 0) return points;
+    return points.filter(p => {
+      const d = Number.isFinite(p.yearNum) ? Math.floor(p.yearNum/10)*10 : undefined;
+      return d ? selectedDecades.includes(d) : false;
+    });
+  }, [points, selectedDecades]);
 
   const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
   const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
@@ -162,7 +195,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           />
         )}
 
-        <FitToBounds positions={polyline} />
+        <FitToBounds positions={(selectedDecades.length? filteredPoints : points).map(p=>[p.lat,p.lng])} />
 
         {polyline.length >= 2 && (
           <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
@@ -177,7 +210,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             iconSize: [34, 34],
           })}
         >
-          {points.map(({ work, lat, lng, yearNum }) => {
+          {(selectedDecades.length? filteredPoints : points).map(({ work, lat, lng, yearNum }) => {
             const color = decadeColor(yearNum);
             return (
               <MR
@@ -205,13 +238,16 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           <button onClick={() => setBasemap('light')} className={`px-2 py-0.5 rounded ${basemap==='light' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>Light</button>
         </div>
         {decades.length > 0 && (
-          <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs">
-            <div className="font-medium text-gray-800 mb-1">Décennies</div>
-            <ul className="space-y-1">
-              {decades.map(d => (
-                <li key={d} className="flex items-center gap-2">
-                  <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: decadeColor(d) }} />
-                  <span>{d}s</span>
+          <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs w-56">
+            <div className="font-medium text-gray-800 mb-2">Filtrer par décennie</div>
+            <div className="flex flex-wrap gap-2">
+              {decades.map(d => {
+                const active = selectedDecades.includes(d);
+                return (
+                  <button key={d} onClick={()=>toggleDecade(d)} className={`px-2 py-0.5 rounded-full border ${active ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50'}`}>{d}s</button>
+                );
+              })}
+            </div>
                 </li>
               ))}
             </ul>
