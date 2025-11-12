@@ -171,7 +171,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           chunkedLoading
           showCoverageOnHover={false}
           spiderfyOnMaxZoom
-          iconCreateFunction={(cluster) => L.divIcon({
+          iconCreateFunction={(cluster: { getChildCount: () => number }) => L.divIcon({
             html: `<div class="wg-cluster">${cluster.getChildCount()}</div>`,
             className: 'wg-cluster-wrap',
             iconSize: [34, 34],
