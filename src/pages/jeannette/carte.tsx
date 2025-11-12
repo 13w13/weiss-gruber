@@ -55,7 +55,6 @@ export default function Carte({ works }: { works: Vitrail[] }) {
             <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue Raisonné</Link></li>
             <li><span className="text-blue-600">Carte</span></li>
-            <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">Expositions</Link></li>
           </ul>
         </nav>
       </header>
