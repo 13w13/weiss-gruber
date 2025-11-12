@@ -262,7 +262,6 @@ export default function BiographyPage() {
             ))}
           </div>
         </div>
-        </div>
       </main>
 
       {/* Lightbox pour les images bio */}
