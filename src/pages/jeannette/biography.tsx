@@ -226,11 +226,16 @@ export default function BiographyPage() {
                     if (mapping) {
                       insertedImages.add(mapping.file);
                     }
+                    const isCenter = mapping?.align === 'center';
+                    const containerClasses = isCenter
+                      ? 'mb-8'
+                      : `mb-8 md:grid md:grid-cols-[minmax(0,1fr)_22rem] md:gap-6 md:items-center space-y-4 md:space-y-0`;
+
                     return (
-                      <div key={pIndex} className="mb-8 md:grid md:grid-cols-[minmax(0,1fr)_22rem] md:gap-6 space-y-4 md:space-y-0">
-                        <p className="text-justify text-lg leading-relaxed">{paragraph}</p>
-                        {mapping && (
-                          <figure className="md:row-span-full">
+                      <div key={pIndex} className={containerClasses}>
+                        <p className={`text-justify text-lg leading-relaxed ${mapping?.align === 'left' ? 'md:order-2' : ''}`}>{paragraph}</p>
+                        {mapping && !isCenter && (
+                          <figure className={`md:row-span-full ${mapping.align === 'left' ? 'md:order-1' : 'md:order-2'}`}>
                             <Image
                               onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
                               src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
