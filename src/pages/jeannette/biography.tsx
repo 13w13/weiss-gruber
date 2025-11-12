@@ -246,6 +246,19 @@ export default function BiographyPage() {
                             />
                           </figure>
                         )}
+
+                        {isCenter && mapping && (
+                          <div className="mt-6 flex justify-center">
+                            <Image
+                              onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
+                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
+                              alt="Illustration biographique"
+                              width={800}
+                              height={600}
+                              className="cursor-zoom-in rounded-lg shadow-md object-contain w-full max-w-2xl"
+                            />
+                          </div>
+                        )}
                       </div>
                     );
                   })}
