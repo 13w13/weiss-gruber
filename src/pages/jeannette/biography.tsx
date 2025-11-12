@@ -270,7 +270,6 @@ export default function BiographyPage() {
                             {mapping.caption && (
                               <p className="mt-2 text-sm italic text-gray-500 text-center max-w-2xl mx-auto">{mapping.caption}</p>
                             )}
-                            />
                           </div>
                         )}
                       </div>
