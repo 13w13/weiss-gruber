@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ChevronDown, Globe } from 'lucide-react'
+import Image from 'next/image'
 import { useState } from 'react'
 
 type Language = 'fr';
@@ -132,6 +133,19 @@ export default function BiographyPage() {
 
   const t: ContentStructure = content[language]
 
+
+  // Images à intégrer dans le récit (ordre d'apparition global des paragraphes)
+  const bioImages: Record<number, string> = {
+    0: 'photo_miminette_bio_1.jpg',
+    1: 'photo_miminette_bio_2.jpg',
+    2: 'photo_miminette_bio_3.png',
+    3: 'photo_miminette_bio_4.png',
+    4: 'photo_miminette_bio_5.png',
+    5: 'photo_miminette_bio_6.jpg'
+  };
+
+  let globalParagraphIndex = -1;
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
@@ -187,11 +201,26 @@ export default function BiographyPage() {
             {t.sections.map((section, index) => (
               <section key={index} className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
-                {section.content.map((paragraph, pIndex) => (
-                  <p key={pIndex} className="mb-4 text-justify">
-                    {paragraph}
-                  </p>
-                ))}
+                {section.content.map((paragraph, pIndex) => {
+                    globalParagraphIndex += 1;
+                    const imgFile = bioImages[globalParagraphIndex];
+                    return (
+                      <div key={pIndex} className="mb-8">
+                        <p className="mb-4 text-justify">{paragraph}</p>
+                        {imgFile && (
+                          <div className="my-6 flex justify-center">
+                            <Image
+                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${imgFile}`}
+                              alt="Illustration biographique"
+                              width={800}
+                              height={600}
+                              className="rounded-lg shadow-md object-contain"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
               </section>
             ))}
           </div>
