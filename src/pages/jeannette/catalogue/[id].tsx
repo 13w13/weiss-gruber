@@ -194,7 +194,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
                         onClick={() => { setIndex(index + 1); setOpen(true); }}
                       />
                       <div className="p-2 text-sm bg-gray-50">
-                        <p className="font-semibold">{image.type}</p>
+                        <p className="font-semibold">{image.alt_fr ?? image.type}</p>
                         {image.credit && <p className="mt-1 text-xs text-gray-400">Crédit photo : {image.credit}</p>}
                       </div>
                     </div>
