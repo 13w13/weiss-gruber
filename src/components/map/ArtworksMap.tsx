@@ -156,11 +156,25 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     });
   }, [points, selectedDecades]);
 
+  // Drawer list & search
+  const [showList, setShowList] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const filteredList = useMemo(() => {
+    const base = (selectedDecades.length ? filteredPoints : points).map(p=>p.work);
+    const q = search.trim().toLowerCase();
+    if(!q) return base;
+    return base.filter(w => (w.city||'').toLowerCase().includes(q) || (w.building_name||'').toLowerCase().includes(q) || (w.title_fr||'').toLowerCase().includes(q));
+  }, [filteredPoints, points, selectedDecades, search]);
+
   const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
   const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
   const MR = Marker as unknown as ComponentType<Record<string, unknown>>;
   const PP = Popup as unknown as ComponentType<Record<string, unknown>>;
   const PL = Polyline as unknown as ComponentType<Record<string, unknown>>;
+
+  // Map ref to allow flyTo when clicking list
+  const mapRef = useRef<L.Map | null>(null);
 
   // Custom pin icon with white border
   const makeIcon = (color: string) => L.divIcon({
@@ -182,7 +196,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   return (
     <div className="relative">
-      <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+      <MC center={center} zoom={6} whenCreated={(m: L.Map)=>{mapRef.current=m;}} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
         {basemap === 'osm' ? (
           <TL
             attribution='&copy; OpenStreetMap contributors'
