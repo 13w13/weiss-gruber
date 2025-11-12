@@ -6,12 +6,12 @@ import L from 'leaflet';
 
 function PopupContent({ work }: { work: Vitrail }) {
   const images = useMemo(() => {
-    const base = 'https://xrarrp4wrvauwge7.public.blob.vercel-storage.com/';
+    const s3Base = 'https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/';
     const list: { src: string; alt: string }[] = [];
-    if (work.main_image) list.push({ src: `${base}${work.main_image}`, alt: work.title_fr });
+    if (work.main_image) list.push({ src: `${s3Base}${work.main_image}`, alt: work.title_fr });
     if (Array.isArray(work.gallery_images)) {
       for (const g of work.gallery_images) {
-        if (g?.url) list.push({ src: `${base}${g.url}`, alt: g.alt_fr || work.title_fr });
+        if (g?.url) list.push({ src: g.url.startsWith('http') ? g.url : `${s3Base}${g.url}`, alt: g.alt_fr || work.title_fr });
       }
     }
     return list;
