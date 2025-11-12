@@ -134,17 +134,26 @@ export default function BiographyPage() {
   const t: ContentStructure = content[language]
 
 
-  // Images à intégrer dans le récit (ordre d'apparition global des paragraphes)
-  const bioImages: Record<number, string> = {
-    0: 'photo_miminette_bio_1.jpg',
-    1: 'photo_miminette_bio_2.jpg',
-    2: 'photo_miminette_bio_3.png',
-    3: 'photo_miminette_bio_4.png',
-    4: 'photo_miminette_bio_5.png',
-    5: 'photo_miminette_bio_6.jpg'
-  };
+  // Mappage phrase → image → alignement (left / right / center)
+  interface ImageMapping {
+    phrase: string;
+    file: string;
+    align: 'left' | 'right' | 'center';
+  }
 
-  let globalParagraphIndex = -1;
+  const imageMappings: ImageMapping[] = [
+    { phrase: 'Elle est la mère de Frédéric, Camille et François Weiss.', file: 'photo_miminette_bio_1.jpg', align: 'right' },
+    { phrase: 'À dix ans, elle se promet de faire « plus joli » que les vitraux de l’atelier.', file: 'photo_miminette_bio_atelier.jpg', align: 'left' },
+    { phrase: 'particulièrement ceux de Miró à Senlis.', file: 'photo_miminette_bio_miro.jpg', align: 'left' },
+    { phrase: 'naissent ses aluchromies (peintures sur aluminium).', file: 'photo_miminette_bio_2.jpg', align: 'right' },
+    { phrase: 'l’atelier familial à la villa d’Alésia.', file: 'photo_miminette_bio_4.png', align: 'right' },
+    { phrase: 'Elle pratique aussi une visualisation originale : regarder ses vitraux avec des jumelles à l’envers pour anticiper l’effet à distance in situ et optimiser l’insertion des vitraux dans l’édifice.', file: 'photo_miminette_bio_5.png', align: 'right' },
+    { phrase: 'Jeannette dit : « Le vitrail est dans ma peau ; quand je fais mes cartons grandeur, la mise en plomb est déjà là (pour ma mise en place sur calque). »', file: 'photo_miminette_bio_3.png', align: 'left' },
+    { phrase: 'renouvellement de l’art du vitrail en France.', file: 'photo_miminette_bio_6.jpg', align: 'center' },
+  ];
+
+  // Pour éviter d’insérer deux fois la même image
+  const insertedImages = new Set<string>();
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -202,15 +211,32 @@ export default function BiographyPage() {
               <section key={index} className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
                 {section.content.map((paragraph, pIndex) => {
-                    globalParagraphIndex += 1;
-                    const imgFile = bioImages[globalParagraphIndex];
+                    const mapping = imageMappings.find(
+                      (m) => paragraph.includes(m.phrase) && !insertedImages.has(m.file)
+                    );
+                    if (mapping) {
+                      insertedImages.add(mapping.file);
+                    }
                     return (
-                      <div key={pIndex} className="mb-8">
+                      <div key={pIndex} className="mb-8 clear-both">
+                        {/* Images flottantes à gauche ou à droite */}
+                        {mapping && mapping.align !== 'center' && (
+                          <Image
+                            src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
+                            alt="Illustration biographique"
+                            width={400}
+                            height={300}
+                            className={`rounded-lg shadow-md w-64 h-auto mb-2 ${mapping.align === 'left' ? 'float-left mr-4' : 'float-right ml-4'}`}
+                          />
+                        )}
+
                         <p className="mb-4 text-justify">{paragraph}</p>
-                        {imgFile && (
+
+                        {/* Image centrée */}
+                        {mapping && mapping.align === 'center' && (
                           <div className="my-6 flex justify-center">
                             <Image
-                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${imgFile}`}
+                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
                               alt="Illustration biographique"
                               width={800}
                               height={600}
