@@ -217,8 +217,11 @@ export default function BiographyPage() {
           
           <div className="max-w-5xl lg:max-w-6xl mx-auto">
             {t.sections.map((section, index) => (
-              <section key={index} className="mb-12">
-                <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
+              <section
+                key={index}
+                className={`${index !== 0 ? 'border-t border-gray-200 pt-12' : ''} space-y-8`}
+              >
+                <h2 className="text-3xl font-serif leading-tight mb-4">{section.title}</h2>
                 {section.content.map((paragraph, pIndex) => {
                     const mapping = imageMappings.find(
                       (m) => paragraph.includes(m.phrase) && !insertedImages.has(m.file)
@@ -229,11 +232,11 @@ export default function BiographyPage() {
                     const isCenter = mapping?.align === 'center';
                     const containerClasses = isCenter
                       ? 'mb-8'
-                      : `mb-8 md:grid md:grid-cols-[minmax(0,1fr)_22rem] md:gap-6 md:items-center space-y-4 md:space-y-0`;
+                      : `mb-8 md:grid md:grid-cols-[minmax(0,1fr)_24rem] 2xl:grid-cols-[minmax(0,1fr)_28rem] md:gap-6 md:items-center space-y-4 md:space-y-0`;
 
                     return (
                       <div key={pIndex} className={containerClasses}>
-                        <p className={`text-justify text-lg leading-relaxed ${mapping?.align === 'left' ? 'md:order-2' : ''}`}>{paragraph}</p>
+                        <p className={`text-justify text-lg leading-relaxed ${mapping?.align === 'left' ? 'md:order-2' : ''} ${pIndex === 0 ? 'first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-1' : ''}`}>{paragraph}</p>
                         {mapping && !isCenter && (
                           <figure className={`md:row-span-full ${mapping.align === 'left' ? 'md:order-1' : 'md:order-2'}`}>
                             <Image
@@ -242,6 +245,8 @@ export default function BiographyPage() {
                               alt="Illustration biographique"
                               width={500}
                               height={375}
+                              priority={index === 0 && pIndex === 0}
+                              sizes="(min-width: 1280px) 28rem, (min-width: 768px) 24rem, 100vw"
                               className="cursor-zoom-in rounded-lg shadow-md w-full"
                             />
                           </figure>
