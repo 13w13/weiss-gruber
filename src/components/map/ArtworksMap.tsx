@@ -119,7 +119,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const toggleDecade = (d: number) => {
     setSelectedDecades(prev => {
       const next = prev.includes(d) ? prev.filter(x=>x!==d) : [...prev, d];
-      const query: Record<string,string> = { ...router.query } as any;
+      const query = { ...router.query } as Record<string, string | string[]>;
       if (next.length) query.decades = next.sort().join(','); else delete query.decades;
       router.push({ pathname: router.pathname, query }, undefined, { shallow: true });
       return next;
