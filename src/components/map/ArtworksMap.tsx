@@ -186,6 +186,9 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                 icon={makeIcon(color)}
                 ref={(r: L.Marker | null) => { markerRefs.current[work.id] = r; }}
               >
+                <Tooltip direction="top" offset={[0, -4]} opacity={1}>
+                  {work.building_name} — {work.year}
+                </Tooltip>
                 <PP>
                   <PopupContent work={work} />
                 </PP>
