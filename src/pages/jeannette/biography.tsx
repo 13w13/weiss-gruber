@@ -227,33 +227,19 @@ export default function BiographyPage() {
                       insertedImages.add(mapping.file);
                     }
                     return (
-                      <div key={pIndex} className="mb-8 clear-both">
-                        {/* Images flottantes à gauche ou à droite */}
-                        {mapping && mapping.align !== 'center' && (
-                          <Image
-                            onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
-                            src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
-                            alt="Illustration biographique"
-                            width={500}
-                            height={375}
-                            className={`cursor-zoom-in rounded-lg shadow-md w-full md:w-80 lg:w-96 h-auto mb-4 md:mb-0 ${mapping.align === 'left' ? 'float-left mr-4' : 'float-right ml-4'}`}
-                          />
-                        )}
-
-                        <p className="mb-4 text-justify text-lg leading-relaxed">{paragraph}</p>
-
-                        {/* Image centrée */}
-                        {mapping && mapping.align === 'center' && (
-                          <div className="my-6 flex justify-center">
+                      <div key={pIndex} className="mb-8 md:grid md:grid-cols-[minmax(0,1fr)_22rem] md:gap-6 space-y-4 md:space-y-0">
+                        <p className="text-justify text-lg leading-relaxed">{paragraph}</p>
+                        {mapping && (
+                          <figure className="md:row-span-full">
                             <Image
                               onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
-                            src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
+                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
                               alt="Illustration biographique"
-                              width={800}
-                              height={600}
-                              className="cursor-zoom-in rounded-lg shadow-md object-contain w-full max-w-2xl"
+                              width={500}
+                              height={375}
+                              className="cursor-zoom-in rounded-lg shadow-md w-full"
                             />
-                          </div>
+                          </figure>
                         )}
                       </div>
                     );
