@@ -245,6 +245,44 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         </MarkerClusterGroup>
       </MC>
 
+      {/* Drawer liste */}
+      <div className="absolute top-3 left-3 z-[4000] pointer-events-auto">
+        <button onClick={() => setShowList((s) => !s)} className="bg-white border border-gray-300 rounded px-3 py-1 text-xs shadow hover:bg-gray-50">
+          {showList ? 'Fermer' : 'Liste'}
+        </button>
+        {showList && (
+          <div className="mt-2 bg-white border border-gray-300 rounded shadow-2xl w-72 max-h-[70vh] overflow-auto p-3 text-sm">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Recherche (ville, lieu, titre)"
+              className="w-full mb-2 border rounded px-2 py-1 text-xs"
+            />
+            <ul className="space-y-2">
+              {filteredList.map((w) => (
+                <li key={w.id} className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="font-medium text-gray-800 leading-tight">{w.building_name}</div>
+                    <div className="text-[11px] text-gray-500">{w.city} • {w.year}</div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const p = points.find((p) => p.work.id === w.id);
+                      if (!p) return;
+                      mapRef.current?.flyTo([p.lat, p.lng], 12, { duration: 1 });
+                      markerRefs.current[w.id]?.openPopup();
+                    }}
+                    className="text-xs border px-2 py-0.5 rounded hover:bg-gray-50"
+                  >
+                    Voir
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
       <div className="absolute top-3 right-3 z-[4000] flex flex-col items-end gap-2 pointer-events-auto">
         <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs flex items-center gap-2">
           <span className="text-gray-700 font-medium">Fond</span>
