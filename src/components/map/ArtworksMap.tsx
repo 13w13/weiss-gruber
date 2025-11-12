@@ -1,5 +1,5 @@
 import { useMemo, useState, type ComponentType, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
@@ -100,8 +100,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const polyline: [number, number][] = points.map(p => [p.lat, p.lng]);
 
   const [basemap, setBasemap] = useState<'osm' | 'light'>('osm');
-  const [playing, setPlaying] = useState(false);
-  const [tourIdx, setTourIdx] = useState(0);
 
   const decadeColor = (y?: number) => {
     if (!y || !Number.isFinite(y)) return '#ef4444';
@@ -149,31 +147,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     return null;
   }
 
-  useEffect(() => {
-    if (!playing || points.length === 0 || !markerRefs.current) return;
-    const current = points[tourIdx % points.length];
-    markerRefs.current[current.work.id].setLatLng([current.lat, current.lng]);
-    const timer = setTimeout(() => {
-      setTourIdx((i) => {
-        const next = i + 1;
-        if (next >= points.length) {
-          setPlaying(false);
-          return 0;
-        }
-        return next;
-      });
-    }, 3500); // wait 3.5s then next
-    return () => clearTimeout(timer);
-  }, [playing, tourIdx, points]);
-
-  const startTour = () => {
-    if (points.length === 0) return;
-    setTourIdx(0);
-    setPlaying(true);
-  };
-
-  const stopTour = () => setPlaying(false);
-
   return (
     <div className="relative">
       <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
@@ -211,11 +184,8 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                 key={work.id}
                 position={[lat, lng]}
                 icon={makeIcon(color)}
-                ref={(r:any)=>{ markerRefs.current[work.id] = r as unknown as L.Marker; }}
+                ref={(r: L.Marker | null) => { markerRefs.current[work.id] = r; }}
               >
-                <Tooltip direction="top" offset={[0, -4]} opacity={1}>
-                  {work.building_name} — {work.year}
-                </Tooltip>
                 <PP>
                   <PopupContent work={work} />
                 </PP>
@@ -224,25 +194,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           })}
         </MarkerClusterGroup>
       </MC>
-
-      {/* Play / Stop buttons */}
-      {!playing ? (
-        <button
-          onClick={startTour}
-          className="absolute bottom-5 right-5 z-[4001] bg-blue-600 text-white rounded-full w-12 h-12 shadow-lg hover:bg-blue-700 focus:outline-none"
-          aria-label="Démarrer le parcours"
-        >
-          ▶
-        </button>
-      ) : (
-        <button
-          onClick={stopTour}
-          className="absolute bottom-5 right-5 z-[4001] bg-red-600 text-white rounded-full w-12 h-12 shadow-lg hover:bg-red-700 focus:outline-none"
-          aria-label="Arrêter le parcours"
-        >
-          ✕
-        </button>
-      )}
 
       <div className="absolute top-3 right-3 z-[4000] flex flex-col items-end gap-2 pointer-events-auto">
         <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs flex items-center gap-2">
