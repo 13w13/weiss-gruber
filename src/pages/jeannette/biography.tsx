@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import { ChevronDown, Globe } from 'lucide-react'
 import Image from 'next/image'
+import Lightbox from 'yet-another-react-lightbox'
+import Zoom from 'yet-another-react-lightbox/plugins/zoom'
+import 'yet-another-react-lightbox/styles.css'
 import { useState } from 'react'
 
 type Language = 'fr';
@@ -155,6 +158,12 @@ export default function BiographyPage() {
   // Pour éviter d’insérer deux fois la même image
   const insertedImages = new Set<string>();
 
+  // Lightbox state & slides
+  const bioLightboxImages = Array.from(new Set(imageMappings.map((m) => m.file)));
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const lightboxSlides = bioLightboxImages.map((f) => ({ src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${f}` }));
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
@@ -206,7 +215,7 @@ export default function BiographyPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-light mb-8 text-center">{t.title}</h1>
           
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl lg:max-w-6xl mx-auto">
             {t.sections.map((section, index) => (
               <section key={index} className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
@@ -222,25 +231,27 @@ export default function BiographyPage() {
                         {/* Images flottantes à gauche ou à droite */}
                         {mapping && mapping.align !== 'center' && (
                           <Image
+                            onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
                             src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
                             alt="Illustration biographique"
-                            width={400}
-                            height={300}
-                            className={`rounded-lg shadow-md w-64 h-auto mb-2 ${mapping.align === 'left' ? 'float-left mr-4' : 'float-right ml-4'}`}
+                            width={500}
+                            height={375}
+                            className={`cursor-zoom-in rounded-lg shadow-md w-full md:w-80 lg:w-96 h-auto mb-4 md:mb-0 ${mapping.align === 'left' ? 'float-left mr-4' : 'float-right ml-4'}`}
                           />
                         )}
 
-                        <p className="mb-4 text-justify">{paragraph}</p>
+                        <p className="mb-4 text-justify text-lg leading-relaxed">{paragraph}</p>
 
                         {/* Image centrée */}
                         {mapping && mapping.align === 'center' && (
                           <div className="my-6 flex justify-center">
                             <Image
-                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
+                              onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
+                            src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
                               alt="Illustration biographique"
                               width={800}
                               height={600}
-                              className="rounded-lg shadow-md object-contain"
+                              className="cursor-zoom-in rounded-lg shadow-md object-contain w-full max-w-2xl"
                             />
                           </div>
                         )}
@@ -251,7 +262,17 @@ export default function BiographyPage() {
             ))}
           </div>
         </div>
+        </div>
       </main>
+
+      {/* Lightbox pour les images bio */}
+      <Lightbox
+        open={lightboxOpen}
+        close={() => setLightboxOpen(false)}
+        slides={lightboxSlides}
+        plugins={[Zoom]}
+        index={lightboxIndex}
+      />
 
       <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600">
