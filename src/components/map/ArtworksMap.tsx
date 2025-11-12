@@ -158,14 +158,31 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   // Drawer list & search
   const [showList, setShowList] = useState(false);
+  const [mapBounds, setMapBounds] = useState<L.LatLngBounds | null>(null);
   const [search, setSearch] = useState('');
 
   const filteredList = useMemo(() => {
-    const base = (selectedDecades.length ? filteredPoints : points).map(p=>p.work);
+    let base = selectedDecades.length ? filteredPoints : points;
+    if (mapBounds) {
+      base = base.filter(p => mapBounds.contains([p.lat, p.lng]));
+    }
+    const list = base.map(p => p.work);
+
     const q = search.trim().toLowerCase();
-    if(!q) return base;
-    return base.filter(w => (w.city||'').toLowerCase().includes(q) || (w.building_name||'').toLowerCase().includes(q) || (w.title_fr||'').toLowerCase().includes(q));
-  }, [filteredPoints, points, selectedDecades, search]);
+    if (!q) return list;
+    return list.filter(w => (w.city || '').toLowerCase().includes(q) || (w.building_name || '').toLowerCase().includes(q) || (w.title_fr || '').toLowerCase().includes(q));
+  }, [filteredPoints, points, selectedDecades, search, mapBounds]);
+
+  function MapEvents() {
+    const map = useMap();
+    useEffect(() => {
+      const updateBounds = () => setMapBounds(map.getBounds());
+      map.on('moveend', updateBounds);
+      updateBounds(); // initial
+      return () => { map.off('moveend', updateBounds); };
+    }, [map]);
+    return null;
+  }
 
   const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
   const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
@@ -210,6 +227,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         )}
 
         <FitToBounds positions={(selectedDecades.length? filteredPoints : points).map(p=>[p.lat,p.lng])} />
+        <MapEvents />
 
         {polyline.length >= 2 && (
           <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
