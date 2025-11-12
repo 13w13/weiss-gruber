@@ -1,4 +1,4 @@
-import { useMemo, useState, type ComponentType, useEffect, useRef } from 'react';
+import { useMemo, useState, type ComponentType, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
 import Image from 'next/image';
@@ -79,9 +79,6 @@ function PopupContent({ work }: { work: Vitrail }) {
 }
 
 export default function ArtworksMap({ works }: { works: Vitrail[] }) {
-  // Map ref for controlling flyTo
-  const markerRefs = useRef<Record<string, L.Marker | null>>({});
-
   const points = useMemo(() => {
     const raw = works
       .map((w) => ({
@@ -155,8 +152,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     });
   }, [points, selectedDecades]);
 
-  // Drawer list & search
-  const [showList, setShowList] = useState(false);
 
 
 
