@@ -248,9 +248,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                 );
               })}
             </div>
-                </li>
-              ))}
-            </ul>
           </div>
         )}
       </div>
