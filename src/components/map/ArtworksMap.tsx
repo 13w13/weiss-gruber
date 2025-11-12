@@ -1,4 +1,4 @@
-import { useMemo, useState, type ComponentType, useEffect } from 'react';
+import { useMemo, useState, type ComponentType, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap } from 'react-leaflet';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
@@ -78,6 +78,9 @@ function PopupContent({ work }: { work: Vitrail }) {
 }
 
 export default function ArtworksMap({ works }: { works: Vitrail[] }) {
+  // Map ref for controlling flyTo
+  const mapRef = useRef<L.Map | null>(null);
+
   const points = useMemo(() => {
     const raw = works
       .map((w) => ({
@@ -96,6 +99,8 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const polyline: [number, number][] = points.map(p => [p.lat, p.lng]);
 
   const [basemap, setBasemap] = useState<'osm' | 'light'>('osm');
+  const [playing, setPlaying] = useState(false);
+  const [tourIdx, setTourIdx] = useState(0);
 
   const decadeColor = (y?: number) => {
     if (!y || !Number.isFinite(y)) return '#ef4444';
@@ -135,9 +140,34 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     return null;
   }
 
+  useEffect(() => {
+    if (!playing || points.length === 0 || !mapRef.current) return;
+    const current = points[tourIdx % points.length];
+    mapRef.current.flyTo([current.lat, current.lng], 11, { duration: 1.5 });
+    const timer = setTimeout(() => {
+      setTourIdx((i) => {
+        const next = i + 1;
+        if (next >= points.length) {
+          setPlaying(false);
+          return 0;
+        }
+        return next;
+      });
+    }, 3500); // wait 3.5s then next
+    return () => clearTimeout(timer);
+  }, [playing, tourIdx, points]);
+
+  const startTour = () => {
+    if (points.length === 0) return;
+    setTourIdx(0);
+    setPlaying(true);
+  };
+
+  const stopTour = () => setPlaying(false);
+
   return (
     <div className="relative">
-      <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+      <MC center={center} zoom={6} whenCreated={(m)=>{mapRef.current=m}} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
         {basemap === 'osm' ? (
           <TL
             attribution='&copy; OpenStreetMap contributors'
@@ -167,6 +197,25 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           );
         })}
       </MC>
+
+      {/* Play / Stop buttons */}
+      {!playing ? (
+        <button
+          onClick={startTour}
+          className="absolute bottom-5 right-5 z-[4001] bg-blue-600 text-white rounded-full w-12 h-12 shadow-lg hover:bg-blue-700 focus:outline-none"
+          aria-label="Démarrer le parcours"
+        >
+          ▶
+        </button>
+      ) : (
+        <button
+          onClick={stopTour}
+          className="absolute bottom-5 right-5 z-[4001] bg-red-600 text-white rounded-full w-12 h-12 shadow-lg hover:bg-red-700 focus:outline-none"
+          aria-label="Arrêter le parcours"
+        >
+          ✕
+        </button>
+      )}
 
       <div className="absolute top-3 right-3 z-[4000] flex flex-col items-end gap-2 pointer-events-auto">
         <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs flex items-center gap-2">
