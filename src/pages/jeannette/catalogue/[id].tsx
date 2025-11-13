@@ -194,7 +194,11 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
                         alt={image.alt_fr || work.title_fr}
                         width={200}
                         height={150}
-                                                className="object-cover w-full h-32 cursor-pointer"
+                        sizes="200px"
+                        quality={60}
+                        placeholder="blur"
+                        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP8zwADAAMBAQAYXP4AAAAASUVORK5CYII="
+                        className="object-cover w-full h-32 cursor-pointer"
                         onClick={() => { setIndex(index + 1); setOpen(true); }}
                       />
                       <div className="p-2 text-sm bg-gray-50">
