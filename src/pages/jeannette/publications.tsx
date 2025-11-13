@@ -67,8 +67,8 @@ export default function PublicationsPage() {
     },
     en: {
       nav: {
-        home: 'Home',
-        biography: 'Biography',
+        home: 'Accueil',
+        biography: 'Biographie',
         catalogue: 'Catalogue Raisonné',
         publications: 'Publications',
       },
