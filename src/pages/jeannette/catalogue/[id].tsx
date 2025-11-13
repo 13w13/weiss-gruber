@@ -80,20 +80,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     })) || [])
   ];
 
-  // Lightbox-specific keydown handler
-  useEffect(() => {
-    if (!open) return;
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (index === slides.length - 1 && nextId && e.key === 'ArrowRight') {
-        router.push(`/jeannette/catalogue/${nextId}`);
-      }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, index, slides.length, nextId, router]);
-
   // Page-level keydown handler (when lightbox is closed)
   useEffect(() => {
     if (open) return;
@@ -207,7 +193,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
               )}
 
               {showToast && (
-                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/90 text-gray-900 px-4 py-2 rounded shadow cursor-pointer" onClick={() => nextId && router.push(`/jeannette/catalogue/${nextId}`)}>
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/90 text-gray-900 px-4 py-2 rounded shadow cursor-pointer z-[9999]" onClick={() => nextId && router.push(`/jeannette/catalogue/${nextId}`)}>
                   {slides.length} / {slides.length} — passer au vitrail suivant →
                 </div>
               )}
