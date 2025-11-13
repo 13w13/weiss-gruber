@@ -169,6 +169,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
             <Lightbox
                 open={open}
                 close={() => setOpen(false)}
+                index={index}
                 slides={slides}
                 plugins={plugins}
                 captions={{
