@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
+    "leaflet-fullscreen": "^1.0.2",
+    "leaflet.fullscreen": "^4.0.0",
     "lucide-react": "^0.456.0",
     "next": "15.0.3",
     "papaparse": "^5.5.3",
