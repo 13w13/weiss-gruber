@@ -101,7 +101,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   // Décennies sélectionnées via URL
   const router = useRouter();
   const [selectedDecades, setSelectedDecades] = useState<number[]>([]);
-  const [query, setQuery] = useState('');
   useEffect(() => {
     const q = router.query.decades as string | undefined;
     if (q) {
@@ -153,17 +152,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     });
   }, [points, selectedDecades]);
 
-  // Apply text query filter
-  const displayPoints = useMemo(() => {
-    const base = selectedDecades.length ? filteredPoints : points;
-    const q = query.trim().toLowerCase();
-    if (!q) return base;
-    return base.filter(p => (p.work.city || '').toLowerCase().includes(q) || (p.work.building_name || '').toLowerCase().includes(q) || (p.work.title_fr || '').toLowerCase().includes(q));
-  }, [filteredPoints, points, selectedDecades, query]);
-
-
-
-
   const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
   const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
   const CM = CircleMarker as unknown as ComponentType<Record<string, unknown>>;
@@ -197,12 +185,12 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           />
         )}
 
-        <FitToBounds positions={displayPoints.map(p=>[p.lat,p.lng])} />
+        <FitToBounds positions={(selectedDecades.length ? filteredPoints : points).map(p=>[p.lat,p.lng])} />
 
         {polyline.length >= 2 && (
           <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
         )}
-        {displayPoints.map(({ work, lat, lng, yearNum }) => {
+        {(selectedDecades.length ? filteredPoints : points).map(({ work, lat, lng, yearNum }) => {
           const color = decadeColor(yearNum);
           return (
             <CM
@@ -240,12 +228,6 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                 );
               })}
             </div>
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Recherche (ville, bâtiment, titre)"
-              className="mt-3 w-full border rounded px-2 py-1 text-xs"
-            />
           </div>
         )}
       </div>
