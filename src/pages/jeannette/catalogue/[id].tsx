@@ -188,6 +188,17 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 index={index}
                 slides={slides}
                 plugins={plugins}
+                zoom={{
+                  maxZoomPixelRatio: 3,
+                  zoomInMultiplier: 2,
+                  doubleTapDelay: 300,
+                  doubleClickDelay: 300,
+                  doubleClickMaxStops: 2,
+                  keyboardMoveDistance: 50,
+                  wheelZoomDistanceFactor: 100,
+                  pinchZoomDistanceFactor: 100,
+                  scrollToZoom: true
+                }}
                 captions={{
                   showToggle: false,
                   descriptionTextAlign: 'center',
@@ -201,12 +212,15 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 }}
               />
 
-              {/* Permanent help box in top-right */}
-              <div className="fixed top-12 right-4 bg-black/60 text-white px-3 py-2 rounded text-xs z-[9998] select-none pointer-events-none max-w-[200px]">
-                <div className="font-semibold mb-1">Navigation :</div>
-                <div>← → Images / Vitraux</div>
-                <div>Échap : Fermer</div>
-              </div>
+              {/* Permanent help box in top-right - only when lightbox is open */}
+              {open && (
+                <div className="fixed top-16 right-4 bg-black/60 text-white px-3 py-2 rounded text-xs z-[9998] select-none pointer-events-none max-w-[200px]">
+                  <div className="font-semibold mb-1">Navigation :</div>
+                  <div>← → Images / Vitraux</div>
+                  <div>Molette : Zoom</div>
+                  <div>Échap : Fermer</div>
+                </div>
+              )}
 
               {showHint && (
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded text-sm select-none pointer-events-none animate-fade">
