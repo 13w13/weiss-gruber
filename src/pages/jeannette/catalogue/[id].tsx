@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Globe, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
@@ -39,7 +40,7 @@ interface CsvRow {
 
 
 // Le composant pour la page de détail
-export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail; prevId?: string | null; nextId?: string | null }) {
+export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: { work: Vitrail; prevId?: string | null; nextId?: string | null; nextMainImage?: string | null }) {
   const router = useRouter();
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
     const [open, setOpen] = useState(false);
@@ -54,6 +55,15 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
       img.src = `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${nextMainImage}`;
     }
   }, [nextMainImage]);
+
+  // Show navigation hint for 4 seconds each time lightbox opens
+  useEffect(() => {
+    if (open) {
+      setShowHint(true);
+      const t = setTimeout(() => setShowHint(false), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [open]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -94,7 +104,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
   ];
 
   // Build plugin list dynamically
-  const plugins = [Zoom, Captions] as any[];
+  const plugins: Plugin[] = [Zoom, Captions];
   if (slides.length > 1) plugins.push(Counter);
   if (slides.length > 4) plugins.push(Thumbnails);
 
@@ -326,14 +336,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true };
   }
 
-  const prevId = index > 0 ? works[index - 1].id : null;
+    const prevId = index > 0 ? works[index - 1].id : null;
   const nextId = index < works.length - 1 ? works[index + 1].id : null;
+  const nextMainImage = nextId ? works[index + 1].main_image : null;
 
   return {
     props: {
       work,
       prevId,
       nextId,
+      nextMainImage,
     },
   };
 };
