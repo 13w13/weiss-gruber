@@ -51,11 +51,10 @@ export default function Carte({ works }: { works: Vitrail[] }) {
             </Link>
           </div>
           <ul className="flex space-x-6">
-            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">{t.nav.home}</Link></li>
-            <li><Link href="/jeannette/biography" className="text-blue-600">{t.nav.biography}</Link></li>
-            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
-            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">{t.nav.carte}</Link></li>
-            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">{t.nav.publications}</Link></li>
+            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
+            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue Raisonné</Link></li>
+            <li><Link href="/jeannette/carte" className="text-blue-600">Carte</Link></li>
+            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">Publications</Link></li>
           </ul>
         </nav>
       </header>
