@@ -124,9 +124,13 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
               <Image
                 src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`}
                 alt={work.title_fr}
-                layout="fill"
+                fill
+                sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 1024px"
+                priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP8zwADAAMBAQAYXP4AAAAASUVORK5CYII="
                 className="object-contain"
-                onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/800x500.png?text=Image+non+disponible'; }}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://via.placeholder.com/800x500.png?text=Image+non+disponible'; }}
               />
             </div>
 
