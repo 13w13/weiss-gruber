@@ -3,14 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 
-// Type definitions
-interface Exhibition {
-  title: string;
-  date: string;
-  location: string;
-  description: string;
-  image: string;
-}
 
 export default function ExhibitionsPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
