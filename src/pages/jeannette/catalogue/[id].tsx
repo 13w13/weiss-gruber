@@ -10,8 +10,12 @@ import { useState, useEffect } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
+import Counter from 'yet-another-react-lightbox/plugins/counter';
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
+import 'yet-another-react-lightbox/plugins/counter.css';
+import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
 
 interface CsvRow {
@@ -40,10 +44,26 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
     const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+  const [showHint, setShowHint] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  // Prefetch hero of next artwork for instant loading
+  useEffect(() => {
+    if (nextMainImage) {
+      const img = new Image();
+      img.src = `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${nextMainImage}`;
+    }
+  }, [nextMainImage]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (open) return; // Ne pas interférer avec la navigation interne du Lightbox
+      if (open) {
+        // lightbox is open
+        if (index === slides.length - 1 && nextId && e.key === 'ArrowRight') {
+          router.push(`/jeannette/catalogue/${nextId}`);
+        }
+        return;
+      }
       if (e.key === 'ArrowLeft' && prevId) {
         router.push(`/jeannette/catalogue/${prevId}`);
       } else if (e.key === 'ArrowRight' && nextId) {
@@ -52,7 +72,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [prevId, nextId, router, open]);
+  }, [prevId, nextId, router, open, index, slides.length]);
 
   if (router.isFallback) {
     return <div>Chargement...</div>;
@@ -69,9 +89,14 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || work.title_fr,
       title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`,
-      description: img.alt_fr ?? ''
+      description: `${img.type}${img.credit ? ` — ${img.credit}` : ''}${img.alt_fr ? `\n${img.alt_fr}` : ''}`
     })) || [])
   ];
+
+  // Build plugin list dynamically
+  const plugins = [Zoom, Captions] as any[];
+  if (slides.length > 1) plugins.push(Counter);
+  if (slides.length > 4) plugins.push(Thumbnails);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -142,14 +167,34 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
                 open={open}
                 close={() => setOpen(false)}
                 slides={slides}
-                plugins={[Zoom, Captions]}
+                plugins={plugins}
                 captions={{
                   showToggle: false,
                   descriptionTextAlign: 'center',
-                  descriptionMaxLines: 3
+                  descriptionMaxLines: 6
                 }}
-                index={index}
+                carousel={{ finite: true }}
+                on={{ view: ({ index: idx }) => {
+                  setIndex(idx);
+                  const atLast = idx === slides.length - 1;
+                  setShowToast(atLast && !!nextId && slides.length > 1);
+                } }}
+                counter={{
+                  container: { style: { backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff' } }
+                }}
               />
+
+              {showHint && (
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded text-sm select-none pointer-events-none animate-fade">
+                  ← → ou swipe pour naviguer, Échap pour fermer
+                </div>
+              )}
+
+              {showToast && (
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/90 text-gray-900 px-4 py-2 rounded shadow cursor-pointer" onClick={() => nextId && router.push(`/jeannette/catalogue/${nextId}`)}>
+                  {slides.length} / {slides.length} — passer au vitrail suivant →
+                </div>
+              )}
 
             {work.caption_fr && (
               <p className="mb-8 text-base text-gray-700 leading-relaxed">
