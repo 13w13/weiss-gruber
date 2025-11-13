@@ -1,6 +1,8 @@
 import { useMemo, useState, type ComponentType, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
+import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
+import 'leaflet-fullscreen';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
 import L from 'leaflet';
@@ -94,6 +96,9 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   const center = points.length > 0 ? [points[0].lat, points[0].lng] as [number, number] : [48.8566, 2.3522];
 
+  // Radius adaptatif mobile
+  const radius = typeof window !== 'undefined' && window.innerWidth < 480 ? 5 : 7;
+
   const polyline: [number, number][] = points.map(p => [p.lat, p.lng]);
 
   const [basemap, setBasemap] = useState<'osm' | 'light'>('osm');
@@ -172,7 +177,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   return (
     <div className="relative">
-      <MC center={center} zoom={6} style={{ height: '70vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true}>
+      <MC center={center} zoom={6} style={{ height: '60vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true} fullscreenControl>
         {basemap === 'osm' ? (
           <TL
             attribution='&copy; OpenStreetMap contributors'
@@ -187,6 +192,13 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
         <FitToBounds positions={(selectedDecades.length ? filteredPoints : points).map(p=>[p.lat,p.lng])} />
 
+        {/* Overlay empty state */}
+        {(selectedDecades.length && filteredPoints.length===0) && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <p className="bg-white/80 backdrop-blur px-4 py-2 text-sm text-gray-600 rounded">Aucune œuvre dans cette plage</p>
+          </div>
+        )}
+
         {polyline.length >= 2 && (
           <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
         )}
@@ -196,7 +208,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             <CM
               key={work.id}
               center={[lat, lng]}
-              radius={7}
+              radius={radius}
               pathOptions={{ color, weight: 1, fillColor: color, fillOpacity: 0.95 }}
             >
               <Tooltip direction="top" offset={[0, -4]} opacity={1}>
@@ -240,6 +252,8 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           from { stroke-dashoffset: 1200; }
           to { stroke-dashoffset: 0; }
         }
+              .marker-point { transition: transform .15s ease-out; }
+        .marker-point:hover { transform: scale(1.1); filter: drop-shadow(0 0 4px rgba(0,0,0,.3)); }
       `}</style>
     </div>
   );
