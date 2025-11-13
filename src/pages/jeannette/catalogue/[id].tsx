@@ -190,7 +190,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   descriptionTextAlign: 'center',
                   descriptionMaxLines: 6
                 }}
-                carousel={{ finite: true }}
                 on={{ view: ({ index: idx }) => {
                   setIndex(idx);
                   const atLast = idx === slides.length - 1;
