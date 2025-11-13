@@ -240,6 +240,12 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                 );
               })}
             </div>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Recherche (ville, bâtiment, titre)"
+              className="mt-3 w-full border rounded px-2 py-1 text-xs"
+            />
           </div>
         )}
       </div>
