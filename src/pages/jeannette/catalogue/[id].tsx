@@ -79,6 +79,24 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     })) || [])
   ];
 
+  // Lightbox keydown handler - navigate to next/prev artwork at boundaries
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' && index === slides.length - 1 && nextId) {
+        e.preventDefault();
+        router.push(`/jeannette/catalogue/${nextId}`);
+      } else if (e.key === 'ArrowLeft' && index === 0 && prevId) {
+        e.preventDefault();
+        router.push(`/jeannette/catalogue/${prevId}`);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open, index, slides.length, prevId, nextId, router]);
+
   // Page-level keydown handler (when lightbox is closed)
   useEffect(() => {
     if (open) return;
@@ -178,8 +196,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 }}
                 on={{ view: ({ index: idx }) => {
                   setIndex(idx);
-                  const atLast = idx === slides.length - 1;
-                  setShowToast(atLast && !!nextId);
                 } }}
                 counter={{
                   container: { style: { top: 0, left: 'auto', right: 0, backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff', padding: '8px 12px' } }
@@ -188,16 +204,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
               {showHint && (
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded text-sm select-none pointer-events-none animate-fade">
-                  ← → ou swipe pour naviguer, Échap pour fermer
-                </div>
-              )}
-
-              {showToast && (
-                <div 
-                  className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg cursor-pointer z-[9999] transition-all duration-300 hover:scale-105 font-medium"
-                  onClick={() => nextId && router.push(`/jeannette/catalogue/${nextId}`)}
-                >
-                  Vitrail suivant →
+                  ← → pour naviguer entre images et vitraux, Échap pour fermer
                 </div>
               )}
 
