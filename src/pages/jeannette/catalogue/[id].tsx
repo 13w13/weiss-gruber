@@ -179,7 +179,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 on={{ view: ({ index: idx }) => {
                   setIndex(idx);
                   const atLast = idx === slides.length - 1;
-                  setShowToast(atLast && !!nextId && slides.length > 1);
+                  setShowToast(atLast && !!nextId);
                 } }}
                 counter={{
                   container: { style: { top: 0, left: 'auto', right: 0, backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff', padding: '8px 12px' } }
@@ -193,8 +193,11 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
               )}
 
               {showToast && (
-                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/90 text-gray-900 px-4 py-2 rounded shadow cursor-pointer z-[9999]" onClick={() => nextId && router.push(`/jeannette/catalogue/${nextId}`)}>
-                  {slides.length} / {slides.length} — passer au vitrail suivant →
+                <div 
+                  className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg cursor-pointer z-[9999] transition-all duration-300 hover:scale-105 font-medium"
+                  onClick={() => nextId && router.push(`/jeannette/catalogue/${nextId}`)}
+                >
+                  Vitrail suivant →
                 </div>
               )}
 
