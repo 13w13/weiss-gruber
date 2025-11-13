@@ -20,8 +20,9 @@ export default function JeannetteFrontPage() {
             Jeannette Weiss Gruber
           </Link>
           <ul className="flex space-x-6">
+            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Accueil</Link></li>
             <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
-            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue</Link></li>
+            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue Raisonné</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
             <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">Publications</Link></li>
           </ul>
