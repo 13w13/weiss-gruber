@@ -183,7 +183,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   setShowToast(atLast && !!nextId && slides.length > 1);
                 } }}
                 counter={{
-                  container: { style: { backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff' } }
+                  container: { style: { top: 0, left: 'auto', right: 0, backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff', padding: '8px 12px' } }
                 }}
               />
 
