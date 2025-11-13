@@ -9,6 +9,7 @@ import { Globe, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
+import Captions from 'yet-another-react-lightbox/plugins/captions';
 import 'yet-another-react-lightbox/styles.css';
 import { Vitrail } from '@/types/images';
 
@@ -60,12 +61,14 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
     { 
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
       alt: work.title_fr,
-      title: work.title_fr
+      title: work.title_fr,
+      description: work.caption_fr ?? ''
     },
     ...(work.gallery_images?.map(img => ({
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || work.title_fr,
-      title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`
+      title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`,
+      description: img.alt_fr ?? ''
     })) || [])
   ];
 
@@ -135,12 +138,20 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
             </div>
 
             <Lightbox
-                            open={open}
-              close={() => setOpen(false)}
-              slides={slides}
-              plugins={[Zoom]}
-              index={index}
-            />
+                open={open}
+                close={() => setOpen(false)}
+                slides={slides}
+                plugins={[Zoom, Captions]}
+                captions={{
+                  showToggle: false,
+                  descriptionTextAlign: 'center',
+                  descriptionMaxLines: 3,
+                  captionContainerProps: {
+                    style: { backgroundColor: 'rgba(255,255,255,0.9)' }
+                  }
+                }}
+                index={index}
+              />
 
             {work.caption_fr && (
               <p className="mb-8 text-base text-gray-700 leading-relaxed">
