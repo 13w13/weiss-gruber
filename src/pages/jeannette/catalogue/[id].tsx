@@ -48,10 +48,10 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [showHint, setShowHint] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  // Prefetch hero of next artwork for instant loading
+  // Prefetch hero of next artwork for instant loading (client only)
   useEffect(() => {
-    if (nextMainImage) {
-      const img = new Image();
+    if (typeof window !== 'undefined' && nextMainImage) {
+      const img = new window.Image();
       img.src = `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${nextMainImage}`;
     }
   }, [nextMainImage]);
