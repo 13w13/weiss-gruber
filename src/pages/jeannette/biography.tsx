@@ -70,7 +70,7 @@ export default function BiographyPage() {
         {
           title: "Biographie",
           content: [
-            "Jeannette Weiss-Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrière française. Elle est la fille du maître-verrier Jean-Jacques Gruber et la petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
+            "Jeannette Weiss-Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrier française. Elle est la fille du maître-verrier Jean-Jacques Gruber et la petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
           ]
         },
         {
@@ -263,7 +263,7 @@ export default function BiographyPage() {
 
       <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss-Gruber Family Art. {t.footer.rights}</p>
+          <p>&copy; {new Date().getFullYear()} Weiss-Gruber. Tous droits réservés.</p>
         </div>
       </footer>
     </div>
