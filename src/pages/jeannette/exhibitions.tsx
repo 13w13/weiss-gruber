@@ -1,25 +1,9 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronDown, Globe } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 // Type definitions
-type Language = 'fr' | 'en';
-
-interface Nav {
-  home: string;
-  biography: string;
-  catalogue: string;
-  exhibitions: string;
-}
-
-interface FamilyMembers {
-  title: string;
-  jeannette: string;
-  frederic: string;
-  camille: string;
-}
-
 interface Exhibition {
   title: string;
   date: string;
@@ -28,119 +12,54 @@ interface Exhibition {
   image: string;
 }
 
-interface Footer {
-  rights: string;
-}
-
-interface ContentStructure {
-  nav: Nav;
-  familyMembers: FamilyMembers;
-  title: string;
-  upcoming: string;
-  past: string;
-  exhibitions: Exhibition[];
-  footer: Footer;
-}
-
-interface Content {
-  fr: ContentStructure;
-  en: ContentStructure;
-}
-
 export default function ExhibitionsPage() {
-  const [language, setLanguage] = useState<Language>('fr')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-  const content: Content = {
-    fr: {
-      nav: {
-        home: "Accueil",
-        biography: "Biographie",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Expositions",
-      },
-      familyMembers: {
-        title: "Artistes de la famille",
-        jeannette: "Jeannette Weiss Gruber",
-        frederic: "Frédéric Weiss",
-        camille: "Camille Weiss"
-      },
-      title: "Expositions de Jeannette Weiss Gruber",
-      upcoming: "Expositions à venir",
-      past: "Expositions passées",
-      exhibitions: [
-        {
-          title: "Rétrospective : Lumière et Couleur",
-          date: "15 septembre - 30 novembre 2024",
-          location: "Musée d'Art Moderne, Paris",
-          description: "Une exposition rétrospective célébrant la carrière de Jeannette Weiss Gruber, mettant en lumière ses œuvres les plus emblématiques.",
-          image: "/api/placeholder/400/300"
-        },
-        {
-          title: "L'Art du Vitrail Contemporain",
-          date: "5 mars - 20 juin 2023",
-          location: "Musée des Beaux-Arts, Lyon",
-          description: "Une exposition collective présentant les innovations dans l'art du vitrail, avec une section dédiée aux créations de Jeannette Weiss Gruber.",
-          image: "/api/placeholder/400/300"
-        },
-        {
-          title: "Héritage et Modernité",
-          date: "10 octobre - 15 décembre 2022",
-          location: "Galerie Nationale, Strasbourg",
-          description: "Une exploration de l'influence de l'héritage familial sur l'œuvre de Jeannette Weiss Gruber et son approche moderne du vitrail.",
-          image: "/api/placeholder/400/300"
-        }
-      ],
-      footer: {
-        rights: "Tous droits réservés."
-      }
+  const content = {
+    nav: {
+      home: "Home",
+      biography: "Biography",
+      catalogue: "Catalogue Raisonné",
+      exhibitions: "Exhibitions",
     },
-    en: {
-      nav: {
-        home: "Home",
-        biography: "Biography",
-        catalogue: "Catalogue Raisonné",
-        exhibitions: "Exhibitions",
+    familyMembers: {
+      title: "Family Artists",
+      jeannette: "Jeannette Weiss Gruber",
+      frederic: "Frédéric Weiss",
+      camille: "Camille Weiss"
+    },
+    title: "Exhibitions of Jeannette Weiss Gruber",
+    upcoming: "Upcoming Exhibitions",
+    past: "Past Exhibitions",
+    exhibitions: [
+      {
+        title: "Retrospective: Light and Color",
+        date: "September 15 - November 30, 2024",
+        location: "Museum of Modern Art, Paris",
+        description: "A retrospective exhibition celebrating the career of Jeannette Weiss Gruber, highlighting her most iconic works.",
+        image: "/api/placeholder/400/300"
       },
-      familyMembers: {
-        title: "Family Artists",
-        jeannette: "Jeannette Weiss Gruber",
-        frederic: "Frédéric Weiss",
-        camille: "Camille Weiss"
+      {
+        title: "The Art of Contemporary Stained Glass",
+        date: "March 5 - June 20, 2023",
+        location: "Museum of Fine Arts, Lyon",
+        description: "A collective exhibition presenting innovations in the art of stained glass, with a section dedicated to the creations of Jeannette Weiss Gruber.",
+        image: "/api/placeholder/400/300"
       },
-      title: "Exhibitions of Jeannette Weiss Gruber",
-      upcoming: "Upcoming Exhibitions",
-      past: "Past Exhibitions",
-      exhibitions: [
-        {
-          title: "Retrospective: Light and Color",
-          date: "September 15 - November 30, 2024",
-          location: "Museum of Modern Art, Paris",
-          description: "A retrospective exhibition celebrating the career of Jeannette Weiss Gruber, highlighting her most iconic works.",
-          image: "/api/placeholder/400/300"
-        },
-        {
-          title: "The Art of Contemporary Stained Glass",
-          date: "March 5 - June 20, 2023",
-          location: "Museum of Fine Arts, Lyon",
-          description: "A collective exhibition presenting innovations in the art of stained glass, with a section dedicated to the creations of Jeannette Weiss Gruber.",
-          image: "/api/placeholder/400/300"
-        },
-        {
-          title: "Heritage and Modernity",
-          date: "October 10 - December 15, 2022",
-          location: "National Gallery, Strasbourg",
-          description: "An exploration of the influence of family heritage on Jeannette Weiss Gruber's work and her modern approach to stained glass.",
-          image: "/api/placeholder/400/300"
-        }
-      ],
-      footer: {
-        rights: "All rights reserved."
+      {
+        title: "Heritage and Modernity",
+        date: "October 10 - December 15, 2022",
+        location: "National Gallery, Strasbourg",
+        description: "An exploration of the influence of family heritage on Jeannette Weiss Gruber's work and her modern approach to stained glass.",
+        image: "/api/placeholder/400/300"
       }
+    ],
+    footer: {
+      rights: "All rights reserved."
     }
   }
 
-  const t: ContentStructure = content[language]
+  const t = content
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -179,12 +98,6 @@ export default function ExhibitionsPage() {
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
             <li><Link href="/jeannette/exhibitions" className="text-blue-600">{t.nav.exhibitions}</Link></li>
-            <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
-              </button>
-            </li>
           </ul>
         </nav>
       </header>

@@ -2,8 +2,6 @@ import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 
-// Simple bilingual support
-type Language = 'fr' | 'en'
 
 interface Nav {
   home: string
