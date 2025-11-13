@@ -1,12 +1,11 @@
 import Link from 'next/link'
-import { ChevronDown, Globe } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import { useState } from 'react'
 
-type Language = 'fr';
 
 interface Section {
   title: string;
@@ -51,7 +50,6 @@ interface Content {
 }
 
 export default function BiographyPage() {
-  const [language] = useState<Language>('fr')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const content: Content = {
@@ -134,7 +132,7 @@ export default function BiographyPage() {
     }
   }
 
-  const t: ContentStructure = content[language]
+  const t: ContentStructure = content.fr
 
 
   // Mappage phrase → image → alignement (left / right / center)
@@ -203,12 +201,6 @@ export default function BiographyPage() {
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">{t.nav.carte}</Link></li>
             <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">{t.nav.publications}</Link></li>
-            <li>
-              <button className="flex items-center hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4 mr-1" />
-                FR
-              </button>
-            </li>
           </ul>
         </nav>
       </header>

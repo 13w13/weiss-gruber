@@ -1,25 +1,12 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronDown, Globe, Search } from 'lucide-react'
+import { ChevronDown, Search } from 'lucide-react';
 import { GetStaticProps } from 'next';
 import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
 import { Vitrail, GalleryImage } from '@/types/images';
-
-// Définitions des types
-type Language = 'fr' | 'en';
-
-// ... (autres types pour le contenu statique de l'interface)
-interface Nav { home: string; biography: string; catalogue: string; publications: string; }
-interface FamilyMembers { title: string; jeannette: string; frederic: string; camille: string; }
-interface Filters { all: string; year: string; location: string; }
-interface Footer { rights: string; }
-interface ContentStructure { nav: Nav; familyMembers: FamilyMembers; title: string; search: string; filters: Filters; footer: Footer; }
-interface Content { fr: ContentStructure; en: ContentStructure; }
-
-
 
 // Interface représentant une ligne brute du CSV (champs sous forme de chaînes)
 interface CsvRow {
@@ -43,31 +30,15 @@ interface CsvRow {
 
 // Le composant reçoit maintenant 'works' en tant que prop
 export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
-  const [language, setLanguage] = useState<Language>('fr')
+  const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
 
-  // Le contenu statique pour les textes de l'interface est conservé
-  const content: Content = {
-    fr: {
-      nav: { home: "Accueil", biography: "Biographie", catalogue: "Catalogue Raisonné", publications: "Publications" },
-      familyMembers: { title: "Artistes de la famille", jeannette: "Jeannette Weiss Gruber", frederic: "Frédéric Weiss", camille: "Camille Weiss" },
-      title: "Catalogue Raisonné de Jeannette Weiss Gruber",
-      search: "Rechercher une œuvre...",
-      filters: { all: "Toutes les œuvres", year: "Année", location: "Lieu" },
-      footer: { rights: "Tous droits réservés." }
-    },
-    en: {
-      nav: { home: "Home", biography: "Biography", catalogue: "Catalogue Raisonné", publications: "Publications" },
-      familyMembers: { title: "Family Artists", jeannette: "Jeannette Weiss Gruber", frederic: "Frédéric Weiss", camille: "Camille Weiss" },
-      title: "Catalogue Raisonné of Jeannette Weiss Gruber",
-      search: "Search for a work...",
-      filters: { all: "All works", year: "Year", location: "Location" },
-      footer: { rights: "All rights reserved." }
-    }
+  // Static content for the page
+  const content = {
+    title: "Catalogue Raisonné of Jeannette Weiss Gruber",
+    search: "Search for a work...",
+    footer: { rights: "All rights reserved." }
   };
-
-  const t: ContentStructure = content[language];
 
   // La logique de filtrage utilise maintenant la prop 'works'
   const filteredWorks = works.filter(work =>
@@ -96,38 +67,32 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
               </button>
               {isDropdownOpen && (
                 <div className="absolute top-full left-0 bg-white shadow-md rounded-md py-2 mt-1">
-                  <Link href="/jeannette" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.jeannette}</Link>
-                  <Link href="/frederic" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.frederic}</Link>
-                  <Link href="/camille" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.camille}</Link>
+                  <Link href="/jeannette" className="block px-4 py-2 hover:bg-gray-100">Jeannette Weiss Gruber</Link>
+                  <Link href="/frederic" className="block px-4 py-2 hover:bg-gray-100">Frédéric Weiss</Link>
+                  <Link href="/camille" className="block px-4 py-2 hover:bg-gray-100">Camille Weiss</Link>
                 </div>
               )}
             </div>
           </div>
           <ul className="flex space-x-6">
-            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">{t.nav.home}</Link></li>
-            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">{t.nav.biography}</Link></li>
-            <li><Link href="/jeannette/catalogue" className="text-blue-600">{t.nav.catalogue}</Link></li>
-            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
-            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">{t.nav.publications}</Link></li>
-            <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
-              </button>
-            </li>
+            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Home</Link></li>
+            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biography</Link></li>
+            <li><Link href="/jeannette/catalogue" className="text-blue-600">Catalogue Raisonné</Link></li>
+            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Map</Link></li>
+            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">Publications</Link></li>
           </ul>
         </nav>
       </header>
 
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-light mb-8 text-center">{t.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-light mb-8 text-center">{content.title}</h1>
           
           <div className="mb-8">
             <div className="relative">
               <input
                 type="text"
-                placeholder={t.search}
+                placeholder={content.search}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md pl-10"
@@ -163,7 +128,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
 
       <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss-Gruber Family Art. {t.footer.rights}</p>
+          <p>&copy; {new Date().getFullYear()} Weiss-Gruber Family Art. {content.footer.rights}</p>
         </div>
       </footer>
     </div>

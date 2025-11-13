@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ChevronDown, Globe } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 
 // Simple bilingual support
@@ -38,7 +38,6 @@ interface Content {
 }
 
 export default function PublicationsPage() {
-  const [language, setLanguage] = useState<Language>('fr')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const content: Content = {
@@ -96,7 +95,7 @@ export default function PublicationsPage() {
     },
   }
 
-  const t = content[language]
+  const t = content.en
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -125,12 +124,6 @@ export default function PublicationsPage() {
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
             <li><Link href="/jeannette/publications" className="text-blue-600">{t.nav.publications}</Link></li>
-            <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
-              </button>
-            </li>
           </ul>
         </nav>
       </header>

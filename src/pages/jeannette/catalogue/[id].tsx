@@ -5,7 +5,7 @@ import Papa from 'papaparse';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Globe, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
@@ -42,8 +42,7 @@ interface CsvRow {
 // Le composant pour la page de détail
 export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: { work: Vitrail; prevId?: string | null; nextId?: string | null; nextMainImage?: string | null }) {
   const router = useRouter();
-  const [language, setLanguage] = useState<'fr' | 'en'>('fr');
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [showHint, setShowHint] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -140,12 +139,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
             <li><Link href="/jeannette/catalogue" className="text-blue-600">Catalogue Raisonné</Link></li>
             <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
             <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">Expositions</Link></li>
-            <li>
-              <button onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')} className="flex items-center hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4 mr-1" />
-                {language.toUpperCase()}
-              </button>
-            </li>
           </ul>
         </nav>
       </header>
