@@ -65,6 +65,22 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     }
   }, [open]);
 
+  // Build slides once per render (needs to be before effects that depend on it)
+  const slides = [
+    { 
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
+      alt: work.title_fr,
+      title: work.title_fr,
+      description: work.caption_fr ?? ''
+    },
+    ...(work.gallery_images?.map(img => ({
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
+      alt: img.alt_fr || work.title_fr,
+      title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`,
+      description: `${img.type}${img.credit ? ` — ${img.credit}` : ''}${img.alt_fr ? `\n${img.alt_fr}` : ''}`
+    })) || [])
+  ];
+
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (open) {
@@ -88,20 +104,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     return <div>Chargement...</div>;
   }
 
-  const slides = [
-    { 
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
-      alt: work.title_fr,
-      title: work.title_fr,
-      description: work.caption_fr ?? ''
-    },
-    ...(work.gallery_images?.map(img => ({
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
-      alt: img.alt_fr || work.title_fr,
-      title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`,
-      description: `${img.type}${img.credit ? ` — ${img.credit}` : ''}${img.alt_fr ? `\n${img.alt_fr}` : ''}`
-    })) || [])
-  ];
+
 
   // Build plugin list dynamically
   const plugins: Plugin[] = [Zoom, Captions];
