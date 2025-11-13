@@ -145,10 +145,7 @@ export default function VitrailDetail({ work, prevId, nextId }: { work: Vitrail;
                 captions={{
                   showToggle: false,
                   descriptionTextAlign: 'center',
-                  descriptionMaxLines: 3,
-                  captionContainerProps: {
-                    style: { backgroundColor: 'rgba(255,255,255,0.9)' }
-                  }
+                  descriptionMaxLines: 3
                 }}
                 index={index}
               />
