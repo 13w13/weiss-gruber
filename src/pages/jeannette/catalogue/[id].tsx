@@ -201,9 +201,16 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 }}
               />
 
+              {/* Permanent help box in top-right */}
+              <div className="fixed top-12 right-4 bg-black/60 text-white px-3 py-2 rounded text-xs z-[9998] select-none pointer-events-none max-w-[200px]">
+                <div className="font-semibold mb-1">Navigation :</div>
+                <div>← → Images / Vitraux</div>
+                <div>Échap : Fermer</div>
+              </div>
+
               {showHint && (
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded text-sm select-none pointer-events-none animate-fade">
-                  ← → pour naviguer entre images et vitraux, Échap pour fermer
+                  Utilisez les flèches pour naviguer
                 </div>
               )}
 
