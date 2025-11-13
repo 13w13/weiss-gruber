@@ -62,7 +62,19 @@ export default function Carte({ works }: { works: Vitrail[] }) {
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-6xl">
           <h1 className="text-3xl md:text-4xl font-light mb-2">Carte des vitraux</h1>
-          <p className="text-gray-600 mb-6">Parcourez les lieux où se trouvent les vitraux de Jeannette Weiss Gruber. Cliquez sur un point pour voir les images et ouvrir la fiche.</p>
+          <p className="text-gray-600 mb-6">
+  Parcourez les lieux où se trouvent les vitraux de Jeannette Weiss&nbsp;Gruber.<br />
+  <span className="block sm:inline">Cliquez sur un point pour voir les images et ouvrir la fiche.</span><br />
+  <span className="mt-1 inline-block text-xs text-gray-500">
+    La ligne bleue suit chronologiquement les réalisations&nbsp;; elle relie les lieux par ordre d&rsquo;année.<br />
+    La couleur de chaque point indique la décennie&nbsp;: <span className="font-semibold" style={{color:'#2563eb'}}>● 1950s</span>,
+    <span className="font-semibold" style={{color:'#059669'}}> ● 1960s</span>,
+    <span className="font-semibold" style={{color:'#a855f7'}}> ● 1970s</span>,
+    <span className="font-semibold" style={{color:'#f59e0b'}}> ● 1980s</span>,
+    <span className="font-semibold" style={{color:'#dc2626'}}> ● 1990s</span>,
+    <span className="font-semibold" style={{color:'#0ea5e9'}}> ● 2000s</span>.
+  </span>
+</p>
 
           <ArtworksMap works={works} />
         </div>
