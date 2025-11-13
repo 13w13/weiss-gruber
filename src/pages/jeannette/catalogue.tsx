@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronDown, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { GetStaticProps } from 'next';
 import fs from 'fs';
 import path from 'path';
@@ -31,12 +31,11 @@ interface CsvRow {
 // Le composant reçoit maintenant 'works' en tant que prop
 export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   // Static content for the page
   const content = {
-    title: "Catalogue Raisonné of Jeannette Weiss Gruber",
-    search: "Search for a work...",
+    title: "Catalogue Raisonné de Jeannette Weiss Gruber",
+    search: "Rechercher une œuvre...",
     footer: { rights: "All rights reserved." }
   };
 
@@ -57,28 +56,15 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
             <Link href="/" className="text-xl font-semibold mr-6">
               Weiss-Gruber
             </Link>
-            <div className="relative">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                Jeannette Weiss Gruber
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute top-full left-0 bg-white shadow-md rounded-md py-2 mt-1">
-                  <Link href="/jeannette" className="block px-4 py-2 hover:bg-gray-100">Jeannette Weiss Gruber</Link>
-                  <Link href="/frederic" className="block px-4 py-2 hover:bg-gray-100">Frédéric Weiss</Link>
-                  <Link href="/camille" className="block px-4 py-2 hover:bg-gray-100">Camille Weiss</Link>
-                </div>
-              )}
-            </div>
+            <Link href="/jeannette" className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+              Jeannette Weiss Gruber
+            </Link>
           </div>
           <ul className="flex space-x-6">
-            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Home</Link></li>
-            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biography</Link></li>
+            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Accueil</Link></li>
+            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
             <li><Link href="/jeannette/catalogue" className="text-blue-600">Catalogue Raisonné</Link></li>
-            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Map</Link></li>
+            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
             <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">Publications</Link></li>
           </ul>
         </nav>

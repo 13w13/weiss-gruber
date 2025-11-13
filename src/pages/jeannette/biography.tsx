@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
@@ -50,7 +49,6 @@ interface Content {
 }
 
 export default function BiographyPage() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const content: Content = {
     fr: {
@@ -172,28 +170,9 @@ export default function BiographyPage() {
             <Link href="/" className="text-xl font-semibold mr-6">
               Weiss-Gruber
             </Link>
-            <div className="relative">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                Jeannette Weiss Gruber
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute top-full left-0 bg-white shadow-md rounded-md py-2 mt-1">
-                  <Link href="/jeannette" className="block px-4 py-2 hover:bg-gray-100">
-                    {t.familyMembers.jeannette}
-                  </Link>
-                  <Link href="/frederic" className="block px-4 py-2 hover:bg-gray-100">
-                    {t.familyMembers.frederic}
-                  </Link>
-                  <Link href="/camille" className="block px-4 py-2 hover:bg-gray-100">
-                    {t.familyMembers.camille}
-                  </Link>
-                </div>
-              )}
-            </div>
+            <Link href="/jeannette" className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+              Jeannette Weiss Gruber
+            </Link>
           </div>
           <ul className="flex space-x-6">
             <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">{t.nav.home}</Link></li>
