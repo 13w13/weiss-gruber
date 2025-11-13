@@ -69,14 +69,12 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     { 
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
       alt: work.title_fr,
-      title: work.title_fr,
-      description: work.caption_fr ?? ''
+      description: work.caption_fr ?? work.title_fr
     },
     ...(work.gallery_images?.map(img => ({
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || work.title_fr,
-      title: `${img.type}${img.credit ? ` (${img.credit})` : ''}`,
-      description: `${img.type}${img.credit ? ` — ${img.credit}` : ''}${img.alt_fr ? `\n${img.alt_fr}` : ''}`
+      description: `${work.title_fr} — ${img.type}${img.credit ? ` (${img.credit})` : ''}`
     })) || [])
   ];
 
