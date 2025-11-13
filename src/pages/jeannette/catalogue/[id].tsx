@@ -81,24 +81,35 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     })) || [])
   ];
 
+  // Lightbox-specific keydown handler
   useEffect(() => {
+    if (!open) return;
+
     const onKeyDown = (e: KeyboardEvent) => {
-      if (open) {
-        // lightbox is open
-        if (index === slides.length - 1 && nextId && e.key === 'ArrowRight') {
-          router.push(`/jeannette/catalogue/${nextId}`);
-        }
-        return;
+      if (index === slides.length - 1 && nextId && e.key === 'ArrowRight') {
+        router.push(`/jeannette/catalogue/${nextId}`);
       }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open, index, slides.length, nextId, router]);
+
+  // Page-level keydown handler (when lightbox is closed)
+  useEffect(() => {
+    if (open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft' && prevId) {
         router.push(`/jeannette/catalogue/${prevId}`);
       } else if (e.key === 'ArrowRight' && nextId) {
         router.push(`/jeannette/catalogue/${nextId}`);
       }
     };
+
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [prevId, nextId, router, open, index, slides.length]);
+  }, [open, prevId, nextId, router]);
 
   if (router.isFallback) {
     return <div>Chargement...</div>;
