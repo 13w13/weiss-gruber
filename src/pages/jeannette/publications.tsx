@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Download } from 'lucide-react'
 import { useState } from 'react'
 
 
@@ -137,6 +137,18 @@ export default function PublicationsPage() {
               <li key={idx}>{pub}</li>
             ))}
           </ul>
+
+          <div className="mt-12 text-center">
+            <a 
+              href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/brochure_vitrail.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors shadow-md hover:shadow-lg"
+            >
+              <Download className="w-5 h-5" />
+              Télécharger le Book PDF réalisé en 2005 référençant les œuvres préférées de Jeannette Weiss Gruber
+            </a>
+          </div>
         </div>
       </main>
 
