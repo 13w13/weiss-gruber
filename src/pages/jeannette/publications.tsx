@@ -93,7 +93,7 @@ export default function PublicationsPage() {
     },
   }
 
-  const t = content.en
+  const t = content.fr
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -140,12 +140,12 @@ export default function PublicationsPage() {
 
           <div className="mt-12 text-center">
             <a 
-              href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/brochure_vitrail.pdf" 
+              href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/brochure%20vitrail.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors shadow-md hover:shadow-lg"
+              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 underline underline-offset-4 transition-colors"
             >
-              <Download className="w-5 h-5" />
+              <Download className="w-4 h-4" />
               Télécharger le Book PDF réalisé en 2005 référençant les œuvres préférées de Jeannette Weiss Gruber
             </a>
           </div>
