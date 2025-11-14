@@ -192,7 +192,7 @@ export default function JeannetteFrontPage() {
 
       {/* Footer */}
       <footer className="bg-gray-100 py-8 text-center text-gray-600 text-sm">
-        &copy; {new Date().getFullYear()} Weiss-Gruber Family Art. Tous droits réservés.
+        &copy; {new Date().getFullYear()} Weiss-Gruber. Tous droits réservés.
       </footer>
 
       {lightboxImage && (

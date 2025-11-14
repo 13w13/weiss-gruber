@@ -78,7 +78,7 @@ export default function PublicationsPage() {
         frederic: 'Frédéric Weiss',
         camille: 'Camille Weiss',
       },
-      title: 'Publications about Jeannette Weiss Gruber',
+      title: 'Publications sur Jeannette Weiss Gruber',
       intro: 'Selection of books and articles mentioning the work or career of Jeannette Weiss Gruber.',
       publications: [
         'Le vitrail, Revue des Métiers d\'art, November 1982',
