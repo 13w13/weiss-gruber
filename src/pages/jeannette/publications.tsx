@@ -146,7 +146,7 @@ export default function PublicationsPage() {
               className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 underline underline-offset-4 transition-colors"
             >
               <Download className="w-4 h-4" />
-              Télécharger le Book PDF réalisé en 2005 référençant les œuvres préférées de Jeannette Weiss Gruber
+              Télécharger la plaquette PDF réalisée en 2005 référençant les œuvres préférées de Jeannette Weiss Gruber
             </a>
           </div>
         </div>
