@@ -112,22 +112,7 @@ export default function PublicationsPage() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <Link href="/jeannette" className="text-xl font-semibold mr-6">Weiss-Gruber</Link>
-            <div className="relative">
-              <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
-                Jeannette Weiss Gruber
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute top-full left-0 bg-white shadow-md rounded-md py-2 mt-1">
-                  <Link href="/jeannette" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.jeannette}</Link>
-                  <Link href="/frederic" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.frederic}</Link>
-                  <Link href="/camille" className="block px-4 py-2 hover:bg-gray-100">{t.familyMembers.camille}</Link>
-                </div>
-              )}
-            </div>
-          </div>
+          <Link href="/jeannette" className="text-xl font-semibold">Jeannette Weiss Gruber</Link>
           <ul className="flex space-x-6">
             <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">{t.nav.home}</Link></li>
             <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">{t.nav.biography}</Link></li>
@@ -277,7 +262,7 @@ export default function PublicationsPage() {
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Jouy le Comte <span className="text-sm font-normal text-gray-500">(Val d'Oise)</span></h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Jouy le Comte <span className="text-sm font-normal text-gray-500">(Val d&apos;Oise)</span></h3>
                 <p className="text-sm text-gray-700">2001. Une baie dans une chapelle sud.</p>
               </div>
             </div>
