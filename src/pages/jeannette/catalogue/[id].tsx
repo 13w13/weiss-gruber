@@ -208,7 +208,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   setIndex(idx);
                 } }}
                 counter={{
-                  container: { style: { top: 'auto', bottom: '20px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(0,0,0,0.7)', color: '#fff', padding: '8px 16px', borderRadius: '20px' } }
+                  container: { style: { top: '16px', left: '16px', bottom: 'auto', right: 'auto', backgroundColor: 'rgba(0,0,0,0.7)', color: '#fff', padding: '6px 12px', borderRadius: '6px', fontSize: '14px' } }
                 }}
               />
 
