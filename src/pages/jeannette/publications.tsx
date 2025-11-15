@@ -284,7 +284,7 @@ export default function PublicationsPage() {
           </div>
 
           <div className="mt-16 text-center">
-            // ... (rest of the code remains the same)
+            <a 
               href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/brochure%20vitrail.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
