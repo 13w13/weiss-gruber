@@ -210,7 +210,7 @@ export default function PublicationsPage() {
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église d'Etioles <span className="text-sm font-normal text-gray-500">(Essonne)</span></h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église d&apos;Etioles <span className="text-sm font-normal text-gray-500">(Essonne)</span></h3>
                 <p className="text-sm text-gray-700 mb-1">1981. Un vitrail de façade.</p>
                 <p className="text-sm text-gray-700">Un vitrail dans la nef nord.</p>
               </div>
@@ -253,18 +253,18 @@ export default function PublicationsPage() {
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-                <h3 className="font-semibold text-lg mb-2 text-gray-900">Cathédrale d'Amiens <span className="text-sm font-normal text-gray-500">(Somme)</span></h3>
-                <p className="text-sm text-gray-700 mb-2">Réaménagement des restes de vitraux de deux baies du chœur dans trois baies de la chapelle Saint François d'Assise.</p>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Cathédrale d&apos;Amiens <span className="text-sm font-normal text-gray-500">(Somme)</span></h3>
+                <p className="text-sm text-gray-700 mb-2">Réaménagement des restes de vitraux de deux baies du chœur dans trois baies de la chapelle Saint François d&apos;Assise.</p>
                 <p className="text-sm text-gray-700 mb-1">1991. Première baie.</p>
                 <p className="text-sm text-gray-700 mb-1">1993. Seconde baie.</p>
                 <p className="text-sm text-gray-700">1997. Troisième baie.</p>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de l'Enclos Paroissial de la Martyre <span className="text-sm font-normal text-gray-500">(Finistère)</span></h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de l&apos;Enclos Paroissial de la Martyre <span className="text-sm font-normal text-gray-500">(Finistère)</span></h3>
                 <p className="font-medium text-sm text-gray-900 mt-2">Nef nord</p>
-                <p className="text-sm text-gray-700 mb-1">1994. Compléments de l'arbre de Jessé du XVIᵉ Breton.</p>
-                <p className="text-sm text-gray-700 mb-1">1994. Cinq baies en harmonie avec l'arbre de Jessé.</p>
+                <p className="text-sm text-gray-700 mb-1">1994. Compléments de l&apos;arbre de Jessé du XVIᵉ Breton.</p>
+                <p className="text-sm text-gray-700 mb-1">1994. Cinq baies en harmonie avec l&apos;arbre de Jessé.</p>
                 <p className="text-sm text-gray-700 mb-2">1994. Oculus de façade.</p>
                 <p className="font-medium text-sm text-gray-900 mt-2">Nef sud</p>
                 <p className="text-sm text-gray-700 mb-1">1996. Deux baies.</p>
