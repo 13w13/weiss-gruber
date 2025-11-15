@@ -186,7 +186,7 @@ export default function JeannetteFrontPage() {
             
             <p className="text-sm text-gray-600 italic">Sauf mention contraire, les photographies sont la propriété de J.E.C. Gruber Weiss. Toute reproduction, diffusion ou utilisation, même partielle, est interdite sans autorisation préalable.</p>
             
-            <p className="text-sm text-gray-600">Le code de ce site est <a href="https://github.com/13w13/weiss-gruber" className="underline" target="_blank" rel="noopener noreferrer">open source</a> , co-développé avec Windsurf, et peut être réutilisé sans demande d’autorisation.</p>
+            <p className="text-sm text-gray-600">Le code de ce site est <a href="https://github.com/13w13/weiss-gruber" className="underline" target="_blank" rel="noopener noreferrer">open source</a> sous licence CC0 (domaine public), co-développé avec Windsurf, et peut être réutilisé sans demande d'autorisation.</p>
             
             <p className="mt-6 text-sm text-gray-600">Son petit-fils. Contact : <a href="mailto:siweiss@proton.me" className="underline">siweiss@proton.me</a></p>
           </div>

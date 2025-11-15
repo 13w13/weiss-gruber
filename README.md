@@ -118,7 +118,7 @@ npm start
 ## License & Reuse
 
 ### Code
-The source code of this website is **open source** and can be reused without permission. Feel free to fork, modify, and adapt it for your own projects.
+The source code of this website is released under the **CC0 1.0 Universal (Public Domain)** license. This means you can copy, modify, distribute and use the code for any purpose, even commercially, without asking permission. See the [LICENSE](LICENSE) file for details.
 
 ### Content & Images
 Unless otherwise stated, photographs are the property of J.E.C. Gruber Weiss. Any reproduction, distribution, or use, even partial, is prohibited without prior authorization.
