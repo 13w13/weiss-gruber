@@ -37,6 +37,9 @@ export default function JeannetteFrontPage() {
             <h1 className="text-5xl md:text-7xl text-white font-light mb-6">Jeannette Weiss Gruber</h1>
             <p className="text-lg md:text-2xl text-white font-light">Peintre-verrier née en 1934</p>
           </div>
+          <div className="absolute bottom-4 right-4 text-white text-sm opacity-70">
+            Photo © Jean-Luc Vallet
+          </div>
         </section>
 
         {/* Citations */}

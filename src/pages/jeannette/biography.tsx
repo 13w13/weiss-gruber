@@ -132,7 +132,7 @@ export default function BiographyPage() {
   }
 
   const imageMappings: ImageMapping[] = [
-    { phrase: 'Elle est la mère de Frédéric, Camille et François Weiss.', file: 'photo_miminette_bio_1.jpg', align: 'right', caption: 'Photo de Jeannette Weiss-Gruber © Jean-Luc Vallet' },
+    { phrase: 'Elle est la mère de Frédéric, Camille et François Weiss.', file: 'photo_miminette_bio_1.jpg', align: 'right', caption: 'Photo de Jeannette Weiss-Gruber' },
     { phrase: 'À dix ans, elle se promet de faire « plus joli » que les vitraux de l’atelier.', file: 'photo_miminette_bio_atelier.jpg', align: 'left', caption: 'Atelier, 10 villa d’Alésia' },
     { phrase: 'particulièrement ceux de Miró à Senlis.', file: 'photo_miminette_bio_miro.jpg', align: 'left', caption: 'Vitraux de Miró, chapelle Saint-Frambourg, Senlis' },
     { phrase: 'naissent ses aluchromies (peintures sur aluminium).', file: 'photo_miminette_bio_2.jpg', align: 'right', caption: 'Article québécois sur son travail' },
