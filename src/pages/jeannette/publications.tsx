@@ -35,8 +35,8 @@ export default function PublicationsPage() {
         catalogue: 'Catalogue Raisonné',
         publications: 'Publications',
       },
-      title: 'Publications et expositions de groupe sur le vitrail',
-      intro: "Principales publications et expositions de groupe mentionnant l'œuvre de Jeannette Weiss Gruber.",
+      title: 'Publications',
+      intro: "Principales publications mentionnant l'œuvre de Jeannette Weiss Gruber.",
       publications: [
         'Premier salon du vitrail, Centre International du Vitrail, Chartres, 1980 – Catalogue et exposition',
         'Le vitrail, Revue des Métiers d\'Art, novembre 1982',

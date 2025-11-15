@@ -234,11 +234,11 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 </div>
               )}
 
-              {/* Custom text overlay for main image only */}
-              {open && index === 0 && fullText && (
+              {/* Custom text overlay for all images */}
+              {open && fullText && (
                 <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-gradient-to-t from-black/90 via-black/80 to-transparent px-6 pb-6 pt-16">
                   <div className="max-w-4xl mx-auto">
-                    <h3 className="text-white text-lg font-semibold mb-2">{work.title_fr}</h3>
+                    {index === 0 && <h3 className="text-white text-lg font-semibold mb-2">{work.title_fr}</h3>}
                     <div className="text-white/90 text-sm leading-relaxed">
                       {showFullText ? (
                         <div className="max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
