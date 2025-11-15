@@ -140,154 +140,160 @@ export default function PublicationsPage() {
 
       {/* Main */}
       <main className="pt-24 pb-16">
-        <div className="container mx-auto px-6 md:px-4 max-w-5xl">
-          <h1 className="text-4xl md:text-5xl font-light mb-6 text-center">{t.title}</h1>
-          <p className="text-center text-gray-700 mb-12">{t.intro}</p>
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <h1 className="text-4xl md:text-5xl font-light mb-4 text-center">{t.title}</h1>
+          <p className="text-center text-gray-600 mb-16 text-lg">{t.intro}</p>
 
-          <ul className="space-y-4 list-disc pl-5 text-gray-800 max-w-3xl mx-auto">
-            {t.publications.map((pub, idx) => (
-              <li key={idx}>{pub}</li>
-            ))}
-          </ul>
+          {/* Publications list with better spacing */}
+          <div className="bg-gray-50 rounded-lg p-8 md:p-10 mb-20">
+            <ul className="space-y-3 text-gray-800 max-w-4xl mx-auto">
+              {t.publications.map((pub, idx) => (
+                <li key={idx} className="flex items-start gap-3 leading-relaxed">
+                  <span className="text-blue-600 mt-1.5 flex-shrink-0">•</span>
+                  <span className="text-base">{pub}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Section Monuments Historiques */}
-          <div className="mt-16 border-t border-gray-300 pt-12">
-            <h2 className="text-3xl font-light mb-4 text-center">Principales créations dans les édifices classés par les Monuments Historiques</h2>
-            <p className="text-center text-gray-700 mb-8 italic max-w-3xl mx-auto">
+          <div className="border-t border-gray-200 pt-16">
+            <p className="text-center text-gray-600 mb-12 italic max-w-3xl mx-auto text-lg">
               Ce site présente uniquement les œuvres préférées de Jeannette Weiss Gruber. Elle a cependant participé à de nombreuses réalisations dont voici une liste non exhaustive :
             </p>
             
-            <div className="grid md:grid-cols-2 gap-x-8 gap-y-6 text-gray-800">
-              <div>
-                <h3 className="font-semibold text-lg">Église Saint Jean Baptiste de Sceaux (Haut-de-Seine)</h3>
-                <p>1955. Rosace de la façade.</p>
+            <div className="grid md:grid-cols-2 gap-6 text-gray-800">
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église Saint Jean Baptiste de Sceaux <span className="text-sm font-normal text-gray-500">(Haut-de-Seine)</span></h3>
+                <p className="text-sm text-gray-700">1955. Rosace de la façade.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Collégiale de Mantes (Yvelines)</h3>
-                <p>1960. Triplet de la façade sous la rosace du XIIIᵉ siècle.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Collégiale de Mantes <span className="text-sm font-normal text-gray-500">(Yvelines)</span></h3>
+                <p className="text-sm text-gray-700">1960. Triplet de la façade sous la rosace du XIIIᵉ siècle.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Saint Crépin aux Bois</h3>
-                <p>1964. Deux baies du chœur.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Saint Crépin aux Bois</h3>
+                <p className="text-sm text-gray-700">1964. Deux baies du chœur.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Pierrefonds (Oise)</h3>
-                <p>1965. Trois baies du chœur.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Pierrefonds <span className="text-sm font-normal text-gray-500">(Oise)</span></h3>
+                <p className="text-sm text-gray-700">1965. Trois baies du chœur.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Caudebec-en-Caux (Seine-Maritime)</h3>
-                <p>1966. Baie axe du chœur.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Caudebec-en-Caux <span className="text-sm font-normal text-gray-500">(Seine-Maritime)</span></h3>
+                <p className="text-sm text-gray-700">1966. Baie axe du chœur.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Cathédrale Primatiale Saint Jean de Lyon (Rhône)</h3>
-                <p>1969. Baie est de la chapelle de la Vierge.</p>
-                <p>1970. Baie sud de la chapelle de la Vierge. Pour la 2ᵉ baie : maquette et carton grandeur.</p>
-                <p>1978-79. Deux baies nord de la chapelle Saint Joseph.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Cathédrale Primatiale Saint Jean de Lyon <span className="text-sm font-normal text-gray-500">(Rhône)</span></h3>
+                <p className="text-sm text-gray-700 mb-1">1969. Baie est de la chapelle de la Vierge.</p>
+                <p className="text-sm text-gray-700 mb-1">1970. Baie sud de la chapelle de la Vierge. Pour la 2ᵉ baie : maquette et carton grandeur.</p>
+                <p className="text-sm text-gray-700">1978-79. Deux baies nord de la chapelle Saint Joseph.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église Saint Étienne de Beauvais (Oise)</h3>
-                <p>1981. Baie du bas coté du chœur est.</p>
-                <p>1984. Compléments de vitraux dépareillés du XVIᵉ siècle dans deux baies bas coté sud.</p>
-                <p>1988. Une baie bas côté nord.</p>
-                <p>1989. Compléments de vitraux dépareillés du XVIᵉ et XIXᵉ siècle dans une baie bas coté sud.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église Saint Étienne de Beauvais <span className="text-sm font-normal text-gray-500">(Oise)</span></h3>
+                <p className="text-sm text-gray-700 mb-1">1981. Baie du bas coté du chœur est.</p>
+                <p className="text-sm text-gray-700 mb-1">1984. Compléments de vitraux dépareillés du XVIᵉ siècle dans deux baies bas coté sud.</p>
+                <p className="text-sm text-gray-700 mb-1">1988. Une baie bas côté nord.</p>
+                <p className="text-sm text-gray-700">1989. Compléments de vitraux dépareillés du XVIᵉ et XIXᵉ siècle dans une baie bas coté sud.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Kerfeunten (Finistère)</h3>
-                <p>1981. Une baie de la nef nord.</p>
-                <p>1984. Seconde baie de la nef nord.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Kerfeunten <span className="text-sm font-normal text-gray-500">(Finistère)</span></h3>
+                <p className="text-sm text-gray-700 mb-1">1981. Une baie de la nef nord.</p>
+                <p className="text-sm text-gray-700">1984. Seconde baie de la nef nord.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église d’Etioles (Essonne)</h3>
-                <p>1981. Un vitrail de façade.</p>
-                <p>Un vitrail dans la nef nord.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église d'Etioles <span className="text-sm font-normal text-gray-500">(Essonne)</span></h3>
+                <p className="text-sm text-gray-700 mb-1">1981. Un vitrail de façade.</p>
+                <p className="text-sm text-gray-700">Un vitrail dans la nef nord.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Chapelle de Villecroze (Var)</h3>
-                <p>1982. Cinq petits vitraux et un oculus.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Chapelle de Villecroze <span className="text-sm font-normal text-gray-500">(Var)</span></h3>
+                <p className="text-sm text-gray-700">1982. Cinq petits vitraux et un oculus.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Darmannes (Haute-Marne)</h3>
-                <p>1984. Quatre vitraux de la nef.</p>
-                <p>1984. Deux vitraux dans le transept.</p>
-                <p>1985. Cinq baies dans le chœur.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Darmannes <span className="text-sm font-normal text-gray-500">(Haute-Marne)</span></h3>
+                <p className="text-sm text-gray-700 mb-1">1984. Quatre vitraux de la nef.</p>
+                <p className="text-sm text-gray-700 mb-1">1984. Deux vitraux dans le transept.</p>
+                <p className="text-sm text-gray-700">1985. Cinq baies dans le chœur.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Cathédrale de Beauvais (Oise)</h3>
-                <p>1985. Une baie dans une chapelle sud du transept. 25 m² de création pour accompagner deux donateurs du XVᵉ.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Cathédrale de Beauvais <span className="text-sm font-normal text-gray-500">(Oise)</span></h3>
+                <p className="text-sm text-gray-700">1985. Une baie dans une chapelle sud du transept. 25 m² de création pour accompagner deux donateurs du XVᵉ.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Champagne sur Oise (Oise)</h3>
-                <p>1986. Douze vitraux dans la nef.</p>
-                <p>Une baie dans un portail de la nef sud.</p>
-                <p>Deux baies dans les bras du transept nord et sud.</p>
-                <p>Une petite rosace de façade.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Champagne sur Oise <span className="text-sm font-normal text-gray-500">(Oise)</span></h3>
+                <p className="text-sm text-gray-700 mb-1">1986. Douze vitraux dans la nef.</p>
+                <p className="text-sm text-gray-700 mb-1">Une baie dans un portail de la nef sud.</p>
+                <p className="text-sm text-gray-700 mb-1">Deux baies dans les bras du transept nord et sud.</p>
+                <p className="text-sm text-gray-700">Une petite rosace de façade.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Pont Sainte Maxence (Oise)</h3>
-                <p>1987. Deux baies de la nef sud en alternance avec Gilles ROUSVOAL.</p>
-                <p>1988. Une baie de la nef nord.</p>
-                <p>1988. Une petite rosace de façade.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Pont Sainte Maxence <span className="text-sm font-normal text-gray-500">(Oise)</span></h3>
+                <p className="text-sm text-gray-700 mb-1">1987. Deux baies de la nef sud en alternance avec Gilles ROUSVOAL.</p>
+                <p className="text-sm text-gray-700 mb-1">1988. Une baie de la nef nord.</p>
+                <p className="text-sm text-gray-700">1988. Une petite rosace de façade.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église Notre Dame de Niort</h3>
-                <p>1991. Baie du chœur. Création de compléments et restauration pour accompagner un arbre de Jessé du XVᵉ remanié au XVIIᵉ et au XIXᵉ.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église Notre Dame de Niort</h3>
+                <p className="text-sm text-gray-700">1991. Baie du chœur. Création de compléments et restauration pour accompagner un arbre de Jessé du XVᵉ remanié au XVIIᵉ et au XIXᵉ.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Cathédrale d’Amiens (Somme)</h3>
-                <p>Réaménagement des restes de vitraux de deux baies du chœur dans trois baies de la chapelle Saint François d’Assise.</p>
-                <p>1991. Première baie.</p>
-                <p>1993. Seconde baie.</p>
-                <p>1997. Troisième baie.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Cathédrale d'Amiens <span className="text-sm font-normal text-gray-500">(Somme)</span></h3>
+                <p className="text-sm text-gray-700 mb-2">Réaménagement des restes de vitraux de deux baies du chœur dans trois baies de la chapelle Saint François d'Assise.</p>
+                <p className="text-sm text-gray-700 mb-1">1991. Première baie.</p>
+                <p className="text-sm text-gray-700 mb-1">1993. Seconde baie.</p>
+                <p className="text-sm text-gray-700">1997. Troisième baie.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de l’Enclos Paroissial de la Martyre (Finistère)</h3>
-                <p className="font-medium">Nef nord</p>
-                <p>1994. Compléments de l’arbre de Jessé du XVIᵉ Breton.</p>
-                <p>1994. Cinq baies en harmonie avec l’arbre de Jessé.</p>
-                <p>1994. Oculus de façade.</p>
-                <p className="font-medium mt-2">Nef sud</p>
-                <p>1996. Deux baies.</p>
-                <p>1996. Deux vitraux et un réseau.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de l'Enclos Paroissial de la Martyre <span className="text-sm font-normal text-gray-500">(Finistère)</span></h3>
+                <p className="font-medium text-sm text-gray-900 mt-2">Nef nord</p>
+                <p className="text-sm text-gray-700 mb-1">1994. Compléments de l'arbre de Jessé du XVIᵉ Breton.</p>
+                <p className="text-sm text-gray-700 mb-1">1994. Cinq baies en harmonie avec l'arbre de Jessé.</p>
+                <p className="text-sm text-gray-700 mb-2">1994. Oculus de façade.</p>
+                <p className="font-medium text-sm text-gray-900 mt-2">Nef sud</p>
+                <p className="text-sm text-gray-700 mb-1">1996. Deux baies.</p>
+                <p className="text-sm text-gray-700">1996. Deux vitraux et un réseau.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église Abbatiale de Saint Jean de Saverne (Bas-Rhin)</h3>
-                <p>2001. Dix-huit vitraux dans les nefs nord et sud.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église Abbatiale de Saint Jean de Saverne <span className="text-sm font-normal text-gray-500">(Bas-Rhin)</span></h3>
+                <p className="text-sm text-gray-700">2001. Dix-huit vitraux dans les nefs nord et sud.</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-lg">Église de Jouy le Comte (Val d’Oise)</h3>
-                <p>2001. Une baie dans une chapelle sud.</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Jouy le Comte <span className="text-sm font-normal text-gray-500">(Val d'Oise)</span></h3>
+                <p className="text-sm text-gray-700">2001. Une baie dans une chapelle sud.</p>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 text-center">
-            <a 
+          <div className="mt-16 text-center">
+            // ... (rest of the code remains the same)
               href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/brochure%20vitrail.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 underline underline-offset-4 transition-colors"
+              className="inline-flex items-center gap-3 px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
             >
-              <Download className="w-4 h-4" />
-              Télécharger la plaquette PDF réalisée en 2005 référençant les œuvres préférées de Jeannette Weiss Gruber
+              <Download className="w-5 h-5" />
+              <span className="font-medium">Télécharger la plaquette PDF (2005)</span>
             </a>
+            <p className="text-sm text-gray-500 mt-3">Référençant les œuvres préférées de Jeannette Weiss Gruber</p>
           </div>
         </div>
       </main>
