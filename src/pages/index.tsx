@@ -3,7 +3,14 @@ import Head from 'next/head'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white text-gray-900 px-4">
+    <>
+      <Head>
+        <title>Jeannette Weiss-Gruber - Peintre-verrier</title>
+        <meta name="description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss-Gruber" />
+        <meta property="og:title" content="Jeannette Weiss-Gruber - Peintre-verrier" />
+        <meta property="og:description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss-Gruber" />
+      </Head>
+      <div className="min-h-screen flex items-center justify-center bg-white text-gray-900 px-4">
       <div className="max-w-xl text-center space-y-6">
         <p className="text-lg md:text-xl">
           Site dédié aux créations de <strong>Jeannette Weiss Gruber</strong>,
@@ -25,7 +32,7 @@ export default function HomePage() {
           Les créations de Frédéric et Camille seront mises en ligne ultérieurement.
         </p>
       </div>
-      </div>
+    </div>
     </>
   )
 }
