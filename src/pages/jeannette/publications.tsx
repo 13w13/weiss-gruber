@@ -150,6 +150,134 @@ export default function PublicationsPage() {
             ))}
           </ul>
 
+          {/* Section Monuments Historiques */}
+          <div className="mt-16 border-t border-gray-300 pt-12">
+            <h2 className="text-3xl font-light mb-4 text-center">Principales créations dans les édifices classés par les Monuments Historiques</h2>
+            <p className="text-center text-gray-700 mb-8 italic">
+              Ce site présente uniquement les œuvres préférées de Jeannette Weiss Gruber. Elle a cependant participé à de nombreuses réalisations dont voici une liste non exhaustive :
+            </p>
+            
+            <div className="space-y-6 text-gray-800">
+              <div>
+                <h3 className="font-semibold text-lg">Église Saint Jean Baptiste de Sceaux (Haut-de-Seine)</h3>
+                <p>1955. Rosace de la façade.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Collégiale de Mantes (Yvelines)</h3>
+                <p>1960. Triplet de la façade sous la rosace du XIIIᵉ siècle.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Saint Crépin aux Bois</h3>
+                <p>1964. Deux baies du chœur.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Pierrefonds (Oise)</h3>
+                <p>1965. Trois baies du chœur.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Caudebec-en-Caux (Seine-Maritime)</h3>
+                <p>1966. Baie axe du chœur.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Cathédrale Primatiale Saint Jean de Lyon (Rhône)</h3>
+                <p>1969. Baie est de la chapelle de la Vierge.</p>
+                <p>1970. Baie sud de la chapelle de la Vierge. Pour la 2ᵉ baie : maquette et carton grandeur.</p>
+                <p>1978-79. Deux baies nord de la chapelle Saint Joseph.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église Saint Étienne de Beauvais (Oise)</h3>
+                <p>1981. Baie du bas coté du chœur est.</p>
+                <p>1984. Compléments de vitraux dépareillés du XVIᵉ siècle dans deux baies bas coté sud.</p>
+                <p>1988. Une baie bas côté nord.</p>
+                <p>1989. Compléments de vitraux dépareillés du XVIᵉ et XIXᵉ siècle dans une baie bas coté sud.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Kerfeunten (Finistère)</h3>
+                <p>1981. Une baie de la nef nord.</p>
+                <p>1984. Seconde baie de la nef nord.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église d’Etioles (Essonne)</h3>
+                <p>1981. Un vitrail de façade.</p>
+                <p>Un vitrail dans la nef nord.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Chapelle de Villecroze (Var)</h3>
+                <p>1982. Cinq petits vitraux et un oculus.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Darmannes (Haute-Marne)</h3>
+                <p>1984. Quatre vitraux de la nef.</p>
+                <p>1984. Deux vitraux dans le transept.</p>
+                <p>1985. Cinq baies dans le chœur.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Cathédrale de Beauvais (Oise)</h3>
+                <p>1985. Une baie dans une chapelle sud du transept. 25 m² de création pour accompagner deux donateurs du XVᵉ.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Champagne sur Oise (Oise)</h3>
+                <p>1986. Douze vitraux dans la nef.</p>
+                <p>Une baie dans un portail de la nef sud.</p>
+                <p>Deux baies dans les bras du transept nord et sud.</p>
+                <p>Une petite rosace de façade.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Pont Sainte Maxence (Oise)</h3>
+                <p>1987. Deux baies de la nef sud en alternance avec Gilles ROUSVOAL.</p>
+                <p>1988. Une baie de la nef nord.</p>
+                <p>1988. Une petite rosace de façade.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église Notre Dame de Niort</h3>
+                <p>1991. Baie du chœur. Création de compléments et restauration pour accompagner un arbre de Jessé du XVᵉ remanié au XVIIᵉ et au XIXᵉ.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Cathédrale d’Amiens (Somme)</h3>
+                <p>Réaménagement des restes de vitraux de deux baies du chœur dans trois baies de la chapelle Saint François d’Assise.</p>
+                <p>1991. Première baie.</p>
+                <p>1993. Seconde baie.</p>
+                <p>1997. Troisième baie.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de l’Enclos Paroissial de la Martyre (Finistère)</h3>
+                <p className="font-medium">Nef nord</p>
+                <p>1994. Compléments de l’arbre de Jessé du XVIᵉ Breton.</p>
+                <p>1994. Cinq baies en harmonie avec l’arbre de Jessé.</p>
+                <p>1994. Oculus de façade.</p>
+                <p className="font-medium mt-2">Nef sud</p>
+                <p>1996. Deux baies.</p>
+                <p>1996. Deux vitraux et un réseau.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église Abbatiale de Saint Jean de Saverne (Bas-Rhin)</h3>
+                <p>2001. Dix-huit vitraux dans les nefs nord et sud.</p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-lg">Église de Jouy le Comte (Val d’Oise)</h3>
+                <p>2001. Une baie dans une chapelle sud.</p>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-12 text-center">
             <a 
               href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/brochure%20vitrail.pdf" 
