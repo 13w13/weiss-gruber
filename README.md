@@ -6,7 +6,7 @@ A website dedicated to Jeannette Weiss-Gruber, a French stained glass artist (pe
 
 ## About the Project
 
-This site was created to preserve and share the artistic legacy of Jeannette Weiss-Gruber, who dedicated her life to the art of stained glass. The website features:
+This site was created to share the artistic journey of Jeannette Weiss Gruber, who dedicated her life to the art of stained glass. The website features:
 
 - **Biography**: Her life, training, and artistic approach
 - **Catalogue Raisonné**: A comprehensive collection of her preferred works with high-quality images
@@ -23,7 +23,7 @@ The digital format offers a unique quality of viewing — the screen's pixel lig
 - **Styling**: Tailwind CSS 3.4.1
 - **Maps**: Leaflet with React-Leaflet
 - **Image Lightbox**: yet-another-react-lightbox
-- **Image Storage**: Vercel Blob Storage & Scaleway Object Storage
+- **Image Storage**: Scaleway Object Storage
 - **Deployment**: Vercel
 - **Development**: Co-developed with Windsurf AI
 
@@ -86,18 +86,6 @@ Artwork data is stored in `vitraux_metadata.csv` with the following fields:
 - **Home page text**: Edit `src/pages/jeannette/index.tsx`
 - **Styling**: Modify Tailwind classes or `src/styles/globals.css`
 
-### Image Management
-
-Images are stored in two locations:
-- **Vercel Blob Storage**: For main catalogue images
-- **Scaleway Object Storage**: For biographical and supplementary images
-
-To upload to Vercel Blob:
-```bash
-vercel blob put <path-to-file> --token <your-token>
-```
-
-## Development
 
 ### Prerequisites
 
@@ -127,12 +115,6 @@ npm run build
 npm start
 ```
 
-## Deployment
-
-The site is automatically deployed to Vercel on every push to the `main` branch.
-
-[![Deploy to VPS](https://github.com/13w13/weiss-gruber/actions/workflows/deploy.yml/badge.svg)](https://github.com/13w13/weiss-gruber/actions/workflows/deploy.yml)
-
 ## License & Reuse
 
 ### Code
@@ -144,18 +126,13 @@ Unless otherwise stated, photographs are the property of J.E.C. Gruber Weiss. An
 ## Credits
 
 - **Artist**: Jeannette Weiss-Gruber (1934-)
-- **Website Creator**: Her grandson
 - **Photography**: Denis Krieger ([mesvitrauxfavoris.fr](https://www.mesvitrauxfavoris.fr/index.htm)) and family archives
 - **Development**: Co-developed with Windsurf AI
-- **Hero Photo**: © Jean-Luc Vallet
 
-## Contact
-
-For questions or information: [siweiss@proton.me](mailto:siweiss@proton.me)
 
 ## Acknowledgments
 
-This catalogue raisonné is a partial and self-declarative work: information comes from Jeannette Weiss-Gruber's own archives and declarations, taken as true. It may contain inaccuracies, omissions, or approximations, and does not claim to cover the entirety of her work.
+This catalogue raisonné is a partial and self-declarative work: information comes from Jeannette WeissnGruber's own archives and declarations, taken as true. It may contain inaccuracies, omissions, or approximations, and does not claim to cover the entirety of her work.
 
 ---
 
