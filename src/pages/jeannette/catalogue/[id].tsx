@@ -234,18 +234,24 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 </div>
               )}
 
-              {/* Custom text overlay for all images */}
+              {/* Custom text overlay for all images - Museum-grade persistent captions */}
               {open && fullText && (
-                <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-gradient-to-t from-black/90 via-black/80 to-transparent px-6 pb-6 pt-16">
-                  <div className="max-w-4xl mx-auto">
+                <div 
+                  className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/85 to-transparent px-6 pb-6 pt-16 pointer-events-none"
+                  style={{ zIndex: 2147483647 }}
+                >
+                  <div className="max-w-4xl mx-auto pointer-events-auto">
                     {index === 0 && <h3 className="text-white text-lg font-semibold mb-2">{work.title_fr}</h3>}
                     <div className="text-white/90 text-sm leading-relaxed">
                       {showFullText ? (
                         <div className="max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
                           <p className="whitespace-pre-line">{fullText}</p>
                           <button
-                            onClick={() => setShowFullText(false)}
-                            className="mt-3 text-blue-300 hover:text-blue-200 underline text-xs font-medium"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowFullText(false);
+                            }}
+                            className="mt-3 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer"
                           >
                             Voir moins
                           </button>
@@ -255,8 +261,11 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                           <p className="line-clamp-2">{fullText}</p>
                           {hasLongText && (
                             <button
-                              onClick={() => setShowFullText(true)}
-                              className="mt-2 text-blue-300 hover:text-blue-200 underline text-xs font-medium"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setShowFullText(true);
+                              }}
+                              className="mt-2 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer"
                             >
                               Lire plus
                             </button>

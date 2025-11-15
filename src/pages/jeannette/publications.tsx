@@ -3,10 +3,11 @@ import { Download } from 'lucide-react'
 
 
 interface Nav {
-  home: string
-  biography: string
-  catalogue: string
-  publications: string
+  home: string;
+  biography: string;
+  catalogue: string;
+  carte: string;
+  publications: string;
 }
 
 interface Footer {
@@ -33,6 +34,7 @@ export default function PublicationsPage() {
         home: 'Accueil',
         biography: 'Biographie',
         catalogue: 'Catalogue Raisonné',
+        carte: 'Carte',
         publications: 'Publications',
       },
       title: 'Publications',
@@ -56,9 +58,10 @@ export default function PublicationsPage() {
     },
     en: {
       nav: {
-        home: 'Accueil',
-        biography: 'Biographie',
+        home: 'Home',
+        biography: 'Biography',
         catalogue: 'Catalogue Raisonné',
+        carte: 'Map',
         publications: 'Publications',
       },
       title: 'Publications and Group Exhibitions on Stained Glass',
@@ -87,14 +90,21 @@ export default function PublicationsPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/jeannette" className="text-xl font-semibold">Jeannette Weiss Gruber</Link>
+          <div className="flex items-center">
+            <Link href="/" className="text-xl font-semibold mr-6">
+              Weiss-Gruber
+            </Link>
+            <Link href="/jeannette" className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+              Jeannette Weiss Gruber
+            </Link>
+          </div>
           <ul className="flex space-x-6">
             <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">{t.nav.home}</Link></li>
             <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">{t.nav.biography}</Link></li>
             <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">{t.nav.catalogue}</Link></li>
-            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
+            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">{t.nav.carte}</Link></li>
             <li><Link href="/jeannette/publications" className="text-blue-600">{t.nav.publications}</Link></li>
           </ul>
         </nav>
