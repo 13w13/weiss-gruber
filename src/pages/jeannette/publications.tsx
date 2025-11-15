@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { ChevronDown, Download } from 'lucide-react'
-import { useState } from 'react'
+import { Download } from 'lucide-react'
 
 
 interface Nav {
@@ -10,20 +9,12 @@ interface Nav {
   publications: string
 }
 
-interface FamilyMembers {
-  title: string
-  jeannette: string
-  frederic: string
-  camille: string
-}
-
 interface Footer {
   rights: string
 }
 
 interface ContentStructure {
   nav: Nav
-  familyMembers: FamilyMembers
   title: string
   intro: string
   publications: string[]
@@ -36,8 +27,6 @@ interface Content {
 }
 
 export default function PublicationsPage() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-
   const content: Content = {
     fr: {
       nav: {
@@ -45,12 +34,6 @@ export default function PublicationsPage() {
         biography: 'Biographie',
         catalogue: 'Catalogue Raisonné',
         publications: 'Publications',
-      },
-      familyMembers: {
-        title: 'Artistes de la famille',
-        jeannette: 'Jeannette Weiss Gruber',
-        frederic: 'Frédéric Weiss',
-        camille: 'Camille Weiss',
       },
       title: 'Publications et expositions de groupe sur le vitrail',
       intro: "Principales publications et expositions de groupe mentionnant l'œuvre de Jeannette Weiss Gruber.",
@@ -77,12 +60,6 @@ export default function PublicationsPage() {
         biography: 'Biographie',
         catalogue: 'Catalogue Raisonné',
         publications: 'Publications',
-      },
-      familyMembers: {
-        title: 'Family Artists',
-        jeannette: 'Jeannette Weiss Gruber',
-        frederic: 'Frédéric Weiss',
-        camille: 'Camille Weiss',
       },
       title: 'Publications and Group Exhibitions on Stained Glass',
       intro: 'Main publications and group exhibitions featuring the work of Jeannette Weiss Gruber.',
