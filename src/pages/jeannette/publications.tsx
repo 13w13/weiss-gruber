@@ -140,11 +140,11 @@ export default function PublicationsPage() {
 
       {/* Main */}
       <main className="pt-24 pb-16">
-        <div className="container mx-auto px-6 md:px-4 max-w-xl">
+        <div className="container mx-auto px-6 md:px-4 max-w-5xl">
           <h1 className="text-4xl md:text-5xl font-light mb-6 text-center">{t.title}</h1>
           <p className="text-center text-gray-700 mb-12">{t.intro}</p>
 
-          <ul className="space-y-4 list-disc pl-5 text-gray-800">
+          <ul className="space-y-4 list-disc pl-5 text-gray-800 max-w-3xl mx-auto">
             {t.publications.map((pub, idx) => (
               <li key={idx}>{pub}</li>
             ))}
@@ -153,11 +153,11 @@ export default function PublicationsPage() {
           {/* Section Monuments Historiques */}
           <div className="mt-16 border-t border-gray-300 pt-12">
             <h2 className="text-3xl font-light mb-4 text-center">Principales créations dans les édifices classés par les Monuments Historiques</h2>
-            <p className="text-center text-gray-700 mb-8 italic">
+            <p className="text-center text-gray-700 mb-8 italic max-w-3xl mx-auto">
               Ce site présente uniquement les œuvres préférées de Jeannette Weiss Gruber. Elle a cependant participé à de nombreuses réalisations dont voici une liste non exhaustive :
             </p>
             
-            <div className="space-y-6 text-gray-800">
+            <div className="grid md:grid-cols-2 gap-x-8 gap-y-6 text-gray-800">
               <div>
                 <h3 className="font-semibold text-lg">Église Saint Jean Baptiste de Sceaux (Haut-de-Seine)</h3>
                 <p>1955. Rosace de la façade.</p>
