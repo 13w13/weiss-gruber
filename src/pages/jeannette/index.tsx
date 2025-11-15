@@ -180,11 +180,13 @@ export default function JeannetteFrontPage() {
             
             <p>Il y a pourtant quelque chose de profondément mystérieux dans le vitrail, en dehors de toute confession religieuse : une lumière venue du dehors qui, en traversant le verre peint, semble réveiller autre chose que de simples couleurs. Le vitrail est une ouverture où le dehors s’allume autrement, une lumière insaisissable qui fait passage — un peu comme le regard d’une personne qui, sans que l’on sache pourquoi, nous touche et nous interroge.</p>
             
-            <p>Ce catalogue raisonné reste une démarche partielle et en partie déclarative : il peut comporter des imprécisions, des oublis ou des approximations, et ne prétend pas couvrir l’intégralité de l’œuvre.</p>
+            <p>Ce catalogue raisonné reste une démarche partielle et auto-déclarative : les informations proviennent des archives et des déclarations de Jeannette Weiss-Gruber elle-même, prises comme vraies. Il peut comporter des imprécisions, des oublis ou des approximations, et ne prétend pas couvrir l’intégralité de l’œuvre.</p>
             
             <p>Ce site s’appuie également sur le remarquable travail photographique de Denis Krieger — consultable sur <a href="https://www.mesvitrauxfavoris.fr/index.htm" className="underline" target="_blank" rel="noopener noreferrer">son site dédié</a> — qui contribue à combler le déficit de documentation numérique autour de l’art du vitrail en France.</p>
             
             <p className="text-sm text-gray-600 italic">Sauf mention contraire, les photographies sont la propriété de J.E.C. Gruber Weiss. Toute reproduction, diffusion ou utilisation, même partielle, est interdite sans autorisation préalable.</p>
+            
+            <p className="text-sm text-gray-600">Le code source de ce site est open source, co-développé avec Windsurf, et peut être réutilisé sans demande d’autorisation : <a href="https://github.com/13w13/weiss-gruber" className="underline" target="_blank" rel="noopener noreferrer">github.com/13w13/weiss-gruber</a></p>
             
             <p className="mt-6 text-sm text-gray-600">Son petit-fils. Contact : <a href="mailto:siweiss@proton.me" className="underline">siweiss@proton.me</a></p>
           </div>
