@@ -172,11 +172,11 @@ export default function JeannetteFrontPage() {
           <div className="container mx-auto px-4 space-y-6 text-base text-gray-800 leading-relaxed max-w-4xl">
             <p>Jeannette Weiss-Gruber a consacré sa vie au vitrail. Elle peignait sur le verre en cherchant sa propre lumière, sa grisaille, en dialogue constant avec les vitraux anciens et l’architecture des édifices où ses œuvres prennent place.</p>
             
-            <p>Ce site est né d’une expérience personnelle : le désir de pouvoir reconnaître, comprendre et identifier le travail de ma grand-mère. En rassemblant ses œuvres, j’ai voulu apprendre à distinguer son style, sa manière de poser la grisaille, son geste singulier, pour ensuite les reconnaître dans les églises. J’espère que le visiteur, en parcourant ce site, pourra à son tour se familiariser avec ce langage et, un jour, dire face à une baie : « Ça, c’est un vitrail de Jeannette Weiss-Gruber. »</p>
+            <p>Ce site est né d’une expérience personnelle : le désir de pouvoir reconnaître, comprendre et identifier le travail de ma grand-mère. En rassemblant ses œuvres, j’ai voulu apprendre à distinguer son style, sa manière de poser la grisaille, son geste singulier, pour ensuite les reconnaître dans les églises. J’espère que le visiteur, en parcourant ce site, pourra à son tour se familiariser avec ce langage et, un jour, dire face à une baie : « Ça, c’est un vitrail de Jeannette Weiss Gruber. »</p>
             
             <p>La forme numérique offre ici une qualité de regard particulière : l’écran, par la lumière même des pixels, restitue quelque chose de la transparence du vitrail que le papier fige et ternit souvent. On voit mieux certaines nuances, certains détails de matière, même si, bien sûr, rien ne remplace l’expérience du vitrail dans l’édifice. Certaines photographies restent de qualité inégale, mais elles ont été conservées pour documenter au mieux l’ensemble.</p>
             
-            <p>L’art du vitrail lui-même demeure, en France, à la fois présent et méconnu. Nous y sommes sensibles, parfois, comme à une simple « beauté » de lumière dans une église, mais le métier de maître-verrier reste largement ignoré du grand public, peu exposé, peu documenté. Les noms des artistes sont rarement connus, et la transmission de cet art passe encore trop peu par des lieux d’exposition ou des ressources accessibles.</p>
+            <p>L’art du vitrail lui-même demeure, en France, à la fois présent et méconnu. Nous y sommes sensibles, parfois, comme à une simple « beauté » de lumière dans une église, mais le métier de maître et peintre-verrier reste largement ignoré du grand public, peu exposé, peu documenté. Les noms des artistes sont rarement connus, et la transmission de cet art passe encore trop peu par des lieux d’exposition ou des ressources accessibles.</p>
             
             <p>Il y a pourtant quelque chose de profondément mystérieux dans le vitrail, en dehors de toute confession religieuse : une lumière venue du dehors qui, en traversant le verre peint, semble réveiller autre chose que de simples couleurs. Le vitrail est une ouverture où le dehors s’allume autrement, une lumière insaisissable qui fait passage — un peu comme le regard d’une personne qui, sans que l’on sache pourquoi, nous touche et nous interroge.</p>
             
@@ -186,7 +186,7 @@ export default function JeannetteFrontPage() {
             
             <p className="text-sm text-gray-600 italic">Sauf mention contraire, les photographies sont la propriété de J.E.C. Gruber Weiss. Toute reproduction, diffusion ou utilisation, même partielle, est interdite sans autorisation préalable.</p>
             
-            <p className="text-sm text-gray-600">Le code source de ce site est open source, co-développé avec Windsurf, et peut être réutilisé sans demande d’autorisation : <a href="https://github.com/13w13/weiss-gruber" className="underline" target="_blank" rel="noopener noreferrer">github.com/13w13/weiss-gruber</a></p>
+            <p className="text-sm text-gray-600">Le code de ce site est <a href="https://github.com/13w13/weiss-gruber" className="underline" target="_blank" rel="noopener noreferrer">open source</a> , co-développé avec Windsurf, et peut être réutilisé sans demande d’autorisation.</p>
             
             <p className="mt-6 text-sm text-gray-600">Son petit-fils. Contact : <a href="mailto:siweiss@proton.me" className="underline">siweiss@proton.me</a></p>
           </div>
