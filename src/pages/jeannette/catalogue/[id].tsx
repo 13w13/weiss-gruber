@@ -45,6 +45,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [showHint, setShowHint] = useState(false);
+  const [showFullText, setShowFullText] = useState(false);
 
   // Prefetch hero of next artwork for instant loading (client only)
   useEffect(() => {
@@ -63,18 +64,22 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     }
   }, [open]);
 
+  // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
+  const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
+  const hasLongText = fullText.length > 150;
+
   // Build slides once per render (needs to be before effects that depend on it)
   const slides = [
     { 
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
       alt: work.title_fr,
       title: work.title_fr,
-      description: work.caption_fr ?? ''
+      description: '' // We'll handle text display separately
     },
     ...(work.gallery_images?.map(img => ({
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || work.title_fr,
-      description: `${work.title_fr} — ${img.type}${img.credit ? ` (${img.credit})` : ''}`
+      description: '' // Keep gallery items without text overlay
     })) || [])
   ];
 
@@ -184,7 +189,10 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
             <Lightbox
                 open={open}
-                close={() => setOpen(false)}
+                close={() => {
+                  setOpen(false);
+                  setShowFullText(false); // Reset text expansion when closing
+                }}
                 index={index}
                 slides={slides}
                 plugins={plugins}
@@ -202,7 +210,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 captions={{
                   showToggle: false,
                   descriptionTextAlign: 'start',
-                  descriptionMaxLines: 3
+                  descriptionMaxLines: 0 // Disable default captions, we'll use custom overlay
                 }}
                 on={{ view: ({ index: idx }) => {
                   setIndex(idx);
@@ -226,14 +234,48 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 </div>
               )}
 
-            {work.caption_fr && (
+              {/* Custom text overlay for main image only */}
+              {open && index === 0 && fullText && (
+                <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-gradient-to-t from-black/90 via-black/80 to-transparent px-6 pb-6 pt-16">
+                  <div className="max-w-4xl mx-auto">
+                    <h3 className="text-white text-lg font-semibold mb-2">{work.title_fr}</h3>
+                    <div className="text-white/90 text-sm leading-relaxed">
+                      {showFullText ? (
+                        <div className="max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+                          <p className="whitespace-pre-line">{fullText}</p>
+                          <button
+                            onClick={() => setShowFullText(false)}
+                            className="mt-3 text-blue-300 hover:text-blue-200 underline text-xs font-medium"
+                          >
+                            Voir moins
+                          </button>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="line-clamp-2">{fullText}</p>
+                          {hasLongText && (
+                            <button
+                              onClick={() => setShowFullText(true)}
+                              className="mt-2 text-blue-300 hover:text-blue-200 underline text-xs font-medium"
+                            >
+                              Lire plus
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            {(work.text_fr || work.caption_fr) && (
               <p className="mb-8 text-base text-gray-700 leading-relaxed">
-                {work.caption_fr}
+                {work.text_fr || work.caption_fr}
               </p>
             )}
 
             <div className="space-y-4 mb-12">
-              {work.description_fr && (
+              {!work.text_fr && work.description_fr && (
                 <p className="text-gray-800 leading-relaxed">
                   {work.description_fr}
                 </p>

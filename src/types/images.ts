@@ -20,9 +20,10 @@ export interface Vitrail {
   location_in_building: string;
   title_fr: string;
   main_image: string;
-  caption_fr?: string;
+  text_fr?: string; // New unified text field
+  caption_fr?: string; // Deprecated, kept for backward compatibility
   photo_status: string;
-  description_fr: string;
+  description_fr?: string; // Deprecated, kept for backward compatibility
   maps_url?: string;
   lat?: string;
   lng?: string;
