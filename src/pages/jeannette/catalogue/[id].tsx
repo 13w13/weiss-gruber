@@ -201,30 +201,28 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 }}
                 captions={{
                   showToggle: false,
-                  descriptionTextAlign: 'center',
-                  descriptionMaxLines: 6
+                  descriptionTextAlign: 'start',
+                  descriptionMaxLines: 3
                 }}
                 on={{ view: ({ index: idx }) => {
                   setIndex(idx);
                 } }}
                 counter={{
-                  container: { style: { top: '16px', left: '16px', bottom: 'auto', right: 'auto', backgroundColor: 'rgba(0,0,0,0.7)', color: '#fff', padding: '6px 12px', borderRadius: '6px', fontSize: '14px' } }
+                  container: { style: { top: 'auto', left: 'auto', bottom: '24px', right: '24px', backgroundColor: 'rgba(0,0,0,0.75)', color: '#fff', padding: '8px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '500' } }
                 }}
               />
 
-              {/* Permanent help box in top-right - only when lightbox is open */}
-              {open && (
-                <div className="fixed top-16 right-4 bg-black/60 text-white px-3 py-2 rounded text-xs z-[9998] select-none pointer-events-none max-w-[200px]">
-                  <div className="font-semibold mb-1">Navigation :</div>
-                  <div>← → Images / Vitraux</div>
-                  <div>Molette : Zoom</div>
-                  <div>Échap : Fermer</div>
-                </div>
-              )}
 
               {showHint && (
-                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded text-sm select-none pointer-events-none animate-fade">
-                  Utilisez les flèches pour naviguer
+                <div className="fixed top-20 left-1/2 -translate-x-1/2 bg-black/80 text-white px-5 py-3 rounded-lg text-sm select-none pointer-events-none animate-fade shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <span>← →</span>
+                    <span>Navigation</span>
+                    <span className="mx-2">•</span>
+                    <span>Molette : Zoom</span>
+                    <span className="mx-2">•</span>
+                    <span>Échap : Fermer</span>
+                  </div>
                 </div>
               )}
 
