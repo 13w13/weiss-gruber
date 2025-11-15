@@ -168,12 +168,25 @@ export default function JeannetteFrontPage() {
         </section>
 
         {/* À propos */}
-        <section className="py-10 md:py-14 bg-white text-left sm:text-center border-y border-gray-200">
-          <div className="container mx-auto px-4 space-y-8 text-lg text-gray-800 leading-loose max-w-2xl">
-            <p>Jeannette Weiss&nbsp;Gruber a consacré sa vie à son art. Elle peignait sur le verre en cherchant sa lumière propre. Ce site internet a pour vocation de présenter ses œuvres dans un catalogue raisonné.</p>
-            <p>Certaines réalisations manquent de documentation photographique&nbsp;– par exemple celles de Champagne-sur-Oise.</p>
-            <p>Ce site s’appuie également sur le remarquable travail photographique de Denis&nbsp;Krieger&nbsp;— visible sur <a href="https://www.mesvitrauxfavoris.fr/index.htm" className="underline" target="_blank" rel="noopener noreferrer">son site dédié</a>&nbsp;— qui contribue à pallier au déficit de documentation numérique autour de l’art du vitrail en France.</p>
-            <p className="mt-4 text-sm text-gray-600"> Son petit-fils. Contact&nbsp;: <a href="mailto:siweiss@proton.me" className="underline">siweiss@proton.me</a></p>
+        <section className="py-10 md:py-14 bg-white text-left border-y border-gray-200">
+          <div className="container mx-auto px-4 space-y-6 text-base text-gray-800 leading-relaxed max-w-4xl">
+            <p>Jeannette Weiss-Gruber a consacré sa vie au vitrail. Elle peignait sur le verre en cherchant sa propre lumière, sa grisaille, en dialogue constant avec les vitraux anciens et l’architecture des édifices où ses œuvres prennent place.</p>
+            
+            <p>Ce site est né d’une expérience personnelle : le désir de pouvoir reconnaître, comprendre et identifier le travail de ma grand-mère. En rassemblant ses œuvres, j’ai voulu apprendre à distinguer son style, sa manière de poser la grisaille, son geste singulier, pour ensuite les reconnaître dans les églises. J’espère que le visiteur, en parcourant ce site, pourra à son tour se familiariser avec ce langage et, un jour, dire face à une baie : « Ça, c’est un vitrail de Jeannette Weiss-Gruber. »</p>
+            
+            <p>La forme numérique offre ici une qualité de regard particulière : l’écran, par la lumière même des pixels, restitue quelque chose de la transparence du vitrail que le papier fige et ternit souvent. On voit mieux certaines nuances, certains détails de matière, même si, bien sûr, rien ne remplace l’expérience du vitrail dans l’édifice. Certaines photographies restent de qualité inégale, mais elles ont été conservées pour documenter au mieux l’ensemble.</p>
+            
+            <p>L’art du vitrail lui-même demeure, en France, à la fois présent et méconnu. Nous y sommes sensibles, parfois, comme à une simple « beauté » de lumière dans une église, mais le métier de maître-verrier reste largement ignoré du grand public, peu exposé, peu documenté. Les noms des artistes sont rarement connus, et la transmission de cet art passe encore trop peu par des lieux d’exposition ou des ressources accessibles.</p>
+            
+            <p>Il y a pourtant quelque chose de profondément mystérieux dans le vitrail, en dehors de toute confession religieuse : une lumière venue du dehors qui, en traversant le verre peint, semble réveiller autre chose que de simples couleurs. Le vitrail est une ouverture où le dehors s’allume autrement, une lumière insaisissable qui fait passage — un peu comme le regard d’une personne qui, sans que l’on sache pourquoi, nous touche et nous interroge.</p>
+            
+            <p>Ce catalogue raisonné reste une démarche partielle et en partie déclarative : il peut comporter des imprécisions, des oublis ou des approximations, et ne prétend pas couvrir l’intégralité de l’œuvre.</p>
+            
+            <p>Ce site s’appuie également sur le remarquable travail photographique de Denis Krieger — consultable sur <a href="https://www.mesvitrauxfavoris.fr/index.htm" className="underline" target="_blank" rel="noopener noreferrer">son site dédié</a> — qui contribue à combler le déficit de documentation numérique autour de l’art du vitrail en France.</p>
+            
+            <p className="text-sm text-gray-600 italic">Sauf mention contraire, les photographies sont la propriété de J.E.C. Gruber Weiss. Toute reproduction, diffusion ou utilisation, même partielle, est interdite sans autorisation préalable.</p>
+            
+            <p className="mt-6 text-sm text-gray-600">Son petit-fils. Contact : <a href="mailto:siweiss@proton.me" className="underline">siweiss@proton.me</a></p>
           </div>
         </section>
 
