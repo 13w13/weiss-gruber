@@ -247,11 +247,12 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         <div className="max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
                           <p className="whitespace-pre-line">{fullText}</p>
                           <button
-                            onClick={(e) => {
+                            onMouseDown={(e) => {
+                              e.preventDefault();
                               e.stopPropagation();
                               setShowFullText(false);
                             }}
-                            className="mt-3 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer"
+                            className="mt-3 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer select-none"
                           >
                             Voir moins
                           </button>
@@ -261,11 +262,12 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                           <p className="line-clamp-2">{fullText}</p>
                           {hasLongText && (
                             <button
-                              onClick={(e) => {
+                              onMouseDown={(e) => {
+                                e.preventDefault();
                                 e.stopPropagation();
                                 setShowFullText(true);
                               }}
-                              className="mt-2 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer"
+                              className="mt-2 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer select-none"
                             >
                               Lire plus
                             </button>
