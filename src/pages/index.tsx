@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Head from 'next/head'
 
 export default function HomePage() {
   return (
@@ -24,6 +25,7 @@ export default function HomePage() {
           Les créations de Frédéric et Camille seront mises en ligne ultérieurement.
         </p>
       </div>
-    </div>
+      </div>
+    </>
   )
 }

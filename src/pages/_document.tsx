@@ -11,9 +11,9 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         
         {/* Meta tags */}
-        <meta name="description" content="Site dédié à Jeannette Weiss-Gruber, peintre-verrier française. Catalogue raisonné de ses créations de vitraux." />
+        <meta name="description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss-Gruber" />
         <meta property="og:title" content="Jeannette Weiss-Gruber - Peintre-verrier" />
-        <meta property="og:description" content="Catalogue raisonné des œuvres de Jeannette Weiss-Gruber, peintre-verrier française" />
+        <meta property="og:description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss-Gruber" />
         <meta property="og:image" content="/og-image.jpg" />
         <meta property="og:type" content="website" />
       </Head>
