@@ -282,9 +282,13 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         padding: window.innerWidth < 640 ? '10px 12px' : (window.innerWidth < 768 ? '12px 16px' : '20px 24px'),
                         zIndex: 1000,
                         pointerEvents: 'auto',
+                        boxSizing: 'border-box',
+                        paddingBottom: 'calc(8px + env(safe-area-inset-bottom, 0px))',
                         minHeight: 'auto',
-                        maxHeight: (showFullText || showFullAlt) ? 'min(65vh, 500px)' : (window.innerWidth < 640 ? '32vh' : (window.innerWidth < 768 ? '35vh' : '180px')),
+                        maxHeight: (showFullText || showFullAlt) ? 'min(70dvh, 560px)' : (window.innerWidth < 640 ? '36dvh' : (window.innerWidth < 768 ? '38dvh' : '180px')),
                         overflowY: 'auto',
+                        WebkitOverflowScrolling: 'touch',
+                        overscrollBehavior: 'contain',
                         transition: 'max-height 0.3s ease'
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
@@ -352,7 +356,9 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                   WebkitLineClamp: window.innerWidth < 768 ? 3 : 2,
                                   WebkitBoxOrient: 'vertical',
                                   fontSize: window.innerWidth < 768 ? '13px' : '14px',
-                                  lineHeight: '1.5'
+                                  lineHeight: '1.5',
+                                  wordBreak: 'break-word',
+                                  hyphens: 'auto'
                                 }}>{currentMeta.text}</p>
                                 {currentMeta.hasLongText && (
                                   <div
@@ -432,7 +438,9 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                   WebkitLineClamp: window.innerWidth < 768 ? 3 : 2,
                                   WebkitBoxOrient: 'vertical',
                                   fontSize: window.innerWidth < 768 ? '13px' : '14px',
-                                  lineHeight: '1.5'
+                                  lineHeight: '1.5',
+                                  wordBreak: 'break-word',
+                                  hyphens: 'auto'
                                 }}>{currentMeta.alt_fr}</p>
                                 {currentMeta.hasLongAlt && (
                                   <div

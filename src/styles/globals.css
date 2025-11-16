@@ -49,37 +49,23 @@ body {
   background-color: #000 !important;
 }
 
-/* Lightbox: Reserve space for bottom caption bar */
-.yarl__slide {
-  padding-bottom: 180px !important;
+/* Lightbox: Reserve space for bottom caption bar (viewport + safe-area) */
+@media (max-width: 639px) {
+  .yarl__slide { padding-bottom: calc(40vh + env(safe-area-inset-bottom, 0px)) !important; }
+  .yarl__slide_image_container { max-height: calc(60vh - env(safe-area-inset-bottom, 0px)) !important; }
+  .yarl__thumbnails { bottom: calc(40vh + env(safe-area-inset-bottom, 0px)) !important; }
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .yarl__slide { padding-bottom: calc(38vh + env(safe-area-inset-bottom, 0px)) !important; }
+  .yarl__slide_image_container { max-height: calc(62vh - env(safe-area-inset-bottom, 0px)) !important; }
+  .yarl__thumbnails { bottom: calc(38vh + env(safe-area-inset-bottom, 0px)) !important; }
 }
 
 @media (min-width: 768px) {
-  .yarl__slide {
-    padding-bottom: 140px !important;
-  }
-}
-
-/* Adjust image container to fit in available space */
-.yarl__slide_image_container {
-  max-height: calc(100vh - 280px) !important;
-}
-
-@media (min-width: 768px) {
-  .yarl__slide_image_container {
-    max-height: calc(100vh - 240px) !important;
-  }
-}
-
-/* Ensure thumbnails don't overlap with caption */
-.yarl__thumbnails {
-  bottom: 180px !important;
-}
-
-@media (min-width: 768px) {
-  .yarl__thumbnails {
-    bottom: 140px !important;
-  }
+  .yarl__slide { padding-bottom: 140px !important; }
+  .yarl__slide_image_container { max-height: calc(100vh - 240px) !important; }
+  .yarl__thumbnails { bottom: 140px !important; }
 }
 
 /* Hide default slide title in top-left */
