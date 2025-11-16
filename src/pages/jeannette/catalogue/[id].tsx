@@ -63,14 +63,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     }
   }, [open]);
 
-  // Track viewport width to toggle Captions on mobile/tablette
-  useEffect(() => {
-    const update = () => setIsMobile(window.innerWidth < 1024);
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
   const hasLongText = fullText.length > 80;
@@ -87,22 +79,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || img.nom || work.title_fr,
       description: '' // Keep gallery items without text overlay
-    })) || [])
-  ];
-
-  // Slides with captions for mobile/tablette (Captions plugin)
-  const slidesWithCaptions = [
-    { 
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
-      alt: work.title_fr,
-      title: work.title_fr,
-      description: fullText || ''
-    },
-    ...(work.gallery_images?.map(img => ({
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
-      alt: img.alt_fr || img.nom || work.title_fr,
-      title: img.nom || undefined,
-      description: img.alt_fr || ''
     })) || [])
   ];
 
