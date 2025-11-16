@@ -4,10 +4,10 @@ export type ArtworkCategory = 'vitrail' | 'peinture' | 'sculpture';
 
 export interface GalleryImage {
   url: string;
-  type: string;
-  credit?: string;
-  alt_fr?: string;
-  alt_en?: string;
+  nom: string;  // Title displayed in lightbox caption
+  credit?: string;  // Photo credit
+  alt_fr?: string;  // Rich descriptive text for French
+  alt_en?: string;  // Rich descriptive text for English
 }
 
 export interface Vitrail {

@@ -78,10 +78,33 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     },
     ...(work.gallery_images?.map(img => ({
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
-      alt: img.alt_fr || work.title_fr,
+      alt: img.alt_fr || img.nom || work.title_fr,
       description: '' // Keep gallery items without text overlay
     })) || [])
   ];
+
+  // Map each slide to its metadata for caption display
+  const slideMetadata = [
+    {
+      isMainImage: true,
+      text: fullText,
+      hasLongText: hasLongText,
+      nom: null,
+      alt_fr: null,
+      credit: null
+    },
+    ...(work.gallery_images?.map(img => ({
+      isMainImage: false,
+      text: null,
+      hasLongText: false,
+      nom: img.nom,
+      alt_fr: img.alt_fr || null,
+      credit: img.credit || null
+    })) || [])
+  ];
+
+  // Get metadata for current slide
+  const currentMeta = slideMetadata[index] || slideMetadata[0];
 
   // Lightbox keydown handler - navigate to next/prev artwork at boundaries
   useEffect(() => {
@@ -259,7 +282,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                     >
                       <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
                         {/* Header with title, metadata, and image counter - always visible */}
-                        <div style={{ marginBottom: fullText ? '12px' : '0' }}>
+                        <div style={{ marginBottom: (currentMeta.text || currentMeta.nom) ? '12px' : '0' }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
                             <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '600', margin: 0 }}>{work.title_fr}</h3>
                             <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', marginLeft: '16px', flexShrink: 0 }}>
@@ -270,13 +293,20 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                             {work.building_name || 'Sans localisation'}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
                           </p>
                         </div>
+
+                        {/* For gallery images: show nom as title */}
+                        {currentMeta.nom && (
+                          <div style={{ marginBottom: '8px' }}>
+                            <h4 style={{ color: 'white', fontSize: '16px', fontWeight: '500', margin: 0 }}>{currentMeta.nom}</h4>
+                          </div>
+                        )}
                         
-                        {/* Text description - only visible if fullText exists */}
-                        {fullText && (
+                        {/* Main image: show text_fr description */}
+                        {currentMeta.text && (
                           <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6' }}>
                             {showFullText ? (
                               <div style={{ paddingRight: '8px' }}>
-                                <p style={{ whiteSpace: 'pre-line' }}>{fullText}</p>
+                                <p style={{ whiteSpace: 'pre-line' }}>{currentMeta.text}</p>
                                 <div
                                   role="button"
                                   tabIndex={0}
@@ -312,8 +342,8 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                   display: '-webkit-box',
                                   WebkitLineClamp: 2,
                                   WebkitBoxOrient: 'vertical'
-                                }}>{fullText}</p>
-                                {hasLongText && (
+                                }}>{currentMeta.text}</p>
+                                {currentMeta.hasLongText && (
                                   <div
                                     role="button"
                                     tabIndex={0}
@@ -343,6 +373,20 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                 )}
                               </div>
                             )}
+                          </div>
+                        )}
+
+                        {/* Gallery images: show alt_fr description */}
+                        {currentMeta.alt_fr && (
+                          <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6', marginBottom: '8px' }}>
+                            <p style={{ margin: 0, whiteSpace: 'pre-line' }}>{currentMeta.alt_fr}</p>
+                          </div>
+                        )}
+
+                        {/* Gallery images: show photo credit */}
+                        {currentMeta.credit && (
+                          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', fontStyle: 'italic', marginTop: '8px' }}>
+                            Photo : {currentMeta.credit}
                           </div>
                         )}
                       </div>
@@ -426,7 +470,8 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         onClick={() => { setIndex(index + 1); setOpen(true); }}
                       />
                       <div className="p-2 text-sm bg-gray-50">
-                        <p className="font-semibold">{image.alt_fr ?? image.type}</p>
+                        <p className="font-semibold">{image.nom}</p>
+                        {image.alt_fr && <p className="mt-1 text-xs text-gray-500">{image.alt_fr}</p>}
                         {image.credit && <p className="mt-1 text-xs text-gray-400">Crédit photo : {image.credit}</p>}
                       </div>
                     </div>
