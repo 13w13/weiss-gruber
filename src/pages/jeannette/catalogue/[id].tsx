@@ -45,6 +45,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [showHint, setShowHint] = useState(false);
   const [showFullText, setShowFullText] = useState(false);
   const [showFullAlt, setShowFullAlt] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Prefetch hero of next artwork for instant loading (client only)
   useEffect(() => {
@@ -63,6 +64,14 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     }
   }, [open]);
 
+  // Track viewport width to toggle between Captions plugin (mobile) and custom footer (desktop)
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 1024);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
   const hasLongText = fullText.length > 80;
@@ -79,6 +88,22 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || img.nom || work.title_fr,
       description: '' // Keep gallery items without text overlay
+    })) || [])
+  ];
+
+  // Slides with captions for mobile (uses Captions plugin)
+  const slidesWithCaptions = [
+    { 
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
+      alt: work.title_fr,
+      title: `${work.title_fr} (1/${slides.length})`,
+      description: `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${fullText || ''}`
+    },
+    ...(work.gallery_images?.map((img, idx) => ({
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
+      alt: img.alt_fr || img.nom || work.title_fr,
+      title: `${img.nom || work.title_fr} (${idx + 2}/${slides.length})`,
+      description: `${img.alt_fr || ''}${img.credit ? `\n\nCrédit: ${img.credit}` : ''}`
     })) || [])
   ];
 
