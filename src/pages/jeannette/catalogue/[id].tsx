@@ -473,6 +473,86 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                             Photo : {currentMeta.credit}
                           </div>
                         )}
+
+                        {/* Navigation inter-vitraux (mobile/tablette uniquement) */}
+                        {window.innerWidth < 1024 && (
+                          <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+                            {index === 0 && prevId ? (
+                              <button
+                                onClick={(e: React.MouseEvent) => {
+                                  e.stopPropagation();
+                                  router.push(`/jeannette/catalogue/${prevId}`);
+                                }}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  padding: '10px 16px',
+                                  backgroundColor: 'rgba(255,255,255,0.1)',
+                                  border: '1px solid rgba(255,255,255,0.2)',
+                                  borderRadius: '6px',
+                                  color: 'white',
+                                  fontSize: '14px',
+                                  fontWeight: '500',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                  flex: 1
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)';
+                                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                                }}
+                              >
+                                <ChevronLeft style={{ width: '16px', height: '16px' }} />
+                                <span>Vitrail précédent</span>
+                              </button>
+                            ) : (
+                              <div style={{ flex: 1 }} />
+                            )}
+                            
+                            {index === slides.length - 1 && nextId ? (
+                              <button
+                                onClick={(e: React.MouseEvent) => {
+                                  e.stopPropagation();
+                                  router.push(`/jeannette/catalogue/${nextId}`);
+                                }}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  padding: '10px 16px',
+                                  backgroundColor: 'rgba(255,255,255,0.1)',
+                                  border: '1px solid rgba(255,255,255,0.2)',
+                                  borderRadius: '6px',
+                                  color: 'white',
+                                  fontSize: '14px',
+                                  fontWeight: '500',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                  flex: 1,
+                                  justifyContent: 'flex-end'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)';
+                                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                                }}
+                              >
+                                <span>Vitrail suivant</span>
+                                <ChevronRight style={{ width: '16px', height: '16px' }} />
+                              </button>
+                            ) : (
+                              <div style={{ flex: 1 }} />
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   )
