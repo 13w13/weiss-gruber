@@ -257,31 +257,57 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       {showFullText ? (
                         <div className="max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
                           <p className="whitespace-pre-line">{fullText}</p>
-                          <button
-                            onMouseDown={(e) => {
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onPointerDown={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                               setShowFullText(false);
                             }}
-                            className="mt-3 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer select-none"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setShowFullText(false);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setShowFullText(false);
+                              }
+                            }}
+                            className="mt-3 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer select-none inline-block"
                           >
                             Voir moins
-                          </button>
+                          </div>
                         </div>
                       ) : (
                         <div>
                           <p className="line-clamp-2">{fullText}</p>
                           {hasLongText && (
-                            <button
-                              onMouseDown={(e) => {
+                            <div
+                              role="button"
+                              tabIndex={0}
+                              onPointerDown={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 setShowFullText(true);
                               }}
-                              className="mt-2 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer select-none"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setShowFullText(true);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  setShowFullText(true);
+                                }
+                              }}
+                              className="mt-2 text-blue-300 hover:text-blue-200 underline text-xs font-medium cursor-pointer select-none inline-block"
                             >
                               Lire plus
-                            </button>
+                            </div>
                           )}
                         </div>
                       )}

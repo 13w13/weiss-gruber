@@ -25,7 +25,7 @@ The digital format offers a unique quality of viewing — the screen's pixel lig
 - **Image Lightbox**: yet-another-react-lightbox
 - **Image Storage**: Scaleway Object Storage
 - **Deployment**: Vercel
-- **Development**: Co-developed with Windsurf AI
+- **Development**: Co-developed with LLMs
 
 ## Project Structure
 
