@@ -279,40 +279,40 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         right: 0,
                         backgroundColor: '#000',
                         borderTop: '1px solid rgba(255,255,255,0.1)',
-                        padding: window.innerWidth < 768 ? '12px 16px' : '20px 24px',
+                        padding: window.innerWidth < 640 ? '10px 12px' : (window.innerWidth < 768 ? '12px 16px' : '20px 24px'),
                         zIndex: 1000,
                         pointerEvents: 'auto',
-                        minHeight: window.innerWidth < 768 ? '160px' : 'auto',
-                        maxHeight: (showFullText || showFullAlt) ? 'min(65vh, 500px)' : (window.innerWidth < 768 ? '240px' : '180px'),
-                        overflowY: (showFullText || showFullAlt) ? 'auto' : 'auto',
+                        minHeight: 'auto',
+                        maxHeight: (showFullText || showFullAlt) ? 'min(65vh, 500px)' : (window.innerWidth < 640 ? '32vh' : (window.innerWidth < 768 ? '35vh' : '180px')),
+                        overflowY: 'auto',
                         transition: 'max-height 0.3s ease'
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
                       <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
                         {/* Header with title, metadata, and image counter - always visible */}
-                        <div style={{ marginBottom: (currentMeta.text || currentMeta.nom) ? '12px' : '0' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
-                            <h3 style={{ color: 'white', fontSize: window.innerWidth < 768 ? '16px' : '18px', fontWeight: '600', margin: 0, lineHeight: '1.3' }}>{work.title_fr}</h3>
-                            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: window.innerWidth < 768 ? '12px' : '13px', fontWeight: '500', marginLeft: '12px', flexShrink: 0 }}>
+                        <div style={{ marginBottom: (currentMeta.text || currentMeta.nom) ? (window.innerWidth < 640 ? '8px' : '12px') : '0' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: window.innerWidth < 640 ? '2px' : '4px' }}>
+                            <h3 style={{ color: 'white', fontSize: window.innerWidth < 640 ? '14px' : (window.innerWidth < 768 ? '16px' : '18px'), fontWeight: '600', margin: 0, lineHeight: '1.2' }}>{work.title_fr}</h3>
+                            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: window.innerWidth < 640 ? '11px' : (window.innerWidth < 768 ? '12px' : '13px'), fontWeight: '500', marginLeft: '8px', flexShrink: 0 }}>
                               {index + 1}/{slides.length}
                             </span>
                           </div>
-                          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: window.innerWidth < 768 ? '12px' : '13px', margin: 0, lineHeight: '1.4' }}>
+                          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: window.innerWidth < 640 ? '11px' : (window.innerWidth < 768 ? '12px' : '13px'), margin: 0, lineHeight: '1.3' }}>
                             {work.building_name || 'Sans localisation'}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
                           </p>
                         </div>
 
                         {/* For gallery images: show nom as title */}
                         {currentMeta.nom && (
-                          <div style={{ marginBottom: '6px' }}>
-                            <h4 style={{ color: 'white', fontSize: window.innerWidth < 768 ? '14px' : '16px', fontWeight: '500', margin: 0, lineHeight: '1.3' }}>{currentMeta.nom}</h4>
+                          <div style={{ marginBottom: window.innerWidth < 640 ? '4px' : '6px' }}>
+                            <h4 style={{ color: 'white', fontSize: window.innerWidth < 640 ? '13px' : (window.innerWidth < 768 ? '14px' : '16px'), fontWeight: '500', margin: 0, lineHeight: '1.2' }}>{currentMeta.nom}</h4>
                           </div>
                         )}
                         
                         {/* Main image: show text_fr description */}
                         {currentMeta.text && (
-                          <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6' }}>
+                          <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: window.innerWidth < 640 ? '12px' : '14px', lineHeight: '1.5' }}>
                             {showFullText ? (
                               <div style={{ paddingRight: '8px' }}>
                                 <p style={{ whiteSpace: 'pre-line' }}>{currentMeta.text}</p>
@@ -389,7 +389,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
                         {/* Gallery images: show alt_fr description */}
                         {currentMeta.alt_fr && (
-                          <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6', marginBottom: '8px' }}>
+                          <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: window.innerWidth < 640 ? '12px' : '14px', lineHeight: '1.5', marginBottom: window.innerWidth < 640 ? '6px' : '8px' }}>
                             {showFullAlt ? (
                               <div style={{ paddingRight: '8px' }}>
                                 <p style={{ margin: 0, whiteSpace: 'pre-line' }}>{currentMeta.alt_fr}</p>
@@ -469,14 +469,14 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
                         {/* Gallery images: show photo credit */}
                         {currentMeta.credit && (
-                          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', fontStyle: 'italic', marginTop: '8px' }}>
+                          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: window.innerWidth < 640 ? '11px' : '12px', fontStyle: 'italic', marginTop: window.innerWidth < 640 ? '4px' : '8px' }}>
                             Photo : {currentMeta.credit}
                           </div>
                         )}
 
                         {/* Navigation inter-vitraux (mobile/tablette uniquement) */}
                         {window.innerWidth < 1024 && (
-                          <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+                          <div style={{ marginTop: window.innerWidth < 640 ? '10px' : '16px', paddingTop: window.innerWidth < 640 ? '8px' : '12px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', gap: window.innerWidth < 640 ? '8px' : '12px' }}>
                             {index === 0 && prevId ? (
                               <button
                                 onClick={(e: React.MouseEvent) => {
@@ -486,13 +486,13 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
-                                  gap: '6px',
-                                  padding: '10px 16px',
+                                  gap: window.innerWidth < 640 ? '4px' : '6px',
+                                  padding: window.innerWidth < 640 ? '8px 12px' : '10px 16px',
                                   backgroundColor: 'rgba(255,255,255,0.1)',
                                   border: '1px solid rgba(255,255,255,0.2)',
                                   borderRadius: '6px',
                                   color: 'white',
-                                  fontSize: '14px',
+                                  fontSize: window.innerWidth < 640 ? '12px' : '14px',
                                   fontWeight: '500',
                                   cursor: 'pointer',
                                   transition: 'all 0.2s ease',
@@ -523,13 +523,13 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
-                                  gap: '6px',
-                                  padding: '10px 16px',
+                                  gap: window.innerWidth < 640 ? '4px' : '6px',
+                                  padding: window.innerWidth < 640 ? '8px 12px' : '10px 16px',
                                   backgroundColor: 'rgba(255,255,255,0.1)',
                                   border: '1px solid rgba(255,255,255,0.2)',
                                   borderRadius: '6px',
                                   color: 'white',
-                                  fontSize: '14px',
+                                  fontSize: window.innerWidth < 640 ? '12px' : '14px',
                                   fontWeight: '500',
                                   cursor: 'pointer',
                                   transition: 'all 0.2s ease',
