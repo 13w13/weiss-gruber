@@ -212,6 +212,16 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   descriptionTextAlign: 'start',
                   descriptionMaxLines: 0 // Disable default captions, we'll use custom overlay
                 }}
+                thumbnails={{
+                  position: 'top',
+                  width: 120,
+                  height: 80,
+                  border: 1,
+                  borderRadius: 4,
+                  padding: 0,
+                  gap: 16,
+                  showToggle: false
+                }}
                 on={{ view: ({ index: idx }) => {
                   setIndex(idx);
                 } }}
@@ -237,11 +247,11 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
               {/* Custom text overlay for all images - Museum-grade persistent captions */}
               {open && fullText && (
                 <div 
-                  className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/85 to-transparent px-6 pb-6 pt-16"
+                  className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/85 to-transparent px-6 pb-8 pt-20"
                   style={{ zIndex: 2147483647 }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="max-w-4xl mx-auto">
+                  <div className="max-w-4xl mx-auto" style={{ marginBottom: '20px' }}>
                     {index === 0 && <h3 className="text-white text-lg font-semibold mb-2">{work.title_fr}</h3>}
                     <div className="text-white/90 text-sm leading-relaxed">
                       {showFullText ? (
