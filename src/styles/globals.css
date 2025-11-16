@@ -38,3 +38,37 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
+
+/* Lightbox: Reserve space for bottom caption bar */
+.yarl__slide {
+  padding-bottom: 140px !important;
+}
+
+/* Adjust image container to fit in available space */
+.yarl__slide_image_container {
+  max-height: calc(100vh - 240px) !important;
+}
+
+/* Ensure thumbnails don't overlap with caption */
+.yarl__thumbnails {
+  bottom: 140px !important;
+}
+
+/* Smooth scrollbar for expanded text in lightbox */
+.yarl__slide_footer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.yarl__slide_footer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.yarl__slide_footer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.yarl__slide_footer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

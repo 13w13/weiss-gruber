@@ -241,22 +241,26 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                     <div 
                       className="yarl__slide_footer" 
                       style={{ 
-                        position: 'absolute',
+                        position: 'fixed',
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        background: 'linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.85), transparent)',
-                        padding: '60px 24px 32px',
+                        backgroundColor: '#000',
+                        borderTop: '1px solid rgba(255,255,255,0.1)',
+                        padding: '20px 24px',
                         zIndex: 1000,
-                        pointerEvents: 'auto'
+                        pointerEvents: 'auto',
+                        maxHeight: showFullText ? '50vh' : '140px',
+                        overflowY: showFullText ? 'auto' : 'visible',
+                        transition: 'max-height 0.3s ease'
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
-                      <div style={{ maxWidth: '1024px', margin: '0 auto', marginBottom: '20px' }}>
+                      <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
                         {index === 0 && <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>{work.title_fr}</h3>}
                         <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6' }}>
                           {showFullText ? (
-                            <div style={{ maxHeight: '40vh', overflowY: 'auto', paddingRight: '8px' }}>
+                            <div style={{ paddingRight: '8px' }}>
                               <p style={{ whiteSpace: 'pre-line' }}>{fullText}</p>
                               <div
                                 role="button"
