@@ -49,17 +49,17 @@ body {
   background-color: #000 !important;
 }
 
-/* Lightbox: Mobile uses plugin Captions, no extra padding reserved */
+/* Lightbox: Reserve space for custom footer on all screen sizes */
 @media (max-width: 639px) {
-  .yarl__slide { padding-bottom: 0 !important; }
-  .yarl__slide_image_container { max-height: 100dvh !important; }
-  .yarl__thumbnails { bottom: 0 !important; }
+  .yarl__slide { padding-bottom: 180px !important; }
+  .yarl__slide_image_container { max-height: calc(100dvh - 180px) !important; }
+  .yarl__thumbnails { bottom: 180px !important; }
 }
 
 @media (min-width: 640px) and (max-width: 767px) {
-  .yarl__slide { padding-bottom: 0 !important; }
-  .yarl__slide_image_container { max-height: 100dvh !important; }
-  .yarl__thumbnails { bottom: 0 !important; }
+  .yarl__slide { padding-bottom: 160px !important; }
+  .yarl__slide_image_container { max-height: calc(100dvh - 160px) !important; }
+  .yarl__thumbnails { bottom: 160px !important; }
 }
 
 @media (min-width: 768px) {

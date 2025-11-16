@@ -253,7 +253,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   setShowFullText(false); // Reset text expansion when closing
                 }}
                 index={index}
-                slides={isMobile ? slidesWithCaptions : slides}
+                slides={slides}
                 plugins={plugins}
                 zoom={{
                   maxZoomPixelRatio: 3,
@@ -267,10 +267,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   scrollToZoom: true
                 }}
                 captions={{
-                  showToggle: false,
-                  descriptionTextAlign: 'start',
-                  descriptionMaxLines: isMobile ? 6 : 0,
-                  hidden: !isMobile
+                  hidden: true
                 }}
                 thumbnails={{
                   position: 'top',
@@ -295,7 +292,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                   ),
-                  slideFooter: isMobile ? () => null : () => (
+                  slideFooter: () => (
                     <div 
                       className="yarl__slide_footer" 
                       style={{ 
