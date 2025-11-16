@@ -54,6 +54,30 @@ body {
   bottom: 140px !important;
 }
 
+/* Hide default slide title in top-left */
+.yarl__slide_title {
+  display: none !important;
+}
+
+/* Improve close button visibility */
+.yarl__button_close {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.yarl__button_close:hover {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Position thumbnails with proper spacing */
+.yarl__thumbnails_container {
+  padding: 16px 24px !important;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent) !important;
+}
+
 /* Smooth scrollbar for expanded text in lightbox */
 .yarl__slide_footer::-webkit-scrollbar {
   width: 6px;

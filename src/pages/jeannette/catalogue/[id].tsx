@@ -226,11 +226,12 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   setIndex(idx);
                 } }}
                 counter={{
-                  container: { style: { top: 'auto', left: 'auto', bottom: '24px', right: '24px', backgroundColor: 'rgba(0,0,0,0.75)', color: '#fff', padding: '8px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '500' } }
+                  container: { style: { top: '100px', left: 'auto', bottom: 'auto', right: '24px', backgroundColor: 'rgba(0,0,0,0.85)', color: '#fff', padding: '8px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '500', backdropFilter: 'blur(8px)' } }
                 }}
                 render={{
                   buttonPrev: () => null,
                   buttonNext: () => null,
+                  slideHeader: () => null,
                   iconClose: () => (
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -257,7 +258,14 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
                       <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
-                        {index === 0 && <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>{work.title_fr}</h3>}
+                        <div style={{ marginBottom: '12px' }}>
+                          <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '600', marginBottom: '4px' }}>{work.title_fr}</h3>
+                          {work.building_name && (
+                            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px' }}>
+                              {work.building_name}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
+                            </p>
+                          )}
+                        </div>
                         <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6' }}>
                           {showFullText ? (
                             <div style={{ paddingRight: '8px' }}>
