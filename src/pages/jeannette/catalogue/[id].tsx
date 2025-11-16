@@ -44,6 +44,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [index, setIndex] = useState(0);
   const [showHint, setShowHint] = useState(false);
   const [showFullText, setShowFullText] = useState(false);
+  const [showFullAlt, setShowFullAlt] = useState(false);
 
   // Prefetch hero of next artwork for instant loading (client only)
   useEffect(() => {
@@ -89,6 +90,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
       hasLongText: hasLongText,
       nom: null,
       alt_fr: null,
+      hasLongAlt: false,
       credit: null
     },
     ...(work.gallery_images?.map(img => ({
@@ -97,12 +99,19 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
       hasLongText: false,
       nom: img.nom,
       alt_fr: img.alt_fr || null,
+      hasLongAlt: (img.alt_fr?.length || 0) > 80,
       credit: img.credit || null
     })) || [])
   ];
 
   // Get metadata for current slide
   const currentMeta = slideMetadata[index] || slideMetadata[0];
+
+  // Reset text expansion when slide changes
+  useEffect(() => {
+    setShowFullText(false);
+    setShowFullAlt(false);
+  }, [index]);
 
   // Lightbox keydown handler - navigate to next/prev artwork at boundaries
   useEffect(() => {
@@ -152,22 +161,26 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
-        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-semibold mr-6">
-              Weiss-Gruber
-            </Link>
-            <Link href="/jeannette" className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
-              Jeannette Weiss Gruber
-            </Link>
+        <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2 md:gap-4">
+              <Link href="/" className="text-lg md:text-xl font-semibold">
+                <span className="hidden sm:inline">Weiss-Gruber</span>
+                <span className="inline sm:hidden">WG</span>
+              </Link>
+              <Link href="/jeannette" className="text-sm md:text-base text-gray-700 hover:text-blue-600 transition-colors">
+                <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
+                <span className="inline sm:hidden">Jeannette</span>
+              </Link>
+            </div>
+            <ul className="flex flex-wrap gap-2 md:gap-4 text-xs md:text-base">
+              <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
+              <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
+              <li><Link href="/jeannette/catalogue" className="text-blue-600 whitespace-nowrap"><span className="hidden md:inline">Catalogue Raisonné</span><span className="inline md:hidden">Catalogue</span></Link></li>
+              <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors whitespace-nowrap">Carte</Link></li>
+              <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Expositions</span><span className="inline md:hidden">Expo</span></Link></li>
+            </ul>
           </div>
-          <ul className="flex space-x-6">
-            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Accueil</Link></li>
-            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
-            <li><Link href="/jeannette/catalogue" className="text-blue-600">Catalogue Raisonné</Link></li>
-            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
-            <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">Expositions</Link></li>
-          </ul>
         </nav>
       </header>
 
@@ -264,11 +277,11 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         right: 0,
                         backgroundColor: '#000',
                         borderTop: '1px solid rgba(255,255,255,0.1)',
-                        padding: '20px 24px',
+                        padding: window.innerWidth < 768 ? '16px 20px' : '20px 24px',
                         zIndex: 1000,
                         pointerEvents: 'auto',
-                        maxHeight: fullText && showFullText ? '50vh' : '140px',
-                        overflowY: fullText && showFullText ? 'auto' : 'visible',
+                        maxHeight: (showFullText || showFullAlt) ? 'min(60vh, 500px)' : (window.innerWidth < 768 ? 'auto' : '180px'),
+                        overflowY: (showFullText || showFullAlt) ? 'auto' : 'visible',
                         transition: 'max-height 0.3s ease'
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
@@ -372,7 +385,78 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         {/* Gallery images: show alt_fr description */}
                         {currentMeta.alt_fr && (
                           <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6', marginBottom: '8px' }}>
-                            <p style={{ margin: 0, whiteSpace: 'pre-line' }}>{currentMeta.alt_fr}</p>
+                            {showFullAlt ? (
+                              <div style={{ paddingRight: '8px' }}>
+                                <p style={{ margin: 0, whiteSpace: 'pre-line' }}>{currentMeta.alt_fr}</p>
+                                {currentMeta.hasLongAlt && (
+                                  <div
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={(e: React.MouseEvent) => {
+                                      e.stopPropagation();
+                                      setShowFullAlt(false);
+                                    }}
+                                    onKeyDown={(e: React.KeyboardEvent) => {
+                                      if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        setShowFullAlt(false);
+                                      }
+                                    }}
+                                    style={{ 
+                                      marginTop: '8px',
+                                      color: 'rgb(147, 197, 253)',
+                                      textDecoration: 'underline',
+                                      fontSize: '12px',
+                                      fontWeight: '500',
+                                      cursor: 'pointer',
+                                      display: 'inline-block',
+                                      userSelect: 'none'
+                                    }}
+                                  >
+                                    Voir moins
+                                  </div>
+                                )}
+                              </div>
+                            ) : (
+                              <div>
+                                <p style={{ 
+                                  margin: 0,
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical'
+                                }}>{currentMeta.alt_fr}</p>
+                                {currentMeta.hasLongAlt && (
+                                  <div
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={(e: React.MouseEvent) => {
+                                      e.stopPropagation();
+                                      setShowFullAlt(true);
+                                    }}
+                                    onKeyDown={(e: React.KeyboardEvent) => {
+                                      if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        setShowFullAlt(true);
+                                      }
+                                    }}
+                                    style={{ 
+                                      marginTop: '8px',
+                                      color: 'rgb(147, 197, 253)',
+                                      textDecoration: 'underline',
+                                      fontSize: '12px',
+                                      fontWeight: '500',
+                                      cursor: 'pointer',
+                                      display: 'inline-block',
+                                      userSelect: 'none'
+                                    }}
+                                  >
+                                    Lire plus
+                                  </div>
+                                )}
+                              </div>
+                            )}
                           </div>
                         )}
 
