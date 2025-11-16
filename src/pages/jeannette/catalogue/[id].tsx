@@ -11,11 +11,9 @@ import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import Captions from 'yet-another-react-lightbox/plugins/captions';
-import Counter from 'yet-another-react-lightbox/plugins/counter';
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
-import 'yet-another-react-lightbox/plugins/counter.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
 
@@ -66,7 +64,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
-  const hasLongText = fullText.length > 150;
+  const hasLongText = fullText.length > 80;
 
   // Build slides once per render (needs to be before effects that depend on it)
   const slides = [
@@ -148,7 +146,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
   // Build plugin list dynamically
   const plugins: Plugin[] = [Zoom, Captions];
-  if (slides.length > 1) plugins.push(Counter);
+  // Counter is now displayed in custom footer, not as a plugin
   if (slides.length > 4) plugins.push(Thumbnails);
 
   return (
@@ -252,8 +250,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   container: { style: { top: '100px', left: 'auto', bottom: 'auto', right: '24px', backgroundColor: 'rgba(0,0,0,0.85)', color: '#fff', padding: '8px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '500', backdropFilter: 'blur(8px)' } }
                 }}
                 render={{
-                  buttonPrev: () => null,
-                  buttonNext: () => null,
                   slideHeader: () => null,
                   iconClose: () => (
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
