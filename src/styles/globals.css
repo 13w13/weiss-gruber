@@ -39,6 +39,16 @@ body {
   background: rgba(255, 255, 255, 0.5);
 }
 
+/* Lightbox: Solid black background - no transparency */
+.yarl__container {
+  background-color: #000 !important;
+}
+
+/* Ensure lightbox backdrop is fully opaque black */
+.yarl__root {
+  background-color: #000 !important;
+}
+
 /* Lightbox: Reserve space for bottom caption bar */
 .yarl__slide {
   padding-bottom: 140px !important;
@@ -72,10 +82,27 @@ body {
   background-color: rgba(0, 0, 0, 0.75) !important;
 }
 
-/* Position thumbnails with proper spacing */
+/* Position thumbnails with proper spacing and better background */
 .yarl__thumbnails_container {
-  padding: 16px 24px !important;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent) !important;
+  padding: 20px 24px 24px !important;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 100%) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Improve thumbnail borders and hover */
+.yarl__thumbnails_thumbnail {
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+.yarl__thumbnails_thumbnail:hover {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  transform: scale(1.05) !important;
+}
+
+.yarl__thumbnails_thumbnail_active {
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5) !important;
 }
 
 /* Smooth scrollbar for expanded text in lightbox */
