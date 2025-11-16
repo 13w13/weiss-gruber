@@ -19,6 +19,7 @@ interface CsvRow {
   location_in_building: string;
   title_fr: string;
   main_image: string;
+  text_fr: string;
   caption_fr: string;
   photo_status: string;
   description_fr: string;

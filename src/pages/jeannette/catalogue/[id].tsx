@@ -238,7 +238,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                   ),
-                  slideFooter: () => fullText ? (
+                  slideFooter: () => (
                     <div 
                       className="yarl__slide_footer" 
                       style={{ 
@@ -251,77 +251,47 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         padding: '20px 24px',
                         zIndex: 1000,
                         pointerEvents: 'auto',
-                        maxHeight: showFullText ? '50vh' : '140px',
-                        overflowY: showFullText ? 'auto' : 'visible',
+                        maxHeight: fullText && showFullText ? '50vh' : '140px',
+                        overflowY: fullText && showFullText ? 'auto' : 'visible',
                         transition: 'max-height 0.3s ease'
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
                       <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
-                        <div style={{ marginBottom: '12px' }}>
-                          <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '600', marginBottom: '4px' }}>{work.title_fr}</h3>
-                          {work.building_name && (
-                            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px' }}>
-                              {work.building_name}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
-                            </p>
-                          )}
+                        {/* Header with title, metadata, and image counter - always visible */}
+                        <div style={{ marginBottom: fullText ? '12px' : '0' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
+                            <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '600', margin: 0 }}>{work.title_fr}</h3>
+                            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', marginLeft: '16px', flexShrink: 0 }}>
+                              {index + 1}/{slides.length}
+                            </span>
+                          </div>
+                          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', margin: 0 }}>
+                            {work.building_name || 'Sans localisation'}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
+                          </p>
                         </div>
-                        <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6' }}>
-                          {showFullText ? (
-                            <div style={{ paddingRight: '8px' }}>
-                              <p style={{ whiteSpace: 'pre-line' }}>{fullText}</p>
-                              <div
-                                role="button"
-                                tabIndex={0}
-                                onClick={(e: React.MouseEvent) => {
-                                  e.stopPropagation();
-                                  setShowFullText(false);
-                                }}
-                                onKeyDown={(e: React.KeyboardEvent) => {
-                                  if (e.key === 'Enter' || e.key === ' ') {
-                                    e.preventDefault();
-                                    setShowFullText(false);
-                                  }
-                                }}
-                                style={{ 
-                                  marginTop: '12px',
-                                  color: 'rgb(147, 197, 253)',
-                                  textDecoration: 'underline',
-                                  fontSize: '12px',
-                                  fontWeight: '500',
-                                  cursor: 'pointer',
-                                  display: 'inline-block',
-                                  userSelect: 'none'
-                                }}
-                              >
-                                Voir moins
-                              </div>
-                            </div>
-                          ) : (
-                            <div>
-                              <p style={{ 
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                display: '-webkit-box',
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: 'vertical'
-                              }}>{fullText}</p>
-                              {hasLongText && (
+                        
+                        {/* Text description - only visible if fullText exists */}
+                        {fullText && (
+                          <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: '1.6' }}>
+                            {showFullText ? (
+                              <div style={{ paddingRight: '8px' }}>
+                                <p style={{ whiteSpace: 'pre-line' }}>{fullText}</p>
                                 <div
                                   role="button"
                                   tabIndex={0}
                                   onClick={(e: React.MouseEvent) => {
                                     e.stopPropagation();
-                                    setShowFullText(true);
+                                    setShowFullText(false);
                                   }}
                                   onKeyDown={(e: React.KeyboardEvent) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
                                       e.preventDefault();
-                                      setShowFullText(true);
+                                      setShowFullText(false);
                                     }
                                   }}
                                   style={{ 
-                                    marginTop: '8px',
+                                    marginTop: '12px',
                                     color: 'rgb(147, 197, 253)',
                                     textDecoration: 'underline',
                                     fontSize: '12px',
@@ -331,15 +301,53 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                     userSelect: 'none'
                                   }}
                                 >
-                                  Lire plus
+                                  Voir moins
                                 </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <p style={{ 
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical'
+                                }}>{fullText}</p>
+                                {hasLongText && (
+                                  <div
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={(e: React.MouseEvent) => {
+                                      e.stopPropagation();
+                                      setShowFullText(true);
+                                    }}
+                                    onKeyDown={(e: React.KeyboardEvent) => {
+                                      if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        setShowFullText(true);
+                                      }
+                                    }}
+                                    style={{ 
+                                      marginTop: '8px',
+                                      color: 'rgb(147, 197, 253)',
+                                      textDecoration: 'underline',
+                                      fontSize: '12px',
+                                      fontWeight: '500',
+                                      cursor: 'pointer',
+                                      display: 'inline-block',
+                                      userSelect: 'none'
+                                    }}
+                                  >
+                                    Lire plus
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  ) : null
+                  )
                 }}
               />
 
