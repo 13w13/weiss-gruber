@@ -259,19 +259,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 on={{ 
                   view: ({ index: idx }) => {
                     setIndex(idx);
-                  },
-                  // Navigate to next/prev artwork when swiping beyond gallery bounds
-                  navigateTo: ({ index: targetIdx }) => {
-                    if (targetIdx < 0 && prevId) {
-                      // Swiped left from first image -> go to previous artwork
-                      router.push(`/jeannette/catalogue/${prevId}`);
-                      return;
-                    }
-                    if (targetIdx >= slides.length && nextId) {
-                      // Swiped right from last image -> go to next artwork
-                      router.push(`/jeannette/catalogue/${nextId}`);
-                      return;
-                    }
                   }
                 }}
                 render={{
