@@ -45,6 +45,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [showHint, setShowHint] = useState(false);
   const [showFullText, setShowFullText] = useState(false);
   const [showFullAlt, setShowFullAlt] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Prefetch hero of next artwork for instant loading (client only)
   useEffect(() => {
@@ -63,6 +64,14 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     }
   }, [open]);
 
+  // Track viewport width to toggle Captions on mobile/tablette
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < 1024);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
   const hasLongText = fullText.length > 80;
@@ -79,6 +88,22 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || img.nom || work.title_fr,
       description: '' // Keep gallery items without text overlay
+    })) || [])
+  ];
+
+  // Slides with captions for mobile/tablette (Captions plugin)
+  const slidesWithCaptions = [
+    { 
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
+      alt: work.title_fr,
+      title: work.title_fr,
+      description: fullText || ''
+    },
+    ...(work.gallery_images?.map(img => ({
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
+      alt: img.alt_fr || img.nom || work.title_fr,
+      title: img.nom || undefined,
+      description: img.alt_fr || ''
     })) || [])
   ];
 
@@ -228,7 +253,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   setShowFullText(false); // Reset text expansion when closing
                 }}
                 index={index}
-                slides={slides}
+                slides={isMobile ? slidesWithCaptions : slides}
                 plugins={plugins}
                 zoom={{
                   maxZoomPixelRatio: 3,
@@ -244,7 +269,8 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 captions={{
                   showToggle: false,
                   descriptionTextAlign: 'start',
-                  descriptionMaxLines: 0 // Disable default captions, we'll use custom overlay
+                  descriptionMaxLines: isMobile ? 6 : 0,
+                  hidden: !isMobile
                 }}
                 thumbnails={{
                   position: 'top',
@@ -269,7 +295,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                   ),
-                  slideFooter: () => (
+                  slideFooter: isMobile ? () => null : () => (
                     <div 
                       className="yarl__slide_footer" 
                       style={{ 

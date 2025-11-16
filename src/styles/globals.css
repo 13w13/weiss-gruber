@@ -49,17 +49,17 @@ body {
   background-color: #000 !important;
 }
 
-/* Lightbox: Reserve space for bottom caption bar (viewport + safe-area) */
+/* Lightbox: Mobile uses plugin Captions, no extra padding reserved */
 @media (max-width: 639px) {
-  .yarl__slide { padding-bottom: calc(40vh + env(safe-area-inset-bottom, 0px)) !important; }
-  .yarl__slide_image_container { max-height: calc(60vh - env(safe-area-inset-bottom, 0px)) !important; }
-  .yarl__thumbnails { bottom: calc(40vh + env(safe-area-inset-bottom, 0px)) !important; }
+  .yarl__slide { padding-bottom: 0 !important; }
+  .yarl__slide_image_container { max-height: 100dvh !important; }
+  .yarl__thumbnails { bottom: 0 !important; }
 }
 
 @media (min-width: 640px) and (max-width: 767px) {
-  .yarl__slide { padding-bottom: calc(38vh + env(safe-area-inset-bottom, 0px)) !important; }
-  .yarl__slide_image_container { max-height: calc(62vh - env(safe-area-inset-bottom, 0px)) !important; }
-  .yarl__thumbnails { bottom: calc(38vh + env(safe-area-inset-bottom, 0px)) !important; }
+  .yarl__slide { padding-bottom: 0 !important; }
+  .yarl__slide_image_container { max-height: 100dvh !important; }
+  .yarl__thumbnails { bottom: 0 !important; }
 }
 
 @media (min-width: 768px) {
