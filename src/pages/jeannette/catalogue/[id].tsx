@@ -246,9 +246,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 on={{ view: ({ index: idx }) => {
                   setIndex(idx);
                 } }}
-                counter={{
-                  container: { style: { top: '100px', left: 'auto', bottom: 'auto', right: '24px', backgroundColor: 'rgba(0,0,0,0.85)', color: '#fff', padding: '8px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '500', backdropFilter: 'blur(8px)' } }
-                }}
                 render={{
                   slideHeader: () => null,
                   iconClose: () => (
