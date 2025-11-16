@@ -184,13 +184,13 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
         </nav>
       </header>
 
-      <main className="pt-24 pb-16">
-        <div className="container mx-auto px-4">
+      <main className="pt-20 md:pt-24 pb-12 md:pb-16">
+        <div className="container mx-auto px-3 md:px-4">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-light mb-4">{work.title_fr}</h1>
-            <p className="text-lg text-gray-600 mb-4">{work.year} - {work.building_name}, {work.city}</p>
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-light mb-3 md:mb-4">{work.title_fr}</h1>
+            <p className="text-base md:text-lg text-gray-600 mb-4">{work.year} - {work.building_name}, {work.city}</p>
 
-            <div className="mb-6 flex justify-between items-center">
+            <div className="mb-4 md:mb-6 flex justify-between items-center text-sm md:text-base">
               {prevId ? (
                 <Link href={`/jeannette/catalogue/${prevId}`} className="inline-flex items-center text-gray-700 hover:text-blue-600 transition-colors">
                   <ChevronLeft className="w-4 h-4 mr-1" />
@@ -207,7 +207,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
               )}
             </div>
 
-                        <div className="relative h-96 md:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => { setIndex(0); setOpen(true); }}>
+                        <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => { setIndex(0); setOpen(true); }}>
               <Image
                 src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`}
                 alt={work.title_fr}
@@ -256,9 +256,24 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   gap: 16,
                   showToggle: false
                 }}
-                on={{ view: ({ index: idx }) => {
-                  setIndex(idx);
-                } }}
+                on={{ 
+                  view: ({ index: idx }) => {
+                    setIndex(idx);
+                  },
+                  // Navigate to next/prev artwork when swiping beyond gallery bounds
+                  navigateTo: ({ index: targetIdx }) => {
+                    if (targetIdx < 0 && prevId) {
+                      // Swiped left from first image -> go to previous artwork
+                      router.push(`/jeannette/catalogue/${prevId}`);
+                      return;
+                    }
+                    if (targetIdx >= slides.length && nextId) {
+                      // Swiped right from last image -> go to next artwork
+                      router.push(`/jeannette/catalogue/${nextId}`);
+                      return;
+                    }
+                  }
+                }}
                 render={{
                   slideHeader: () => null,
                   iconClose: () => (
@@ -277,11 +292,12 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         right: 0,
                         backgroundColor: '#000',
                         borderTop: '1px solid rgba(255,255,255,0.1)',
-                        padding: window.innerWidth < 768 ? '16px 20px' : '20px 24px',
+                        padding: window.innerWidth < 768 ? '12px 16px' : '20px 24px',
                         zIndex: 1000,
                         pointerEvents: 'auto',
-                        maxHeight: (showFullText || showFullAlt) ? 'min(60vh, 500px)' : (window.innerWidth < 768 ? 'auto' : '180px'),
-                        overflowY: (showFullText || showFullAlt) ? 'auto' : 'visible',
+                        minHeight: window.innerWidth < 768 ? '160px' : 'auto',
+                        maxHeight: (showFullText || showFullAlt) ? 'min(65vh, 500px)' : (window.innerWidth < 768 ? '240px' : '180px'),
+                        overflowY: (showFullText || showFullAlt) ? 'auto' : 'auto',
                         transition: 'max-height 0.3s ease'
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
@@ -290,20 +306,20 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         {/* Header with title, metadata, and image counter - always visible */}
                         <div style={{ marginBottom: (currentMeta.text || currentMeta.nom) ? '12px' : '0' }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
-                            <h3 style={{ color: 'white', fontSize: '18px', fontWeight: '600', margin: 0 }}>{work.title_fr}</h3>
-                            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', marginLeft: '16px', flexShrink: 0 }}>
+                            <h3 style={{ color: 'white', fontSize: window.innerWidth < 768 ? '16px' : '18px', fontWeight: '600', margin: 0, lineHeight: '1.3' }}>{work.title_fr}</h3>
+                            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: window.innerWidth < 768 ? '12px' : '13px', fontWeight: '500', marginLeft: '12px', flexShrink: 0 }}>
                               {index + 1}/{slides.length}
                             </span>
                           </div>
-                          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', margin: 0 }}>
+                          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: window.innerWidth < 768 ? '12px' : '13px', margin: 0, lineHeight: '1.4' }}>
                             {work.building_name || 'Sans localisation'}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
                           </p>
                         </div>
 
                         {/* For gallery images: show nom as title */}
                         {currentMeta.nom && (
-                          <div style={{ marginBottom: '8px' }}>
-                            <h4 style={{ color: 'white', fontSize: '16px', fontWeight: '500', margin: 0 }}>{currentMeta.nom}</h4>
+                          <div style={{ marginBottom: '6px' }}>
+                            <h4 style={{ color: 'white', fontSize: window.innerWidth < 768 ? '14px' : '16px', fontWeight: '500', margin: 0, lineHeight: '1.3' }}>{currentMeta.nom}</h4>
                           </div>
                         )}
                         
@@ -346,8 +362,10 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                   overflow: 'hidden',
                                   textOverflow: 'ellipsis',
                                   display: '-webkit-box',
-                                  WebkitLineClamp: 2,
-                                  WebkitBoxOrient: 'vertical'
+                                  WebkitLineClamp: window.innerWidth < 768 ? 3 : 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  fontSize: window.innerWidth < 768 ? '13px' : '14px',
+                                  lineHeight: '1.5'
                                 }}>{currentMeta.text}</p>
                                 {currentMeta.hasLongText && (
                                   <div
@@ -424,8 +442,10 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                                   overflow: 'hidden',
                                   textOverflow: 'ellipsis',
                                   display: '-webkit-box',
-                                  WebkitLineClamp: 2,
-                                  WebkitBoxOrient: 'vertical'
+                                  WebkitLineClamp: window.innerWidth < 768 ? 3 : 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  fontSize: window.innerWidth < 768 ? '13px' : '14px',
+                                  lineHeight: '1.5'
                                 }}>{currentMeta.alt_fr}</p>
                                 {currentMeta.hasLongAlt && (
                                   <div
@@ -488,12 +508,12 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
 
             {(work.text_fr || work.caption_fr) && (
-              <p className="mb-8 text-base text-gray-700 leading-relaxed">
+              <p className="mb-6 md:mb-8 text-sm md:text-base text-gray-700 leading-relaxed">
                 {work.text_fr || work.caption_fr}
               </p>
             )}
 
-            <div className="space-y-4 mb-12">
+            <div className="space-y-3 md:space-y-4 mb-8 md:mb-12">
               {!work.text_fr && work.description_fr && (
                 <p className="text-gray-800 leading-relaxed">
                   {work.description_fr}
@@ -530,8 +550,8 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
             {work.gallery_images && work.gallery_images.length > 0 && (
               <div>
-                <h2 className="text-2xl font-light mb-4">Galerie</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <h2 className="text-xl md:text-2xl font-light mb-3 md:mb-4">Galerie</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                   {work.gallery_images.map((image, index) => (
                     <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                       <Image

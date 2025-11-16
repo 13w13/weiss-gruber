@@ -15,43 +15,46 @@ export default function JeannetteFrontPage() {
     <div className="min-h-screen bg-white text-gray-900">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
-        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/jeannette" className="text-xl font-semibold">
-            Jeannette Weiss Gruber
-          </Link>
-          <ul className="flex space-x-6">
-            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Accueil</Link></li>
-            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
-            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue Raisonné</Link></li>
-            <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">Carte</Link></li>
-            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">Publications</Link></li>
-          </ul>
+        <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
+              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
+              <span className="inline sm:hidden">Jeannette WG</span>
+            </Link>
+            <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
+              <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
+              <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
+              <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Catalogue Raisonné</span><span className="inline md:hidden">Catalogue</span></Link></li>
+              <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors whitespace-nowrap">Carte</Link></li>
+              <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Publications</span><span className="inline md:hidden">Publi</span></Link></li>
+            </ul>
+          </div>
         </nav>
       </header>
 
       <main className="pt-16">
         {/* Hero */}
-        <section className="relative h-[90vh]">
+        <section className="relative h-[70vh] sm:h-[80vh] md:h-[90vh]">
           <Image src={heroImg} alt="Jeannette peignant" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
-            <h1 className="text-5xl md:text-7xl text-white font-light mb-6">Jeannette Weiss Gruber</h1>
-            <p className="text-lg md:text-2xl text-white font-light">Peintre-verrier née en 1934</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white font-light mb-4 md:mb-6">Jeannette Weiss Gruber</h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light">Peintre-verrier née en 1934</p>
           </div>
-          <div className="absolute bottom-4 right-4 text-white text-sm opacity-70">
+          <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 text-white text-xs sm:text-sm opacity-70">
             Photo © Jean-Luc Vallet
           </div>
         </section>
 
         {/* Citations */}
-        <section className="bg-white py-16 md:py-24">
-          <div className="max-w-3xl mx-auto px-4 space-y-12 text-center">
-            <blockquote className="italic text-2xl text-gray-800 leading-relaxed">
+        <section className="bg-white py-12 md:py-16 lg:py-24">
+          <div className="max-w-3xl mx-auto px-4 space-y-8 md:space-y-12 text-center">
+            <blockquote className="italic text-lg md:text-xl lg:text-2xl text-gray-800 leading-relaxed">
               « J&apos;ai beaucoup admiré la lumière que mon grand-père obtenait avec trois superpositions de verre et la gravure. Contrai­rement à lui, amoureuse du vitrail, j&apos;ai cherché la lumière avec mon travail de la grisaille. »
             </blockquote>
-            <blockquote className="italic text-2xl text-gray-800 leading-relaxed">
+            <blockquote className="italic text-lg md:text-xl lg:text-2xl text-gray-800 leading-relaxed">
               « À 11 ans, j&apos;ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »
             </blockquote>
-            <p className="text-lg text-gray-700 font-medium">Jeannette Weiss Gruber</p>
+            <p className="text-base md:text-lg text-gray-700 font-medium">Jeannette Weiss Gruber</p>
           </div>
         </section>
 
@@ -76,25 +79,25 @@ export default function JeannetteFrontPage() {
         </section>
 
         {/* Recensement Taralon */}
-        <section className="bg-gray-50 py-16 md:py-24">
+        <section className="bg-gray-50 py-12 md:py-16 lg:py-24">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto mb-10">
+            <p className="text-base md:text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto mb-8 md:mb-10">
               A réalisé des vitraux dans l&apos;atelier familial d&apos;après ses maquettes, ses cartons colorés et la peinture à la grisaille toujours à la lumière du jour. Ses créations ont été recensées par Jean Taralon :
             </p>
-            <div className="flex justify-center gap-8">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-6 md:gap-8">
               <button onClick={() => setLightboxImage(taralonRecto.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
-                <Image src={taralonRecto} alt="Taralon recto" className="rounded shadow-lg" width={400} height={560} />
+                <Image src={taralonRecto} alt="Taralon recto" className="rounded shadow-lg" width={300} height={420} />
               </button>
               <button onClick={() => setLightboxImage(taralonVerso.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
-                <Image src={taralonVerso} alt="Taralon verso" className="rounded shadow-lg" width={400} height={560} />
+                <Image src={taralonVerso} alt="Taralon verso" className="rounded shadow-lg" width={300} height={420} />
               </button>
             </div>
           </div>
         </section>
 
         {/* Technique & inspirations */}
-        <section className="bg-blue-50 py-16 md:py-24">
-          <div className="max-w-4xl mx-auto px-4 text-2xl text-gray-800 leading-relaxed space-y-6">
+        <section className="bg-blue-50 py-12 md:py-16 lg:py-24">
+          <div className="max-w-4xl mx-auto px-4 text-base md:text-xl lg:text-2xl text-gray-800 leading-relaxed space-y-4 md:space-y-6">
             <p>
               Dès 1958, Jeannette Weiss-Gruber utilise, selon les besoins, peignes et éponges, blaireaux et pinceaux — un ensemble de techniques qu’elle mobilise notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon, achevées en 1978.
             </p>
@@ -104,10 +107,10 @@ export default function JeannetteFrontPage() {
         </section>
 
         {/* Citation Zublena */}
-        <section className="container mx-auto px-4 py-16 md:py-24">
-          <div className="bg-white border border-gray-200 rounded-lg shadow-md p-8 md:p-12 max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-6">Médaille de la restauration 2001 - Fondation Académie d&apos;Architecture</h3>
-            <blockquote className="italic text-xl text-gray-800 space-y-4 text-left">
+        <section className="container mx-auto px-4 py-12 md:py-16 lg:py-24">
+          <div className="bg-white border border-gray-200 rounded-lg shadow-md p-6 md:p-8 lg:p-12 max-w-3xl mx-auto text-center">
+            <h3 className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-800 mb-4 md:mb-6">Médaille de la restauration 2001 - Fondation Académie d&apos;Architecture</h3>
+            <blockquote className="italic text-base md:text-lg lg:text-xl text-gray-800 space-y-3 md:space-y-4 text-left">
               <p>
                 « Son objectif est d&apos;insérer ses créations dans les différents édifices en s&apos;imprégnant du cadre architectural et de la lumière, avec une recherche d&apos;harmonie et d&apos;équilibre avec les autres vitraux quand ils existent, tout en évitant les pastiches. »
               </p>
@@ -120,9 +123,9 @@ export default function JeannetteFrontPage() {
         </section>
 
         {/* Timeline */}
-        <section className="bg-gray-50 py-16 md:py-24">
+        <section className="bg-gray-50 py-12 md:py-16 lg:py-24">
           <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-light text-center mb-16">Son Chemin</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-light text-center mb-10 md:mb-16">Son Chemin</h2>
             <div className="relative max-w-2xl mx-auto">
               <div className="absolute left-2.5 top-2 h-full w-0.5 bg-gray-300" aria-hidden="true"></div>
               <div className="space-y-12">
@@ -193,8 +196,8 @@ export default function JeannetteFrontPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-16 md:py-24 bg-gray-100 text-center">
-          <h2 className="text-3xl md:text-4xl font-light mb-8">Explorer l&apos;œuvre de Jeannette Weiss Gruber</h2>
+        <section className="py-12 md:py-16 lg:py-24 bg-gray-100 text-center">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-light mb-6 md:mb-8 px-4">Explorer l&apos;œuvre de Jeannette Weiss Gruber</h2>
           <div className="flex flex-col sm:flex-row justify-center gap-6">
             <Link href="/jeannette/catalogue" className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
               Catalogue Raisonné <ChevronRight className="ml-2 w-4 h-4" />
