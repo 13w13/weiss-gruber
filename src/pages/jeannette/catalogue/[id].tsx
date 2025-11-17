@@ -297,27 +297,68 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 }}
                 render={{
                   slideHeader: () => isMobile ? (
-                    <div style={{
-                      position: 'absolute',
-                      top: 'calc(env(safe-area-inset-top, 0px) + 16px)',
-                      right: '60px',
-                      zIndex: 1001,
-                      pointerEvents: 'none'
-                    }}>
+                    <>
+                      {/* Compteur de photos en haut à droite */}
                       <div style={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                        backdropFilter: 'blur(8px)',
-                        WebkitBackdropFilter: 'blur(8px)',
-                        padding: '6px 12px',
-                        borderRadius: '20px',
-                        color: 'white',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        border: '1px solid rgba(255,255,255,0.2)'
+                        position: 'absolute',
+                        top: 'calc(env(safe-area-inset-top, 0px) + 16px)',
+                        right: '120px',
+                        zIndex: 1001,
+                        pointerEvents: 'none'
                       }}>
-                        {index + 1} / {slides.length}
+                        <div style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                          padding: '6px 12px',
+                          borderRadius: '20px',
+                          color: 'white',
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          border: '1px solid rgba(255,255,255,0.2)'
+                        }}>
+                          {index + 1} / {slides.length}
+                        </div>
                       </div>
-                    </div>
+                      
+                      {/* Bouton "Vitrail suivant" sur la dernière image si nextId existe */}
+                      {index === slides.length - 1 && nextId && (
+                        <div style={{
+                          position: 'absolute',
+                          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 420px)',
+                          right: '16px',
+                          zIndex: 1001,
+                          pointerEvents: 'auto'
+                        }}>
+                          <button
+                            onClick={(e: React.MouseEvent) => {
+                              e.stopPropagation();
+                              router.push(`/jeannette/catalogue/${nextId}`);
+                            }}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              padding: '12px 16px',
+                              backgroundColor: 'rgba(147, 197, 253, 0.95)',
+                              backdropFilter: 'blur(8px)',
+                              WebkitBackdropFilter: 'blur(8px)',
+                              border: 'none',
+                              borderRadius: '24px',
+                              color: '#000',
+                              fontSize: '14px',
+                              fontWeight: '600',
+                              cursor: 'pointer',
+                              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            <span>Vitrail suivant</span>
+                            <ChevronRight style={{ width: '18px', height: '18px' }} />
+                          </button>
+                        </div>
+                      )}
+                    </>
                   ) : null,
                   iconClose: () => (
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
