@@ -278,7 +278,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 captions={{
                   showToggle: false,
                   descriptionTextAlign: 'start',
-                  descriptionMaxLines: 4
+                  descriptionMaxLines: 8
                 }}
                 thumbnails={{
                   position: 'top',
@@ -296,7 +296,29 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   }
                 }}
                 render={{
-                  slideHeader: () => null,
+                  slideHeader: () => isMobile ? (
+                    <div style={{
+                      position: 'absolute',
+                      top: 'calc(env(safe-area-inset-top, 0px) + 16px)',
+                      right: '60px',
+                      zIndex: 1001,
+                      pointerEvents: 'none'
+                    }}>
+                      <div style={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        color: 'white',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        border: '1px solid rgba(255,255,255,0.2)'
+                      }}>
+                        {index + 1} / {slides.length}
+                      </div>
+                    </div>
+                  ) : null,
                   iconClose: () => (
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="18" y1="6" x2="6" y2="18"></line>
