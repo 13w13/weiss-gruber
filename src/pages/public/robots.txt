@@ -1,0 +1,12 @@
+# robots.txt pour weiss-gruber.art
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.weiss-gruber.art/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/

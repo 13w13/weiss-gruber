@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "leaflet": "^1.9.4",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet.fullscreen": "^4.0.0",
