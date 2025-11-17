@@ -7,6 +7,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Component {...pageProps} />
+      {/* Vercel Analytics - Suivi des visites sans cookies, compatible RGPD */}
       <Analytics />
     </>
   );

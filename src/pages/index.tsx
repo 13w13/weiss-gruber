@@ -6,8 +6,9 @@ export default function HomePage() {
   const router = useRouter()
 
   useEffect(() => {
+    // Redirection automatique vers la page Jeannette
     router.replace('/jeannette')
-  }, [router])
+  }, [])
 
   return (
     <>
@@ -28,12 +29,9 @@ export default function HomePage() {
           Les œuvres de Jeannette Weiss Gruber sont visibles ici :
         </p>
 
-        <Link
-          href="/jeannette"
-          className="inline-block px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
-          Découvrir Jeannette
-        </Link>
+        <p className="text-gray-500 italic">
+          Redirection en cours...
+        </p>
 
         <p className="text-gray-600 text-sm">
           Les créations de Frédéric et Camille seront mises en ligne ultérieurement.
