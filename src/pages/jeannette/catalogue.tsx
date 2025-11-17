@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Search, ArrowUpDown, ArrowUp, ArrowDown, Camera } from 'lucide-react';
+import { Search, ArrowUp, ArrowDown, Camera } from 'lucide-react';
 import { GetStaticProps } from 'next';
 import fs from 'fs';
 import path from 'path';
