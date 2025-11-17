@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Search } from 'lucide-react';
+import { Search, ArrowUpDown, ArrowUp, ArrowDown, Camera } from 'lucide-react';
 import { GetStaticProps } from 'next';
 import fs from 'fs';
 import path from 'path';
@@ -32,6 +32,7 @@ interface CsvRow {
 // Le composant reçoit maintenant 'works' en tant que prop
 export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc'); // Par défaut décroissant
 
   // Static content for the page
   const content = {
@@ -47,6 +48,19 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
     (work.city && work.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (work.building_name && work.building_name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  // Tri par année
+  const sortedWorks = [...filteredWorks].sort((a, b) => {
+    const yearA = parseInt(a.year) || 0;
+    const yearB = parseInt(b.year) || 0;
+    return sortOrder === 'desc' ? yearB - yearA : yearA - yearB;
+  });
+
+  // Fonction pour compter les photos (image principale + galerie)
+  const getPhotoCount = (work: Vitrail) => {
+    const galleryCount = work.gallery_images?.length || 0;
+    return 1 + galleryCount; // 1 pour l'image principale + galerie
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -82,21 +96,53 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
             </p>
           </div>
           
-          <div className="mb-8">
-            <div className="relative max-w-2xl mx-auto">
-              <input
-                type="text"
-                placeholder={content.search}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md pl-10"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          {/* Barre de recherche et tri */}
+          <div className="mb-8 max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              {/* Recherche */}
+              <div className="relative flex-1 w-full">
+                <input
+                  type="text"
+                  placeholder={content.search}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md pl-10"
+                />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              </div>
+              
+              {/* Bouton de tri */}
+              <button
+                onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors whitespace-nowrap"
+                title={sortOrder === 'desc' ? 'Trier du plus ancien au plus récent' : 'Trier du plus récent au plus ancien'}
+              >
+                {sortOrder === 'desc' ? (
+                  <>
+                    <ArrowDown className="w-4 h-4" />
+                    <span className="text-sm">Plus récent</span>
+                  </>
+                ) : (
+                  <>
+                    <ArrowUp className="w-4 h-4" />
+                    <span className="text-sm">Plus ancien</span>
+                  </>
+                )}
+              </button>
+            </div>
+            
+            {/* Compteur de résultats */}
+            <div className="mt-4 text-center text-sm text-gray-600">
+              {sortedWorks.length === works.length ? (
+                <span>{works.length} réalisation{works.length > 1 ? 's' : ''}</span>
+              ) : (
+                <span>{sortedWorks.length} résultat{sortedWorks.length > 1 ? 's' : ''} sur {works.length}</span>
+              )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredWorks.map((work) => (
+            {sortedWorks.map((work) => (
               <Link key={work.id} href={`/jeannette/catalogue/${work.id}`} className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-64 bg-gray-200">
                   {/* L'image sera connectée dans une prochaine étape */}
@@ -108,6 +154,11 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
                     className="object-cover w-full h-full"
                     onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300.png?text=Image+non+disponible'; }}
                   />
+                  {/* Badge nombre de photos */}
+                  <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded-md flex items-center gap-1 text-xs font-medium">
+                    <Camera className="w-3 h-3" />
+                    <span>{getPhotoCount(work)}</span>
+                  </div>
                 </div>
                 <div className="p-4">
                   <h3 className="text-xl font-semibold mb-2">{work.title_fr}</h3>
