@@ -6,12 +6,14 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
+import Captions from 'yet-another-react-lightbox/plugins/captions';
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
 
@@ -43,8 +45,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [showHint, setShowHint] = useState(false);
   const [showFullText, setShowFullText] = useState(false);
   const [showFullAlt, setShowFullAlt] = useState(false);
-  const [viewportHeight, setViewportHeight] = useState(0);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const footerRef = useRef<HTMLDivElement | null>(null);
@@ -66,58 +67,13 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     }
   }, [open]);
 
-  // Track viewport height dynamically for mobile (iOS safe handling)
+  // Detect mobile to switch between Captions plugin and custom footer
   useEffect(() => {
-    const updateHeight = () => {
-      const vv = (window as unknown as { visualViewport?: { height: number } }).visualViewport;
-      const height = vv ? vv.height : window.innerHeight;
-      setViewportHeight(height);
-    };
-    
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
-    
-    const vv = (window as unknown as { visualViewport?: { addEventListener: (event: string, handler: () => void) => void; removeEventListener: (event: string, handler: () => void) => void } }).visualViewport;
-    if (vv) {
-      vv.addEventListener('resize', updateHeight);
-    }
-    
-    return () => {
-      window.removeEventListener('resize', updateHeight);
-      if (vv) vv.removeEventListener('resize', updateHeight);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  // Helper function for adaptive footer height
-  const getFooterMaxHeight = () => {
-    if (!viewportHeight) return '45vh';
-    
-    const isSm = typeof window !== 'undefined' && window.innerWidth < 640;
-    const isMd = typeof window !== 'undefined' && window.innerWidth < 768;
-    const reservedSpace = isSm ? 200 : (isMd ? 250 : 300);
-    const availableHeight = viewportHeight - reservedSpace;
-    
-    if (isExpanded || showFullText || showFullAlt) {
-      return `${Math.min(availableHeight * 0.7, viewportHeight * 0.7)}px`;
-    } else {
-      return `${Math.min(availableHeight * 0.4, viewportHeight * 0.4)}px`;
-    }
-  };
-
-  // Update CSS variable to sync reserved space with footer height
-  useEffect(() => {
-    if (!open || typeof window === 'undefined') return;
-    
-    const root = document.querySelector('.yarl__root') as HTMLElement;
-    if (!root) return;
-    
-    const footerHeight = getFooterMaxHeight();
-    root.style.setProperty('--yarl-footer-h', footerHeight);
-    
-    return () => {
-      root.style.removeProperty('--yarl-footer-h');
-    };
-  }, [open, viewportHeight, isExpanded, showFullText, showFullAlt]);
 
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
@@ -168,7 +124,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   useEffect(() => {
     setShowFullText(false);
     setShowFullAlt(false);
-    setIsExpanded(false);
   }, [index]);
 
   // Lightbox keydown handler - navigate to next/prev artwork at boundaries
@@ -211,8 +166,24 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
 
 
+  // Slides with captions for mobile
+  const slidesWithCaptions = [
+    {
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
+      alt: work.title_fr,
+      title: work.title_fr,
+      description: `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${fullText || ''}`
+    },
+    ...(work.gallery_images?.map((img) => ({
+      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
+      alt: img.alt_fr || img.nom || work.title_fr,
+      title: img.nom || work.title_fr,
+      description: `${img.alt_fr || ''}${img.credit ? `\n\nPhoto : ${img.credit}` : ''}`
+    })) || [])
+  ];
+
   // Build plugin list dynamically
-  const plugins: Plugin[] = [Zoom];
+  const plugins: Plugin[] = [Zoom, Captions];
   // Counter is now displayed in custom footer, not as a plugin
   if (slides.length > 4) plugins.push(Thumbnails);
 
@@ -286,7 +257,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   setShowFullText(false); // Reset text expansion when closing
                 }}
                 index={index}
-                slides={slides}
+                slides={isMobile ? slidesWithCaptions : slides}
                 plugins={plugins}
                 zoom={{
                   maxZoomPixelRatio: 3,
@@ -298,6 +269,11 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   wheelZoomDistanceFactor: 100,
                   pinchZoomDistanceFactor: 100,
                   scrollToZoom: true
+                }}
+                captions={{
+                  showToggle: false,
+                  descriptionTextAlign: 'start',
+                  descriptionMaxLines: 4
                 }}
                 thumbnails={{
                   position: 'top',
@@ -322,9 +298,8 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                   ),
-                  slideFooter: () => (
+                  slideFooter: () => isMobile ? null : (
                     <div 
-                      ref={containerRef}
                       className="yarl__slide_footer"
                       style={{ 
                         position: 'fixed',
@@ -335,12 +310,10 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                         pointerEvents: 'auto',
                         display: 'flex',
                         flexDirection: 'column',
-                        maxHeight: typeof window !== 'undefined' && window.innerWidth < 1024 ? getFooterMaxHeight() : 'none',
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
                       <div
-                        ref={footerRef}
                         style={{ 
                           background: 'linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.88))',
                           backdropFilter: 'blur(12px)',
