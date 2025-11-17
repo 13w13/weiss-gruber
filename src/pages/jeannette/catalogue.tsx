@@ -50,19 +50,13 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2 md:gap-4">
-              <Link href="/" className="text-lg md:text-xl font-semibold">
-                <span className="hidden sm:inline">Weiss-Gruber</span>
-                <span className="inline sm:hidden">WG</span>
-              </Link>
-              <Link href="/jeannette" className="text-sm md:text-base text-gray-700 hover:text-blue-600 transition-colors">
-                <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
-                <span className="inline sm:hidden">Jeannette</span>
-              </Link>
-            </div>
+            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
+              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
+              <span className="inline sm:hidden">Jeannette WG</span>
+            </Link>
             <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
               <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
               <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
@@ -76,10 +70,20 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
 
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-light mb-8 text-center">{content.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-light mb-6 text-center">{content.title}</h1>
+          
+          {/* Texte explicatif */}
+          <div className="max-w-3xl mx-auto mb-10 text-center">
+            <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
+              Les réalisations sont présentées par ordre chronologique décroissant. Cliquez sur une œuvre pour accéder à sa fiche détaillée avec images en grand format. Sur la fiche, utilisez les flèches du clavier ou les boutons de navigation pour passer d'une œuvre à l'autre. Un clic sur une image ouvre le mode plein écran avec zoom.
+            </p>
+            <p className="text-xs md:text-sm text-gray-600 italic">
+              Ce catalogue recense les vitraux photographiés et documentés. Il ne constitue pas une liste exhaustive de l'œuvre, mais présente les réalisations principales dont nous disposons d'images de qualité.
+            </p>
+          </div>
           
           <div className="mb-8">
-            <div className="relative">
+            <div className="relative max-w-2xl mx-auto">
               <input
                 type="text"
                 placeholder={content.search}
