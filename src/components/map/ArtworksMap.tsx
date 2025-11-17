@@ -56,6 +56,7 @@ function PopupContent({ work }: { work: Vitrail }) {
               fill
               sizes="256px"
               className="object-cover"
+              unoptimized
             />
           </div>
           {images.length > 1 && (
