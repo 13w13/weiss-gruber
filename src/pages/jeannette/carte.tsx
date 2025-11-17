@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 export default function Carte({ works }: { works: Vitrail[] }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white text-gray-900">
       <header className="fixed top-0 left-0 right-0 bg-white border-b z-50">
         <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
