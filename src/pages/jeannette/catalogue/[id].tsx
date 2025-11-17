@@ -302,7 +302,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       <div style={{
                         position: 'absolute',
                         top: 'calc(env(safe-area-inset-top, 0px) + 16px)',
-                        right: '120px',
+                        right: '160px',
                         zIndex: 1001,
                         pointerEvents: 'none'
                       }}>
@@ -325,28 +325,31 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       {index === slides.length - 1 && nextId && (
                         <div style={{
                           position: 'absolute',
-                          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 420px)',
-                          right: '16px',
+                          top: 'calc(env(safe-area-inset-top, 0px) + 100px)',
+                          left: '16px',
                           zIndex: 1001,
                           pointerEvents: 'auto'
                         }}>
                           <button
                             onClick={(e: React.MouseEvent) => {
                               e.stopPropagation();
-                              router.push(`/jeannette/catalogue/${nextId}`);
+                              setOpen(false);
+                              setTimeout(() => {
+                                router.push(`/jeannette/catalogue/${nextId}`);
+                              }, 100);
                             }}
                             style={{
                               display: 'flex',
                               alignItems: 'center',
-                              gap: '8px',
-                              padding: '12px 16px',
+                              gap: '6px',
+                              padding: '8px 12px',
                               backgroundColor: 'rgba(147, 197, 253, 0.95)',
                               backdropFilter: 'blur(8px)',
                               WebkitBackdropFilter: 'blur(8px)',
                               border: 'none',
-                              borderRadius: '24px',
+                              borderRadius: '20px',
                               color: '#000',
-                              fontSize: '14px',
+                              fontSize: '13px',
                               fontWeight: '600',
                               cursor: 'pointer',
                               boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
@@ -354,7 +357,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                             }}
                           >
                             <span>Vitrail suivant</span>
-                            <ChevronRight style={{ width: '18px', height: '18px' }} />
+                            <ChevronRight style={{ width: '16px', height: '16px' }} />
                           </button>
                         </div>
                       )}
