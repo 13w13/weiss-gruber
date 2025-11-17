@@ -168,14 +168,14 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     {
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
       alt: work.title_fr,
-      title: work.title_fr,
+      title: `${work.title_fr} (1/${slides.length})`,
       description: `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${fullText || ''}`
     },
-    ...(work.gallery_images?.map((img) => ({
+    ...(work.gallery_images?.map((img, idx) => ({
       src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
       alt: img.alt_fr || img.nom || work.title_fr,
-      title: img.nom || work.title_fr,
-      description: `${img.alt_fr || ''}${img.credit ? `\n\nPhoto : ${img.credit}` : ''}`
+      title: `${img.nom || work.title_fr} (${idx + 2}/${slides.length})`,
+      description: `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}${img.alt_fr ? `\n\n${img.alt_fr}` : ''}${img.credit ? `\n\nPhoto : ${img.credit}` : ''}`
     })) || [])
   ];
 
