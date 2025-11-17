@@ -1,4 +1,4 @@
-# Weiss-Gruber - Jeannette Weiss Gruber Stained Glass Portfolio
+# Jeannette Weiss Gruber Stained Glass Portfolio
 
 A website dedicated to Jeannette Weiss Gruber, a French stained glass artist (peintre-verrier) born in 1934. This digital catalogue raisonné showcases her life's work creating and restoring stained glass windows in churches and cathedrals across France.
 

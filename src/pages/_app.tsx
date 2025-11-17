@@ -10,6 +10,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       {/* Vercel Analytics - Suivi des visites sans cookies, compatible RGPD */}
       <Analytics />
+      {/* Speed Insights - Performances Web Core Vitals */}
+      <SpeedInsights />
     </>
   );
 }

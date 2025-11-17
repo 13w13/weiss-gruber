@@ -8,6 +8,7 @@ export default function HomePage() {
   useEffect(() => {
     // Redirection automatique vers la page Jeannette
     router.replace('/jeannette')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
