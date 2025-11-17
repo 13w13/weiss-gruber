@@ -104,6 +104,21 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     }
   };
 
+  // Update CSS variable to sync reserved space with footer height
+  useEffect(() => {
+    if (!open || typeof window === 'undefined') return;
+    
+    const root = document.querySelector('.yarl__root') as HTMLElement;
+    if (!root) return;
+    
+    const footerHeight = getFooterMaxHeight();
+    root.style.setProperty('--yarl-footer-h', footerHeight);
+    
+    return () => {
+      root.style.removeProperty('--yarl-footer-h');
+    };
+  }, [open, viewportHeight, isExpanded, showFullText, showFullAlt]);
+
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
   const hasLongText = fullText.length > 80;

@@ -51,12 +51,12 @@ body {
 
 /* Lightbox: Reserve space for custom footer on all devices */
 @media (max-width: 1023px) {
-  /* Mobile/tablet: Reserve 40vh for footer */
-  .yarl__slide { padding-bottom: 40vh !important; }
+  /* Mobile/tablet: Use dynamic CSS variable for footer height */
+  .yarl__slide { padding-bottom: var(--yarl-footer-h, 40vh) !important; }
   .yarl__slide_image_container { 
-    max-height: calc(100dvh - 40vh - env(safe-area-inset-bottom, 0px)) !important; 
+    max-height: calc(100dvh - var(--yarl-footer-h, 40vh) - env(safe-area-inset-bottom, 0px)) !important; 
   }
-  .yarl__thumbnails { bottom: 40vh !important; }
+  .yarl__thumbnails { bottom: var(--yarl-footer-h, 40vh) !important; }
 }
 
 @media (min-width: 1024px) {
