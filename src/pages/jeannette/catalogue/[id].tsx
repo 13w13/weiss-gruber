@@ -72,6 +72,16 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Auto-open lightbox if ?lightbox=true in URL (for mobile navigation)
+  useEffect(() => {
+    if (router.query.lightbox === 'true') {
+      setOpen(true);
+      setIndex(0);
+      // Clean URL after opening
+      router.replace(`/jeannette/catalogue/${router.query.id}`, undefined, { shallow: true });
+    }
+  }, [router]);
+
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
   const hasLongText = fullText.length > 80;
@@ -333,10 +343,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                           <button
                             onClick={(e: React.MouseEvent) => {
                               e.stopPropagation();
-                              setOpen(false);
-                              setTimeout(() => {
-                                router.push(`/jeannette/catalogue/${nextId}`);
-                              }, 100);
+                              router.push(`/jeannette/catalogue/${nextId}?lightbox=true`);
                             }}
                             style={{
                               display: 'flex',
