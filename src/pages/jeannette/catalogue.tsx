@@ -32,7 +32,7 @@ interface CsvRow {
 // Le composant reçoit maintenant 'works' en tant que prop
 export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc'); // Par défaut décroissant
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('asc'); // Par défaut croissant (plus ancien)
 
   // Static content for the page
   const content = {
@@ -61,6 +61,9 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
     const galleryCount = work.gallery_images?.length || 0;
     return 1 + galleryCount; // 1 pour l'image principale + galerie
   };
+
+  // Compter le nombre d'édifices uniques
+  const uniqueBuildings = new Set(works.map(w => w.building_name)).size;
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -132,12 +135,14 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
             </div>
             
             {/* Compteur de résultats */}
-            <div className="mt-4 text-center text-sm text-gray-600">
-              {sortedWorks.length === works.length ? (
-                <span>{works.length} réalisation{works.length > 1 ? 's' : ''}</span>
-              ) : (
-                <span>{sortedWorks.length} résultat{sortedWorks.length > 1 ? 's' : ''} sur {works.length}</span>
-              )}
+            <div className="mt-6 flex justify-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm text-gray-700">
+                {sortedWorks.length === works.length ? (
+                  <span><strong>{uniqueBuildings}</strong> édifice{uniqueBuildings > 1 ? 's' : ''} • <strong>{works.length}</strong> réalisation{works.length > 1 ? 's' : ''}</span>
+                ) : (
+                  <span><strong>{sortedWorks.length}</strong> résultat{sortedWorks.length > 1 ? 's' : ''} sur <strong>{works.length}</strong></span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -145,7 +150,6 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
             {sortedWorks.map((work) => (
               <Link key={work.id} href={`/jeannette/catalogue/${work.id}`} className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-64 bg-gray-200">
-                  {/* L'image sera connectée dans une prochaine étape */}
                   <Image
                     src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`}
                     alt={work.title_fr}
@@ -154,14 +158,16 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
                     className="object-cover w-full h-full"
                     onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300.png?text=Image+non+disponible'; }}
                   />
-                  {/* Badge nombre de photos */}
-                  <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded-md flex items-center gap-1 text-xs font-medium">
-                    <Camera className="w-3 h-3" />
-                    <span>{getPhotoCount(work)}</span>
-                  </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-2">{work.title_fr}</h3>
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="text-xl font-semibold flex-1">{work.title_fr}</h3>
+                    {/* Badge nombre de photos sur le titre */}
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mt-1">
+                      <Camera className="w-3.5 h-3.5" />
+                      <span>{getPhotoCount(work)}</span>
+                    </div>
+                  </div>
                   <p className="text-gray-600">{work.year}</p>
                   <p className="text-gray-600">{`${work.building_name}, ${work.city}`}</p>
                 </div>
