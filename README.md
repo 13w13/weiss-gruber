@@ -127,7 +127,7 @@ Unless otherwise stated, photographs are the property of J.E.C. Gruber Weiss. An
 
 - **Artist**: Jeannette Weiss-Gruber (1934-)
 - **Photography**: Denis Krieger ([mesvitrauxfavoris.fr](https://www.mesvitrauxfavoris.fr/index.htm)) and family archives
-- **Development**: Co-developed with Windsurf AI
+- **Development**: Co-developed with LLMs
 
 
 ## Acknowledgments

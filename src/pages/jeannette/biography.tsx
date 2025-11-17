@@ -70,7 +70,7 @@ export default function BiographyPage() {
         {
           title: "Biographie",
           content: [
-            "Jeannette Weiss-Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrier française. Elle est la fille du maître-verrier Jean-Jacques Gruber et la petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
+            "Jeannette Weiss Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrier française. Elle est la fille du maître-verrier Jean-Jacques Gruber et la petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
           ]
         },
         {
@@ -81,7 +81,7 @@ export default function BiographyPage() {
             "Après la guerre, elle assiste à la repose des vitraux de Chartres, non pollués, avec ses amies d’enfance ; à dix-huit ans, elle découvre émerveillée l’Arbre de Jessé (Le Prince) au pavillon de Marsan, ainsi que des vitraux de Chagall à Hadassah. Elle admire les vitraux des grands peintres, particulièrement ceux de Miró à Senlis.",
             "De 1954 à 1969, elle travaille dans l’atelier familial, où elle a le privilège de voir de près des vitraux anciens en restauration. La reconnaissance lui est d’abord difficile au sein de l’atelier familial, dominé par la figure du père et du frère.",
             "En 1969, elle part au Québec avec son mari et ses enfants (1969-1973) et travaille la lumière comme elle travaillait la grisaille sur ses vitraux. Demandée par les usines Alcan, elle expérimente l’aluminium oxydé et des pigments issus de la teinture lainière : naissent ses aluchromies (peintures sur aluminium).",
-            "De retour à Paris en 1973, elle enseigne l’histoire de l’art pour une école américaine. La même année, elle reçoit le diplôme des Arts et Métiers pour la coupe et le montage des vitraux. En 1980, elle reprend une partie de l’atelier familial à la villa d’Alésia. Elle adopte la signature JWG. Elle se fait aider pour le montage, la coupe du verre et la pose par d'anciennes élèves qu'elle a connu au métier d'art et par deux maitres verriers. "
+            "De retour à Paris en 1973, elle enseigne l’histoire de l’art pour une école américaine. La même année, elle reçoit le diplôme des Arts et Métiers pour la coupe et le montage des vitraux. En 1980, elle reprend une partie de l’atelier familial à la villa d’Alésia. Elle adopte la signature JWG. Elle se fait aider pour le montage, la coupe du verre et la pose par d'anciennes élèves qu'elle a connues au Métier d'Art et par deux maîtres-verriers. "
           ]
         },
         {
@@ -98,20 +98,20 @@ export default function BiographyPage() {
         {
           title: "Donations et archives",
           content: [
-            "Elle a procédé à de nombreuses donations liées à l’œuvre de son grand-père Jacques Gruber et à son propre atelier (cartons, maquettes, dossiers des situations et des répiculatrice pour les monuments hitoriques et dossier de restauration) à la Médiathèque de l’Architecture et du Patrimoine (Ministère de la Culture, 2005).",
+            "Elle a procédé à de nombreuses donations liées à l’œuvre de son grand-père Jacques Gruber et à son propre atelier (cartons, maquettes, dossiers des situations pour les monuments historiques et dossiers de restauration) à la Médiathèque de l’Architecture et du Patrimoine (Ministère de la Culture, 2005).",
             "Elle a également fait restaurer le vitrail bombé situé au-dessus de la porte intérieure de l’atelier (ancien atelier Jacques Gruber) et l’a donné au Musée des Arts décoratifs (Paris). En 2022, elle y a déposé le vitrail des Mouettes."
           ]
         },
         {
           title: "Réception et reconnaissance",
           content: [
-            "Elle apprécie la reconnaissance des DRACS, des inspecteurs en monuments historiques et des architectes en chef et de ses amies hisotriennes du vitrail qui l'ont vu travaillé. À plus de 90 ans, il lui arrive encore de se réveiller la nuit, préoccupée par ces sujets.",
+            "Elle apprécie la reconnaissance des DRACS, des inspecteurs en monuments historiques et des architectes en chef et de ses amies historiennes du vitrail qui l'ont vue travailler. À plus de 90 ans, il lui arrive encore de se réveiller la nuit, préoccupée par ces sujets.",
             "En 2001, la Fondation de l’Académie d’Architecture lui décerne la Médaille de la Restauration, qui salue l’excellence de son œuvre en création et en restauration ainsi que sa contribution au renouvellement de l’art du vitrail en France."
           ]
         }
       ],
       familyLegacy: {
-        title: "L&apos;Héritage Artistique Weiss-Gruber",
+        title: "L&apos;Héritage Artistique Weiss Gruber",
         content: "Jeannette Weiss Gruber s&apos;inscrit dans une lignée d&apos;artistes d&apos;exception. Son œuvre témoigne de la perpétuation et du renouvellement d&apos;une tradition familiale dans l&apos;art du vitrail, tout en apportant une vision contemporaine à cet art séculaire."
       },
       footer: {
@@ -132,7 +132,7 @@ export default function BiographyPage() {
   }
 
   const imageMappings: ImageMapping[] = [
-    { phrase: 'Elle est la mère de Frédéric, Camille et François Weiss.', file: 'photo_miminette_bio_1.jpg', align: 'right', caption: 'Photo de Jeannette Weiss-Gruber' },
+    { phrase: 'Elle est la mère de Frédéric, Camille et François Weiss.', file: 'photo_miminette_bio_1.jpg', align: 'right', caption: 'Photo de Jeannette Weiss Gruber' },
     { phrase: 'À dix ans, elle se promet de faire « plus joli » que les vitraux de l’atelier.', file: 'photo_miminette_bio_atelier.jpg', align: 'left', caption: 'Atelier, 10 villa d’Alésia' },
     { phrase: 'particulièrement ceux de Miró à Senlis.', file: 'photo_miminette_bio_miro.jpg', align: 'left', caption: 'Vitraux de Miró, chapelle Saint-Frambourg, Senlis' },
     { phrase: 'naissent ses aluchromies (peintures sur aluminium).', file: 'photo_miminette_bio_2.jpg', align: 'right', caption: 'Article québécois sur son travail' },
@@ -251,7 +251,7 @@ export default function BiographyPage() {
 
       <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss-Gruber. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} Weiss Gruber. Tous droits réservés.</p>
         </div>
       </footer>
     </div>

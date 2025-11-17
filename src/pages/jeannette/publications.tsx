@@ -155,7 +155,7 @@ export default function PublicationsPage() {
 
               <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
                 <h3 className="font-semibold text-lg mb-2 text-gray-900">Église de Caudebec-en-Caux <span className="text-sm font-normal text-gray-500">(Seine-Maritime)</span></h3>
-                <p className="text-sm text-gray-700">1966. Baie axe du chœur.</p>
+                <p className="text-sm text-gray-700">1966. Baie axiale du chœur.</p>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
@@ -271,7 +271,7 @@ export default function PublicationsPage() {
       {/* Footer */}
       <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss-Gruber. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} Weiss Gruber. Tous droits réservés.</p>
         </div>
       </footer>
     </div>

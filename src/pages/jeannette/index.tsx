@@ -82,7 +82,7 @@ export default function JeannetteFrontPage() {
         <section className="bg-gray-50 py-12 md:py-16 lg:py-24">
           <div className="container mx-auto px-4 text-center">
             <p className="text-base md:text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto mb-8 md:mb-10">
-              A réalisé des vitraux dans l&apos;atelier familial d&apos;après ses maquettes, ses cartons colorés et la peinture à la grisaille toujours à la lumière du jour. Ses créations ont été recensées par Jean Taralon :
+              Jeannette Weiss Gruber a réalisé des vitraux dans l&apos;atelier familial d&apos;après ses maquettes, ses cartons colorés et la peinture à la grisaille toujours à la lumière du jour. Ses créations ont été recensées par Jean Taralon :
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-6 md:gap-8">
               <button onClick={() => setLightboxImage(taralonRecto.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
@@ -99,7 +99,7 @@ export default function JeannetteFrontPage() {
         <section className="bg-blue-50 py-12 md:py-16 lg:py-24">
           <div className="max-w-4xl mx-auto px-4 text-base md:text-xl lg:text-2xl text-gray-800 leading-relaxed space-y-4 md:space-y-6">
             <p>
-              Dès 1958, Jeannette Weiss-Gruber utilise, selon les besoins, peignes et éponges, blaireaux et pinceaux — un ensemble de techniques qu’elle mobilise notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon, achevées en 1978.
+              Dès 1958, Jeannette Weiss Gruber utilise, selon les besoins, peignes et éponges, blaireaux et pinceaux — un ensemble de techniques qu’elle mobilise notamment pour les deux baies de la chapelle Saint-Joseph de la cathédrale primatiale Saint-Jean de Lyon, achevées en 1978.
             </p>
             <p>Le blanc et le bleu sont ses couleurs de prédilection dans le vitrail.</p>
             <p>Pour anticiper l’effet in situ, elle observe ses œuvres avec des jumelles à l&apos;envers, afin d’en imaginer la lecture à distance dans l’édifice.</p>
@@ -183,7 +183,7 @@ export default function JeannetteFrontPage() {
             
             <p>Il y a pourtant quelque chose de profondément mystérieux dans le vitrail, en dehors de toute confession religieuse : une lumière venue du dehors qui, en traversant le verre peint, semble réveiller autre chose que de simples couleurs. Le vitrail est une ouverture où le dehors s’allume autrement, une lumière insaisissable qui fait passage — un peu comme le regard d’une personne qui, sans que l’on sache pourquoi, nous touche et nous interroge.</p>
             
-            <p>Ce catalogue raisonné reste une démarche partielle et auto-déclarative : les informations proviennent des archives et des déclarations de Jeannette Weiss-Gruber elle-même, prises comme vraies. Il peut comporter des imprécisions, des oublis ou des approximations, et ne prétend pas couvrir l’intégralité de l’œuvre.</p>
+            <p>Ce catalogue raisonné reste une démarche partielle et auto-déclarative : les informations proviennent des archives et des déclarations de Jeannette Weiss Gruber elle-même, prises comme vraies. Il peut comporter des imprécisions, des oublis ou des approximations, et ne prétend pas couvrir l’intégralité de l’œuvre.</p>
             
             <p>Ce site s’appuie également sur le remarquable travail photographique de Denis Krieger — consultable sur <a href="https://www.mesvitrauxfavoris.fr/index.htm" className="underline" target="_blank" rel="noopener noreferrer">son site dédié</a> — qui contribue à combler le déficit de documentation numérique autour de l’art du vitrail en France.</p>
             
@@ -213,7 +213,7 @@ export default function JeannetteFrontPage() {
 
       {/* Footer */}
       <footer className="bg-gray-100 py-8 text-center text-gray-600 text-sm">
-        &copy; {new Date().getFullYear()} Weiss-Gruber. Tous droits réservés.
+        &copy; {new Date().getFullYear()} Weiss Gruber. Tous droits réservés.
       </footer>
 
       {lightboxImage && (

@@ -92,10 +92,10 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
           {/* Texte explicatif */}
           <div className="max-w-3xl mx-auto mb-10 text-center">
             <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
-              Les réalisations sont présentées par ordre chronologique décroissant. Cliquez sur une œuvre pour accéder à sa fiche détaillée avec images en grand format. Sur la fiche, utilisez les flèches du clavier ou les boutons de navigation pour passer d&apos;une œuvre à l&apos;autre. Un clic sur une image ouvre le mode plein écran avec zoom.
+              Les réalisations sont présentées par ordre chronologique. Cliquez sur une œuvre pour accéder à sa fiche détaillée avec images en grand format. Sur la fiche, utilisez les flèches du clavier ou les boutons de navigation pour passer d&apos;une œuvre à l&apos;autre. Un clic sur une image ouvre le mode plein écran avec zoom.
             </p>
             <p className="text-xs md:text-sm text-gray-600 italic">
-              Ce catalogue recense les vitraux photographiés et documentés. Il ne constitue pas une liste exhaustive de l&apos;œuvre, mais présente les réalisations principales dont nous disposons d&apos;images de qualité.
+              Ce catalogue recense les vitraux photographiés et documentés. Il ne constitue pas une liste exhaustive de l&apos;œuvre, mais présente les réalisations principales.
             </p>
           </div>
           
@@ -179,7 +179,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
 
       <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; 2025 Weiss-Gruber. Tous droits réservés.</p>
+          <p>&copy; 2025 Weiss Gruber. Tous droits réservés.</p>
         </div>
       </footer>
     </div>
