@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
@@ -46,6 +46,11 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [showFullText, setShowFullText] = useState(false);
   const [showFullAlt, setShowFullAlt] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const footerRef = useRef<HTMLDivElement | null>(null);
 
   // Prefetch hero of next artwork for instant loading (client only)
   useEffect(() => {
@@ -71,6 +76,44 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
+
+  // Track viewport height dynamically for mobile (iOS safe handling)
+  useEffect(() => {
+    const updateHeight = () => {
+      const vv = (window as unknown as { visualViewport?: { height: number } }).visualViewport;
+      const height = vv ? vv.height : window.innerHeight;
+      setViewportHeight(height);
+    };
+    
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    
+    const vv = (window as unknown as { visualViewport?: { addEventListener: (event: string, handler: () => void) => void; removeEventListener: (event: string, handler: () => void) => void } }).visualViewport;
+    if (vv) {
+      vv.addEventListener('resize', updateHeight);
+    }
+    
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+      if (vv) vv.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
+  // Helper function for adaptive footer height
+  const getFooterMaxHeight = () => {
+    if (!viewportHeight) return '45vh';
+    
+    const isSm = typeof window !== 'undefined' && window.innerWidth < 640;
+    const isMd = typeof window !== 'undefined' && window.innerWidth < 768;
+    const reservedSpace = isSm ? 200 : (isMd ? 250 : 300);
+    const availableHeight = viewportHeight - reservedSpace;
+    
+    if (isExpanded || showFullText || showFullAlt) {
+      return `${Math.min(availableHeight * 0.7, viewportHeight * 0.7)}px`;
+    } else {
+      return `${Math.min(availableHeight * 0.4, viewportHeight * 0.4)}px`;
+    }
+  };
 
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
@@ -136,6 +179,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   useEffect(() => {
     setShowFullText(false);
     setShowFullAlt(false);
+    setIsExpanded(false);
   }, [index]);
 
   // Lightbox keydown handler - navigate to next/prev artwork at boundaries
@@ -297,28 +341,40 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   ),
                   slideFooter: () => (
                     <div 
-                      className="yarl__slide_footer" 
+                      ref={containerRef}
+                      className="yarl__slide_footer"
                       style={{ 
                         position: 'fixed',
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        backgroundColor: '#000',
-                        borderTop: '1px solid rgba(255,255,255,0.1)',
-                        padding: window.innerWidth < 640 ? '10px 12px' : (window.innerWidth < 768 ? '12px 16px' : '20px 24px'),
                         zIndex: 1000,
                         pointerEvents: 'auto',
-                        boxSizing: 'border-box',
-                        paddingBottom: 'calc(8px + env(safe-area-inset-bottom, 0px))',
-                        minHeight: 'auto',
-                        maxHeight: (showFullText || showFullAlt) ? 'min(70dvh, 560px)' : (window.innerWidth < 640 ? '36dvh' : (window.innerWidth < 768 ? '38dvh' : '180px')),
-                        overflowY: 'auto',
-                        WebkitOverflowScrolling: 'touch',
-                        overscrollBehavior: 'contain',
-                        transition: 'max-height 0.3s ease'
+                        display: 'flex',
+                        flexDirection: 'column',
+                        maxHeight: typeof window !== 'undefined' && window.innerWidth < 1024 ? getFooterMaxHeight() : 'none',
                       }}
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
+                      <div
+                        ref={footerRef}
+                        style={{ 
+                          background: 'linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.88))',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                          borderTop: '1px solid rgba(255,255,255,0.1)',
+                          padding: window.innerWidth < 640 ? '12px 14px' : (window.innerWidth < 768 ? '14px 18px' : '20px 24px'),
+                          paddingBottom: `calc(${window.innerWidth < 640 ? '12px' : (window.innerWidth < 768 ? '14px' : '20px')} + env(safe-area-inset-bottom, 0px))`,
+                          boxSizing: 'border-box',
+                          overflowY: 'auto',
+                          overflowX: 'hidden',
+                          overscrollBehavior: 'contain',
+                          touchAction: 'pan-y',
+                          flex: '1 1 auto',
+                          minHeight: 'fit-content',
+                          transition: 'max-height 0.3s ease'
+                        }}
+                      >
                       <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
                         {/* Header with title, metadata, and image counter - always visible */}
                         <div style={{ marginBottom: (currentMeta.text || currentMeta.nom) ? (window.innerWidth < 640 ? '8px' : '12px') : '0' }}>
@@ -587,6 +643,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                             )}
                           </div>
                         )}
+                      </div>
                       </div>
                     </div>
                   )
