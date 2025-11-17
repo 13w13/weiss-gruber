@@ -10,10 +10,8 @@ import { useState, useEffect, useRef } from 'react';
 import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import Captions from 'yet-another-react-lightbox/plugins/captions';
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import 'yet-another-react-lightbox/styles.css';
-import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
 
@@ -45,7 +43,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [showHint, setShowHint] = useState(false);
   const [showFullText, setShowFullText] = useState(false);
   const [showFullAlt, setShowFullAlt] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -68,14 +65,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
       return () => clearTimeout(t);
     }
   }, [open]);
-
-  // Track viewport width to toggle between Captions plugin (mobile) and custom footer (desktop)
-  useEffect(() => {
-    const update = () => setIsMobile(window.innerWidth < 1024);
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
 
   // Track viewport height dynamically for mobile (iOS safe handling)
   useEffect(() => {
@@ -134,21 +123,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     })) || [])
   ];
 
-  // Slides with captions for mobile (uses Captions plugin)
-  const slidesWithCaptions = [
-    { 
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
-      alt: work.title_fr,
-      title: `${work.title_fr} (1/${slides.length})`,
-      description: `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${fullText || ''}`
-    },
-    ...(work.gallery_images?.map((img, idx) => ({
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
-      alt: img.alt_fr || img.nom || work.title_fr,
-      title: `${img.nom || work.title_fr} (${idx + 2}/${slides.length})`,
-      description: `${img.alt_fr || ''}${img.credit ? `\n\nCrédit: ${img.credit}` : ''}`
-    })) || [])
-  ];
 
   // Map each slide to its metadata for caption display
   const slideMetadata = [
@@ -223,7 +197,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
 
   // Build plugin list dynamically
-  const plugins: Plugin[] = [Zoom, Captions];
+  const plugins: Plugin[] = [Zoom];
   // Counter is now displayed in custom footer, not as a plugin
   if (slides.length > 4) plugins.push(Thumbnails);
 
@@ -297,7 +271,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   setShowFullText(false); // Reset text expansion when closing
                 }}
                 index={index}
-                slides={isMobile ? slidesWithCaptions : slides}
+                slides={slides}
                 plugins={plugins}
                 zoom={{
                   maxZoomPixelRatio: 3,
@@ -309,12 +283,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   wheelZoomDistanceFactor: 100,
                   pinchZoomDistanceFactor: 100,
                   scrollToZoom: true
-                }}
-                captions={{
-                  showToggle: false,
-                  descriptionTextAlign: 'start',
-                  descriptionMaxLines: isMobile ? 6 : 0,
-                  hidden: !isMobile
                 }}
                 thumbnails={{
                   position: 'top',
