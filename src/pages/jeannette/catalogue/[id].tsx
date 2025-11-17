@@ -680,7 +680,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
 
               {showHint && (
-                <div className="fixed top-20 left-1/2 -translate-x-1/2 bg-black/80 text-white px-5 py-3 rounded-lg text-sm select-none pointer-events-none animate-fade shadow-lg">
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/80 text-white px-5 py-3 rounded-lg text-sm select-none pointer-events-none animate-fade shadow-lg z-50">
                   <div className="flex items-center gap-2">
                     <span>← →</span>
                     <span>Navigation</span>
