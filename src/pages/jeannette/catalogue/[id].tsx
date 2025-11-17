@@ -204,25 +204,19 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2 md:gap-4">
-              <Link href="/" className="text-lg md:text-xl font-semibold">
-                <span className="hidden sm:inline">Weiss-Gruber</span>
-                <span className="inline sm:hidden">WG</span>
-              </Link>
-              <Link href="/jeannette" className="text-sm md:text-base text-gray-700 hover:text-blue-600 transition-colors">
-                <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
-                <span className="inline sm:hidden">Jeannette</span>
-              </Link>
-            </div>
-            <ul className="flex flex-wrap gap-2 md:gap-4 text-xs md:text-base">
+            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
+              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
+              <span className="inline sm:hidden">Jeannette WG</span>
+            </Link>
+            <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
               <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
               <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
               <li><Link href="/jeannette/catalogue" className="text-blue-600 whitespace-nowrap"><span className="hidden md:inline">Catalogue Raisonné</span><span className="inline md:hidden">Catalogue</span></Link></li>
               <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors whitespace-nowrap">Carte</Link></li>
-              <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Expositions</span><span className="inline md:hidden">Expo</span></Link></li>
+              <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Publications</span><span className="inline md:hidden">Publi</span></Link></li>
             </ul>
           </div>
         </nav>
