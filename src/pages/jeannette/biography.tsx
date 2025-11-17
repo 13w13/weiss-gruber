@@ -148,6 +148,7 @@ export default function BiographyPage() {
 
   // Lightbox state & slides
   const bioLightboxImages = Array.from(new Set(imageMappings.map((m) => m.file)));
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const lightboxSlides = bioLightboxImages.map((f) => ({ src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${f}` }));
 
