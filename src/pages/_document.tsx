@@ -18,7 +18,7 @@ export default function Document() {
         <meta name="description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss Gruber" />
         <meta property="og:title" content="Jeannette Weiss Gruber - Peintre-verrier" />
         <meta property="og:description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss Gruber" />
-        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:image" content="/android-chrome-512x512.png" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Weiss Gruber" />
         <meta property="og:locale" content="fr_FR" />

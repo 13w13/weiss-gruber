@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import Head from 'next/head'
 import { ChevronRight, X } from 'lucide-react'
 import { useState } from 'react'
 
@@ -13,6 +14,13 @@ export default function JeannetteFrontPage() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   return (
     <div className="min-h-screen bg-white text-gray-900">
+      <Head>
+        <title>Jeannette Weiss Gruber — Peintre-verrier</title>
+        <meta name="description" content="Catalogue raisonné, biographie et carte des œuvres de Jeannette Weiss Gruber." />
+        <link rel="canonical" href="https://www.weiss-gruber.art/jeannette" />
+        <meta property="og:title" content="Jeannette Weiss Gruber — Peintre-verrier" />
+        <meta property="og:description" content="Catalogue raisonné, biographie et carte des œuvres de Jeannette Weiss Gruber." />
+      </Head>
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
         <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
