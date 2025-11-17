@@ -6,7 +6,7 @@ const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const content = {
-    nav: { home: "Home", biography: "Biography", catalogue: "Catalogue Raisonné", exhibitions: "Exhibitions", map: "Map" },
+    nav: { home: "Home", biography: "Biography", catalogue: "Catalogue Raisonné", map: "Map" },
     familyMembers: { title: "Family Artists", jeannette: "Jeannette Weiss Gruber", frederic: "Frédéric Weiss", camille: "Camille Weiss" },
   };
 
@@ -41,7 +41,6 @@ const Header = () => {
           <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">{t.nav.biography}</Link></li>
           <li><Link href="/jeannette/catalogue" className="text-blue-600">{t.nav.catalogue}</Link></li>
           <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors">{t.nav.map}</Link></li>
-          <li><Link href="/jeannette/exhibitions" className="hover:text-blue-600 transition-colors">{t.nav.exhibitions}</Link></li>
         </ul>
       </nav>
     </header>
