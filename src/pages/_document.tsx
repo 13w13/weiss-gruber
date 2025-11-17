@@ -10,12 +10,19 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         
+        {/* Preconnects */}
+        <link rel="preconnect" href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://xrarrp4wrvauwge7.public.blob.vercel-storage.com" crossOrigin="anonymous" />
+
         {/* Meta tags */}
         <meta name="description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss Gruber" />
         <meta property="og:title" content="Jeannette Weiss Gruber - Peintre-verrier" />
         <meta property="og:description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss Gruber" />
         <meta property="og:image" content="/og-image.jpg" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Weiss Gruber" />
+        <meta property="og:locale" content="fr_FR" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <body className="antialiased">
         <Main />

@@ -17,7 +17,7 @@ const Header = () => {
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link href="/" className="text-xl font-semibold mr-6">
-            Weiss-Gruber
+            Weiss Gruber
           </Link>
           <div className="relative">
             <button
