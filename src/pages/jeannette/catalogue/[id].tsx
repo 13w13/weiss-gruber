@@ -47,9 +47,6 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   const [showFullAlt, setShowFullAlt] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const footerRef = useRef<HTMLDivElement | null>(null);
-
   // Prefetch hero of next artwork for instant loading (client only)
   useEffect(() => {
     if (typeof window !== 'undefined' && nextMainImage) {
