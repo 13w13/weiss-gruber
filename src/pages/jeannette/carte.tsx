@@ -40,23 +40,21 @@ export const getStaticProps: GetStaticProps = async () => {
 export default function Carte({ works }: { works: Vitrail[] }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="fixed top-0 left-0 right-0 bg-white bg-opacity-90 backdrop-blur border-b z-50">
-        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-semibold mr-6">
-              Weiss-Gruber
+      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur border-b z-50">
+        <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
+              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
+              <span className="inline sm:hidden">Jeannette WG</span>
             </Link>
-            <Link href="/jeannette" className="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
-              Jeannette Weiss Gruber
-            </Link>
+            <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
+              <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
+              <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
+              <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Catalogue Raisonné</span><span className="inline md:hidden">Catalogue</span></Link></li>
+              <li><Link href="/jeannette/carte" className="text-blue-600 whitespace-nowrap">Carte</Link></li>
+              <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Publications</span><span className="inline md:hidden">Publi</span></Link></li>
+            </ul>
           </div>
-          <ul className="flex space-x-6">
-            <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors">Accueil</Link></li>
-            <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors">Biographie</Link></li>
-            <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors">Catalogue Raisonné</Link></li>
-            <li><Link href="/jeannette/carte" className="text-blue-600">Carte</Link></li>
-            <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors">Publications</Link></li>
-          </ul>
         </nav>
       </header>
 
