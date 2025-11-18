@@ -252,10 +252,8 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 fill
                 sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 1024px"
                 priority
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP8zwADAAMBAQAYXP4AAAAASUVORK5CYII="
                 className="object-contain"
-                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://via.placeholder.com/800x500.png?text=Image+non+disponible'; }}
+                unoptimized
               />
             </div>
 

@@ -135,7 +135,7 @@ export default function BiographyPage() {
     { phrase: 'Elle est la mère de Frédéric, Camille et François Weiss.', file: 'photo_miminette_bio_1.jpg', align: 'right', caption: 'Photo de Jeannette Weiss Gruber' },
     { phrase: 'À dix ans, elle se promet de faire « plus joli » que les vitraux de l’atelier.', file: 'photo_miminette_bio_atelier.jpg', align: 'left', caption: 'Atelier, 10 villa d’Alésia' },
     { phrase: 'particulièrement ceux de Miró à Senlis.', file: 'photo_miminette_bio_miro.jpg', align: 'left', caption: 'Vitraux de Miró, chapelle Saint-Frambourg, Senlis' },
-    { phrase: 'naissent ses aluchromies (peintures sur aluminium).', file: 'photo_miminette_bio_2.jpg', align: 'right', caption: 'Article québécois sur son travail' },
+    { phrase: 'naissent ses aluchromies (peintures sur aluminium).', file: 'alu_6.jpg', align: 'right', caption: 'Article québécois sur son travail' },
     { phrase: 'En 1959, à la suite de son mariage avec Bernard Weiss, elle adopte la signature JWG.', file: 'photo_miminette_bio_signature.jpg', align: 'right', caption: 'Signature' },
     { phrase: 'l’atelier familial à la villa d’Alésia.', file: 'photo_miminette_bio_4.png', align: 'right', caption: 'Début du carton de la verrière voisine de l’Arbre de Jessé' },
     { phrase: 'Elle pratique aussi une visualisation originale : regarder ses vitraux avec des jumelles à l’envers pour anticiper l’effet à distance in situ et optimiser l’insertion des vitraux dans l’édifice.', file: 'photo_miminette_bio_5.png', align: 'right', caption: 'Jeannette au travail sur les médaillons de la cathédrale d’Amiens' },
@@ -209,6 +209,7 @@ export default function BiographyPage() {
                               priority={index === 0 && pIndex === 0}
                               sizes="(min-width: 1280px) 28rem, (min-width: 768px) 24rem, 100vw"
                               className="cursor-zoom-in rounded-lg shadow-md w-full"
+                              unoptimized
                             />
                             {mapping.caption && (
                               <figcaption className="mt-2 text-sm italic text-gray-500">{mapping.caption}</figcaption>
@@ -225,6 +226,7 @@ export default function BiographyPage() {
                               width={800}
                               height={600}
                               className="cursor-zoom-in rounded-lg shadow-md object-contain w-full max-w-2xl"
+                              unoptimized
                               />
                             {mapping.caption && (
                               <p className="mt-2 text-sm italic text-gray-500 text-center max-w-2xl mx-auto">{mapping.caption}</p>
