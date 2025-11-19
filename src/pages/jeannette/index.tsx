@@ -171,7 +171,7 @@ export default function JeannetteFrontPage() {
                 <div className="relative pl-10">
                   <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
                   <p className="text-xl font-bold text-gray-800">2003</p>
-                  <p className="text-lg text-gray-600">Fermeture de l&apos;atelier suite aux appels d&apos;offres sur Saint-Étienne de Beauvais</p>
+                  <p className="text-lg text-gray-600">Fermeture de l&apos;atelier</p>
                 </div>
               </div>
             </div>
