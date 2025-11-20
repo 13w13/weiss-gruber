@@ -156,7 +156,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
                     width={400}
                     height={300}
                     className="object-cover w-full h-full"
-                    unoptimized={false}
+                    unoptimized={true}
                     loading="lazy"
                   />
                 </div>
