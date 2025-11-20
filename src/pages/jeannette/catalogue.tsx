@@ -156,7 +156,8 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
                     width={400}
                     height={300}
                     className="object-cover w-full h-full"
-                    onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300.png?text=Image+non+disponible'; }}
+                    unoptimized={false}
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-4">
