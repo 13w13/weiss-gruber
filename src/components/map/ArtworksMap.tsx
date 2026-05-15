@@ -7,6 +7,7 @@ import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
 import L from 'leaflet';
 import { IMAGE_BASE_URL } from '@/lib/images';
+import { s3ImageLoader } from '@/lib/imageLoader';
 
 function PopupContent({ work }: { work: Vitrail }) {
   const images = useMemo(() => {
@@ -57,7 +58,7 @@ function PopupContent({ work }: { work: Vitrail }) {
               fill
               sizes="256px"
               className="object-cover"
-              unoptimized
+              loader={s3ImageLoader}
             />
           </div>
           {images.length > 1 && (

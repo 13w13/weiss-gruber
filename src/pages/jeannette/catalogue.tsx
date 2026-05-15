@@ -8,6 +8,7 @@ import path from 'path';
 import Papa from 'papaparse';
 import { Vitrail, GalleryImage } from '@/types/images';
 import { IMAGE_BASE_URL } from '@/lib/images';
+import { s3ImageLoader } from '@/lib/imageLoader';
 
 // Interface représentant une ligne brute du CSV (champs sous forme de chaînes)
 interface CsvRow {
@@ -157,7 +158,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
                     width={400}
                     height={300}
                     className="object-cover w-full h-full"
-                    unoptimized={true}
+                    loader={s3ImageLoader}
                     loading="lazy"
                   />
                 </div>

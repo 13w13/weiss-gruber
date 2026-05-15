@@ -17,6 +17,7 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
 import { IMAGE_BASE_URL } from '@/lib/images';
+import { s3ImageLoader } from '@/lib/imageLoader';
 
 interface CsvRow {
   id: string;
@@ -254,7 +255,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                 sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 1024px"
                 priority
                 className="object-contain"
-                unoptimized
+                loader={s3ImageLoader}
               />
             </div>
 
@@ -742,6 +743,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                       <Image
                         src={`${IMAGE_BASE_URL}/vitraux/${image.url}`}
                         alt={image.alt_fr || work.title_fr}
+                        loader={s3ImageLoader}
                         width={200}
                         height={150}
                         sizes="200px"

@@ -36,3 +36,7 @@ next-env.d.ts
 deploy.sh
 sync-from-vps.sh
 *.pdf
+
+# generated image variants (regenerated via npm run optimize-images, served from S3)
+/images/vitraux-optimized/
+/images/bio-optimized/

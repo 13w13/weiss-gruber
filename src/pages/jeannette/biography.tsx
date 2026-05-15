@@ -5,6 +5,7 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import { useState } from 'react'
 import { IMAGE_BASE_URL } from '@/lib/images'
+import { s3ImageLoader } from '@/lib/imageLoader'
 
 
 interface Section {
@@ -210,7 +211,7 @@ export default function BiographyPage() {
                               priority={index === 0 && pIndex === 0}
                               sizes="(min-width: 1280px) 28rem, (min-width: 768px) 24rem, 100vw"
                               className="cursor-zoom-in rounded-lg shadow-md w-full"
-                              unoptimized
+                              loader={s3ImageLoader}
                             />
                             {mapping.caption && (
                               <figcaption className="mt-2 text-sm italic text-gray-500">{mapping.caption}</figcaption>
@@ -227,7 +228,7 @@ export default function BiographyPage() {
                               width={800}
                               height={600}
                               className="cursor-zoom-in rounded-lg shadow-md object-contain w-full max-w-2xl"
-                              unoptimized
+                              loader={s3ImageLoader}
                               />
                             {mapping.caption && (
                               <p className="mt-2 text-sm italic text-gray-500 text-center max-w-2xl mx-auto">{mapping.caption}</p>
