@@ -7,6 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
 import { Vitrail, GalleryImage } from '@/types/images';
+import { IMAGE_BASE_URL } from '@/lib/images';
 
 // Interface représentant une ligne brute du CSV (champs sous forme de chaînes)
 interface CsvRow {
@@ -151,7 +152,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
               <Link key={work.id} href={`/jeannette/catalogue/${work.id}`} className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-64 bg-gray-200">
                   <Image
-                    src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`}
+                    src={`${IMAGE_BASE_URL}/vitraux/${work.main_image}`}
                     alt={work.title_fr}
                     width={400}
                     height={300}

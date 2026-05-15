@@ -4,6 +4,7 @@ import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import { useState } from 'react'
+import { IMAGE_BASE_URL } from '@/lib/images'
 
 
 interface Section {
@@ -150,7 +151,7 @@ export default function BiographyPage() {
   const bioLightboxImages = Array.from(new Set(imageMappings.map((m) => m.file)));
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const lightboxSlides = bioLightboxImages.map((f) => ({ src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${f}` }));
+  const lightboxSlides = bioLightboxImages.map((f) => ({ src: `${IMAGE_BASE_URL}/bio/${f}` }));
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -202,7 +203,7 @@ export default function BiographyPage() {
                           <figure className={`md:row-span-full ${mapping.align === 'left' ? 'md:order-1' : 'md:order-2'}`}>
                             <Image
                               onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
-                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
+                              src={`${IMAGE_BASE_URL}/bio/${mapping.file}`}
                               alt="Illustration biographique"
                               width={500}
                               height={375}
@@ -221,7 +222,7 @@ export default function BiographyPage() {
                           <div className="mt-6 flex justify-center">
                             <Image
                               onClick={() => { const idx = bioLightboxImages.indexOf(mapping.file); if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); } }}
-                              src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/bio/${mapping.file}`}
+                              src={`${IMAGE_BASE_URL}/bio/${mapping.file}`}
                               alt="Illustration biographique"
                               width={800}
                               height={600}

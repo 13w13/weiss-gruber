@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Download } from 'lucide-react'
+import { IMAGE_BASE_URL } from '@/lib/images'
 
 
 interface Nav {
@@ -255,7 +256,7 @@ export default function PublicationsPage() {
 
           <div className="mt-16 text-center">
             <a 
-              href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/brochure%20vitrail.pdf" 
+              href={`${IMAGE_BASE_URL}/brochure%20vitrail.pdf`} 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"

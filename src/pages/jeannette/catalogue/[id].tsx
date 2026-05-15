@@ -16,6 +16,7 @@ import 'yet-another-react-lightbox/styles.css';
 import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
+import { IMAGE_BASE_URL } from '@/lib/images';
 
 interface CsvRow {
   id: string;
@@ -51,7 +52,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   useEffect(() => {
     if (typeof window !== 'undefined' && nextMainImage) {
       const img = new window.Image();
-      img.src = `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${nextMainImage}`;
+      img.src = `${IMAGE_BASE_URL}/vitraux/${nextMainImage}`;
     }
   }, [nextMainImage]);
 
@@ -89,13 +90,13 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   // Build slides once per render (needs to be before effects that depend on it)
   const slides = [
     { 
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
+      src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`,
       alt: work.title_fr,
       title: work.title_fr,
       description: '' // We'll handle text display separately
     },
     ...(work.gallery_images?.map(img => ({
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
+      src: `${IMAGE_BASE_URL}/vitraux/${img.url}`,
       alt: img.alt_fr || img.nom || work.title_fr,
       description: '' // Keep gallery items without text overlay
     })) || [])
@@ -176,7 +177,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   // Slides with captions for mobile
   const slidesWithCaptions = [
     {
-      src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`,
+      src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`,
       alt: work.title_fr,
       title: `${work.title_fr} (1/${slides.length})`,
       description: `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${work.title_fr}\n\n${fullText || ''}`
@@ -189,7 +190,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
       if (img.credit) desc += `\n\nPhoto : ${img.credit}`; // Crédit
       
       return {
-        src: `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${img.url}`,
+        src: `${IMAGE_BASE_URL}/vitraux/${img.url}`,
         alt: img.alt_fr || img.nom || work.title_fr,
         title: `${work.title_fr} (${idx + 2}/${slides.length})`, // Toujours le titre principal du vitrail
         description: desc
@@ -247,7 +248,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
 
                         <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => { setIndex(0); setOpen(true); }}>
               <Image
-                src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${work.main_image}`}
+                src={`${IMAGE_BASE_URL}/vitraux/${work.main_image}`}
                 alt={work.title_fr}
                 fill
                 sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 1024px"
@@ -739,7 +740,7 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                   {work.gallery_images.map((image, index) => (
                     <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                       <Image
-                        src={`https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${image.url}`}
+                        src={`${IMAGE_BASE_URL}/vitraux/${image.url}`}
                         alt={image.alt_fr || work.title_fr}
                         width={200}
                         height={150}

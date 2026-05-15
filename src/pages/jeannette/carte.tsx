@@ -5,6 +5,7 @@ import path from 'path';
 import Papa from 'papaparse';
 import Link from 'next/link';
 import { Vitrail, GalleryImage } from '@/types/images';
+import { IMAGE_BASE_URL } from '@/lib/images';
 
 const ArtworksMap = dynamic(() => import('@/components/map/ArtworksMap'), { ssr: false });
 
@@ -20,7 +21,7 @@ function getWorks(): Vitrail[] {
         const cleanedJsonString = work.gallery_images.replace(/""/g, '"');
         gallery_images = JSON.parse(cleanedJsonString) as GalleryImage[];
         gallery_images.forEach((image) => {
-          image.url = `https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/${image.url}`;
+          image.url = `${IMAGE_BASE_URL}/vitraux/${image.url}`;
         });
       } catch {
         console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);

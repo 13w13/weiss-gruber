@@ -6,10 +6,11 @@ import 'leaflet.fullscreen';
 import Image from 'next/image';
 import type { Vitrail } from '@/types/images';
 import L from 'leaflet';
+import { IMAGE_BASE_URL } from '@/lib/images';
 
 function PopupContent({ work }: { work: Vitrail }) {
   const images = useMemo(() => {
-    const s3Base = 'https://weiss-gruber-jeanette.s3.fr-par.scw.cloud/vitraux/';
+    const s3Base = `${IMAGE_BASE_URL}/vitraux/`;
     const list: { src: string; alt: string }[] = [];
     if (work.main_image) list.push({ src: `${s3Base}${work.main_image}`, alt: work.title_fr });
     if (Array.isArray(work.gallery_images)) {

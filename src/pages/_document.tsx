@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import { IMAGE_BASE_URL } from '@/lib/images';
 
 export default function Document() {
   return (
@@ -11,7 +12,7 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         
         {/* Preconnects */}
-        <link rel="preconnect" href="https://weiss-gruber-jeanette.s3.fr-par.scw.cloud" crossOrigin="anonymous" />
+        <link rel="preconnect" href={IMAGE_BASE_URL} crossOrigin="anonymous" />
         <link rel="preconnect" href="https://xrarrp4wrvauwge7.public.blob.vercel-storage.com" crossOrigin="anonymous" />
 
         {/* Meta tags */}

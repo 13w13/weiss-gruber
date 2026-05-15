@@ -1,13 +1,18 @@
 import type { NextConfig } from 'next'
 
+const imageBaseUrl =
+  process.env.NEXT_PUBLIC_IMAGE_BASE_URL ??
+  'https://weiss-gruber-jeanette.s3.fr-par.scw.cloud'
+const imageHostname = new URL(imageBaseUrl).hostname
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  
+
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'weiss-gruber-jeanette.s3.fr-par.scw.cloud',
+        hostname: imageHostname,
         port: '',
         pathname: '/**',
       },
