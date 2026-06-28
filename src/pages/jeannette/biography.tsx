@@ -72,7 +72,7 @@ export default function BiographyPage() {
         {
           title: "Biographie",
           content: [
-            "Jeannette Weiss Gruber, née le 1ᵉʳ juillet 1934 à Paris, est une peintre-verrier française. Elle est la fille du maître-verrier Jean-Jacques Gruber et la petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
+            "Jeannette Weiss Gruber, née le 1ᵉʳ juillet 1934 à Paris et morte le 7 juin 2026 dans cette même ville, est une peintre-verrier française. Elle est la fille du maître-verrier Jean-Jacques Gruber et la petite-fille de Jacques Gruber, figure de l’École de Nancy. Elle est la mère de Frédéric, Camille et François Weiss."
           ]
         },
         {
@@ -107,8 +107,15 @@ export default function BiographyPage() {
         {
           title: "Réception et reconnaissance",
           content: [
-            "Elle apprécie la reconnaissance des DRACS, des inspecteurs en monuments historiques et des architectes en chef et de ses amies historiennes du vitrail qui l'ont vue travailler. À plus de 90 ans, il lui arrive encore de se réveiller la nuit, préoccupée par ces sujets.",
+            "Elle apprécie la reconnaissance des DRACS, des inspecteurs en monuments historiques et des architectes en chef et de ses amies historiennes du vitrail qui l'ont vue travailler. À plus de 90 ans, il lui arrivait encore de se réveiller la nuit, préoccupée par ces sujets.",
             "En 2001, la Fondation de l’Académie d’Architecture lui décerne la Médaille de la Restauration, qui salue l’excellence de son œuvre en création et en restauration ainsi que sa contribution au renouvellement de l’art du vitrail en France."
+          ]
+        },
+        {
+          title: "Hommage",
+          content: [
+            "Jeannette Weiss Gruber s’est éteinte le 7 juin 2026 à Paris, à la Maison médicale Jeanne Garnier, entourée de ses enfants, à l’âge de 91 ans.",
+            "Une cérémonie en son hommage s’est tenue le jeudi 18 juin 2026, sous la coupole du Père-Lachaise, où ses proches et ses pairs ont rendu hommage à sa mémoire de peintre et maître-verrier, d’historienne de l’art et de femme aimante."
           ]
         }
       ],

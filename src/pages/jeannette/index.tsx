@@ -46,7 +46,7 @@ export default function JeannetteFrontPage() {
           <Image src={heroImg} alt="Jeannette peignant" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white font-light mb-4 md:mb-6">Jeannette Weiss Gruber</h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light">Peintre-verrier née en 1934</p>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light">Peintre-verrier (1934&nbsp;&ndash;&nbsp;2026)</p>
           </div>
           <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 text-white text-xs sm:text-sm opacity-70">
             Photo © Jean-Luc Vallet
@@ -172,6 +172,12 @@ export default function JeannetteFrontPage() {
                   <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
                   <p className="text-xl font-bold text-gray-800">2003</p>
                   <p className="text-lg text-gray-600">Fermeture de l&apos;atelier</p>
+                </div>
+                {/* Item 7 */}
+                <div className="relative pl-10">
+                  <div className="absolute left-0 top-1 w-5 h-5 bg-gray-800 rounded-full border-4 border-gray-50"></div>
+                  <p className="text-xl font-bold text-gray-800">2026</p>
+                  <p className="text-lg text-gray-600">Décès à Paris</p>
                 </div>
               </div>
             </div>
