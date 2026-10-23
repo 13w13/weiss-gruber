@@ -194,3 +194,34 @@ body {
     box-shadow: 0 0 0 2px rgba(31, 78, 156, 0.5);
   }
 }
+
+/* Voyage : fondu enchaîné des photos (la nouvelle apparaît une fois chargée, par-dessus l'ancienne)
+   et texte qui change en douceur, sans déplacement */
+.wg-xfade {
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.wg-xfade[data-ready='true'] {
+  opacity: 1;
+}
+@starting-style {
+  .wg-xfade[data-ready='true'] {
+    opacity: 0;
+  }
+}
+.wg-fade-text {
+  transition: opacity 0.25s ease-out;
+}
+@starting-style {
+  .wg-fade-text {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wg-xfade {
+    transition-duration: 0.2s;
+  }
+  .wg-fade-text {
+    transition-duration: 0.15s;
+  }
+}

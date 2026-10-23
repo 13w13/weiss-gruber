@@ -595,7 +595,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
           {/* Mobile : l'étape courante posée sur la carte, vitrail en grand */}
           {journey && currentStep && !isDesktop && (
-            <div key={currentStep.id} className="absolute left-2 right-2 bottom-[60px] z-[1000]">
+            <div className="absolute left-2 right-2 bottom-[60px] z-[1000]">
               <JourneyPanel step={currentStep} quote={quoteFor(currentStep)} color={stepColor(currentStep)} variant="overlay" />
             </div>
           )}
@@ -682,7 +682,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         {/* Index des lieux, synchronisé avec la carte */}
         {/* Ordinateur : l'étape courante en grand dans la colonne de droite */}
         {journey && currentStep && isDesktop && (
-          <div key={currentStep.id} className="lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:sticky lg:top-20 lg:self-start">
+          <div className="lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:sticky lg:top-20 lg:self-start">
             <JourneyPanel step={currentStep} quote={quoteFor(currentStep)} color={stepColor(currentStep)} variant="panel" />
           </div>
         )}
