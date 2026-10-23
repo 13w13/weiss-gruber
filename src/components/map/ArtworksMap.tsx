@@ -13,7 +13,7 @@ import { s3ImageLoader } from '@/lib/imageLoader';
 import { decadeOf, matchesQuery } from '@/lib/text';
 import OtherVitrailLink from '@/components/layout/OtherVitrailLink';
 import JourneyPanel from '@/components/map/JourneyPanel';
-import { LIFE_MILESTONES, excerpt, stepLatLng, type InterviewQuote, type JourneyStep } from '@/lib/journey';
+import { LIFE_MILESTONES, excerpt, orderJourney, stepLatLng, type InterviewQuote, type JourneyStep } from '@/lib/journey';
 import { optimizedImageUrl } from '@/lib/imageLoader';
 import interviewQuotes from '../../../data/interview_quotes.json';
 import { useLocale, useT } from '@/i18n';
@@ -450,7 +450,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   }, [router.query.oeuvre, places]);
 
   // Étapes du voyage : œuvres localisées et affichées, plus les étapes de vie (sauf pendant une recherche),
-  // par ordre d'année ; à année égale, la vie avant les œuvres
+  // dans l'ordre de orderJourney (années, proximité, séjour au Québec regroupé)
   const steps = useMemo<JourneyStep[]>(() => {
     const placeOf = new Map<string, Place>();
     for (const p of filteredPlaces) for (const w of p.works) placeOf.set(w.id, p);
@@ -461,12 +461,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     const lifeSteps: JourneyStep[] = query.trim()
       ? []
       : LIFE_MILESTONES.filter((m) => decadeOk(m.year)).map((m) => ({ kind: 'life', id: m.id, year: m.year, milestone: m }));
-    return [...lifeSteps, ...workSteps]
-      .map((step, i) => ({ step, i }))
-      .sort((a, b) => (parseInt(a.step.year) || 0) - (parseInt(b.step.year) || 0)
-        || (a.step.kind === 'life' ? 0 : 1) - (b.step.kind === 'life' ? 0 : 1)
-        || a.i - b.i)
-      .map(({ step }) => step);
+    return orderJourney([...lifeSteps, ...workSteps]);
   }, [works, filteredPlaces, selectedDecades, query]);
 
   const quoteFor = (step: JourneyStep | undefined) => (step ? QUOTES.find((q) => q.anchor === step.id) : undefined);

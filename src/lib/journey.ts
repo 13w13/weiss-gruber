@@ -141,3 +141,75 @@ export function stepLatLng(step: JourneyStep): [number, number] | null {
   if (step.kind === 'work') return [step.place.lat, step.place.lng];
   return step.milestone.lat !== undefined && step.milestone.lng !== undefined ? [step.milestone.lat, step.milestone.lng] : null;
 }
+
+// Séjours : pendant ces années, le voyage reste sur place (les œuvres du séjour d'abord, dans l'ordre
+// des années), puis montre ce qui a été fait ailleurs pendant la même période. Évite les allers-retours
+// au-dessus de l'Atlantique pendant les années au Québec.
+const STAYS = [
+  { from: 1969, to: 1973, inRegion: (lat: number, lng: number) => lng < -30 },
+];
+
+const distanceKm = (a: [number, number], b: [number, number]) => {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(b[0] - a[0]);
+  const dLng = toRad(b[1] - a[1]);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a[0])) * Math.cos(toRad(b[0])) * Math.sin(dLng / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(h));
+};
+
+// Ordre du voyage : par année ; à année égale, la vie d'abord puis l'œuvre la plus proche du lieu
+// où l'on se trouve ; enfin, regroupement des séjours.
+export function orderJourney(steps: JourneyStep[]): JourneyStep[] {
+  const year = (s: JourneyStep) => parseInt(s.year) || 0;
+  const chrono = steps
+    .map((step, i) => ({ step, i }))
+    .sort((a, b) => year(a.step) - year(b.step)
+      || (a.step.kind === 'life' ? 0 : 1) - (b.step.kind === 'life' ? 0 : 1)
+      || a.i - b.i)
+    .map(({ step }) => step);
+
+  // À année égale, enchaîner les œuvres par proximité
+  const nearest: JourneyStep[] = [];
+  let here: [number, number] | null = null;
+  for (let k = 0; k < chrono.length;) {
+    const y = year(chrono[k]);
+    const group: JourneyStep[] = [];
+    while (k < chrono.length && year(chrono[k]) === y) group.push(chrono[k++]);
+    for (const life of group.filter((s) => s.kind === 'life')) {
+      nearest.push(life);
+      here = stepLatLng(life) ?? here;
+    }
+    const rest = group.filter((s) => s.kind === 'work');
+    while (rest.length) {
+      let best = 0;
+      if (here) {
+        let bestD = Infinity;
+        rest.forEach((s, j) => {
+          const ll = stepLatLng(s);
+          const d = ll && here ? distanceKm(here, ll) : Infinity;
+          if (d < bestD) { bestD = d; best = j; }
+        });
+      }
+      const [next] = rest.splice(best, 1);
+      nearest.push(next);
+      here = stepLatLng(next) ?? here;
+    }
+  }
+
+  // Séjours : sur place d'abord, puis ailleurs pendant la même période
+  let ordered = nearest;
+  for (const stay of STAYS) {
+    const inStay = (s: JourneyStep) => year(s) >= stay.from && year(s) < stay.to;
+    const first = ordered.findIndex(inStay);
+    if (first < 0) continue;
+    const segment = ordered.filter(inStay);
+    const local = segment.filter((s) => {
+      const ll = stepLatLng(s);
+      return ll ? stay.inRegion(ll[0], ll[1]) : s.kind === 'life';
+    });
+    const elsewhere = segment.filter((s) => !local.includes(s));
+    const outside = ordered.filter((s) => !inStay(s));
+    ordered = [...outside.slice(0, first), ...local, ...elsewhere, ...outside.slice(first)];
+  }
+  return ordered;
+}
