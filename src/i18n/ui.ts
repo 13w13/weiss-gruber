@@ -16,7 +16,7 @@ const fr = {
     switchAria: 'Read this page in English',
     contact: 'Contact',
     rights: 'Tous droits réservés.',
-    views: (n: string) => `${n} visites depuis le 23 octobre 2026`,
+    views: (count: number, n: string) => `${n} visite${count > 1 ? 's' : ''} depuis le 23 octobre 2026`,
   },
   otherVitrail: {
     question: 'Vous connaissez un autre vitrail de Jeannette Weiss Gruber ?',
@@ -122,7 +122,7 @@ const en: UiStrings = {
     switchAria: 'Lire cette page en français',
     contact: 'Contact',
     rights: 'All rights reserved.',
-    views: (n: string) => `${n} visits since October 23, 2026`,
+    views: (count: number, n: string) => `${n} visit${count > 1 ? 's' : ''} since October 23, 2026`,
   },
   otherVitrail: {
     question: 'Do you know of another stained-glass window by Jeannette Weiss Gruber?',

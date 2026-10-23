@@ -17,5 +17,5 @@ export default function ViewCounter() {
   }, []);
 
   if (total === null || total === 0) return null;
-  return <p className="tabular-nums">{t.nav.views(total.toLocaleString(locale === 'en' ? 'en-US' : 'fr-FR'))}</p>;
+  return <p className="tabular-nums">{t.nav.views(total, total.toLocaleString(locale === 'en' ? 'en-US' : 'fr-FR'))}</p>;
 }
