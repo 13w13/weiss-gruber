@@ -6,7 +6,7 @@ import 'leaflet.fullscreen/Control.FullScreen.css';
 import 'leaflet.fullscreen';
 import Image from 'next/image';
 import L from 'leaflet';
-import { Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pause, Play, Search, X } from 'lucide-react';
 import type { Vitrail } from '@/types/images';
 import { IMAGE_BASE_URL } from '@/lib/images';
 import { s3ImageLoader } from '@/lib/imageLoader';
@@ -177,6 +177,42 @@ function MapController({ fit, focus, markers }: {
   return null;
 }
 
+interface JourneyStep {
+  work: Vitrail;
+  place: Place;
+}
+
+// Voyage chronologique : temps passé sur chaque œuvre après le vol, et durée du vol
+const JOURNEY_DWELL_MS = 2600;
+const journeyFlightSeconds = (from: JourneyStep | undefined, to: JourneyStep) =>
+  from && L.latLng(from.place.lat, from.place.lng).distanceTo(L.latLng(to.place.lat, to.place.lng)) > 1_000_000 ? 2.6 : 1.6;
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Caméra du voyage : vole vers l'œuvre courante ; à la sortie du voyage, recadre l'ensemble
+function JourneyCamera({ step, previous, active, fitPlaces }: {
+  step: JourneyStep | undefined;
+  previous: JourneyStep | undefined;
+  active: boolean;
+  fitPlaces: Place[];
+}) {
+  const map = useMap();
+  const wasActive = useRef(false);
+
+  useEffect(() => {
+    if (active && step) {
+      map.closePopup();
+      const target = L.latLng(step.place.lat, step.place.lng);
+      if (prefersReducedMotion()) map.setView(target, 9);
+      else map.flyTo(target, 9, { duration: journeyFlightSeconds(previous, step), easeLinearity: 0.2 });
+    } else if (!active && wasActive.current && fitPlaces.length) {
+      map.fitBounds(boundsOf(fitPlaces), { padding: [28, 28], maxZoom: 12 });
+    }
+    wasActive.current = active;
+  }, [map, active, step]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return null;
+}
+
 export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const t = useT();
   const router = useRouter();
@@ -189,6 +225,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const [view, setView] = useState<View>('europe');
   const [focus, setFocus] = useState<{ key: string; token: number } | null>(null);
   const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [journey, setJourney] = useState<{ index: number; playing: boolean } | null>(null);
   const [canHover, setCanHover] = useState(false);
 
   useEffect(() => setCanHover(window.matchMedia('(hover: hover)').matches), []);
@@ -292,7 +329,60 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     return () => clearTimeout(timer);
   }, [router.query.oeuvre, places]);
 
+  // Étapes du voyage : les œuvres localisées et affichées, dans l'ordre chronologique du catalogue
+  const steps = useMemo<JourneyStep[]>(() => {
+    const placeOf = new Map<string, Place>();
+    for (const p of filteredPlaces) for (const w of p.works) placeOf.set(w.id, p);
+    return works.filter((w) => placeOf.has(w.id)).map((w) => ({ work: w, place: placeOf.get(w.id) as Place }));
+  }, [works, filteredPlaces]);
+
+  // Un changement de filtre arrête le voyage
+  useEffect(() => setJourney(null), [selectedDecades, query]);
+
+  // Lecture automatique : étape suivante après le vol et un temps d'arrêt ; pause à la dernière œuvre
+  useEffect(() => {
+    if (!journey?.playing) return;
+    if (journey.index >= steps.length - 1) {
+      setJourney((j) => (j ? { ...j, playing: false } : j));
+      return;
+    }
+    const flight = prefersReducedMotion() ? 0 : journeyFlightSeconds(steps[journey.index - 1], steps[journey.index]) * 1000;
+    const timer = setTimeout(() => setJourney((j) => (j && j.playing ? { ...j, index: j.index + 1 } : j)), flight + JOURNEY_DWELL_MS);
+    return () => clearTimeout(timer);
+  }, [journey, steps]);
+
+  // État des points pendant le voyage : déjà visités, courant, à venir (estompés)
+  useEffect(() => {
+    const current = journey ? steps[journey.index]?.place.key : undefined;
+    const visited = new Set(journey ? steps.slice(0, journey.index + 1).map((s) => s.place.key) : []);
+    for (const p of filteredPlaces) {
+      const el = markerRefs.current[p.key]?.getElement();
+      if (!el) continue;
+      if (!journey) el.removeAttribute('data-journey');
+      else el.setAttribute('data-journey', p.key === current ? 'current' : visited.has(p.key) ? 'visited' : 'future');
+    }
+  }, [journey, steps, filteredPlaces]);
+
+  // Tracé du voyage : il s'allonge à chaque étape
+  const journeyPath = useMemo(() => {
+    const line: [number, number][] = [];
+    if (!journey) return line;
+    for (const st of steps.slice(0, journey.index + 1)) {
+      const last = line[line.length - 1];
+      if (!last || last[0] !== st.place.lat || last[1] !== st.place.lng) line.push([st.place.lat, st.place.lng]);
+    }
+    return line;
+  }, [journey, steps]);
+
+  const pauseJourney = () => setJourney((j) => (j ? { ...j, playing: false } : j));
+  const goToStep = (index: number) =>
+    setJourney((j) => ({ index: Math.max(0, Math.min(steps.length - 1, index)), playing: j?.playing ?? false }));
+  const togglePlay = () =>
+    setJourney((j) => (j ? { index: !j.playing && j.index >= steps.length - 1 ? 0 : j.index, playing: !j.playing } : j));
+  const currentStep = journey ? steps[journey.index] : undefined;
+
   const focusPlace = (key: string) => {
+    pauseJourney();
     // Sur mobile la carte est au-dessus de la liste : on la ramène à l'écran
     if (window.matchMedia('(max-width: 1023px)').matches) {
       mapWrapperRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -350,8 +440,13 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
             <MapController fit={fit} focus={focus} markers={markerRefs} />
+            <JourneyCamera step={currentStep} previous={journey ? steps[journey.index - 1] : undefined} active={!!journey} fitPlaces={fit.places} />
 
-            {showPath && path.length >= 2 && (
+            {journey && journeyPath.length >= 2 && (
+              <Polyline positions={journeyPath} pathOptions={{ color: LEAD, weight: 2, opacity: 0.75, lineCap: 'round', lineJoin: 'round' }} />
+            )}
+
+            {!journey && showPath && path.length >= 2 && (
               <Polyline positions={path} pathOptions={{ color: LEAD, weight: 1.5, opacity: 0.6, dashArray: '1 5', lineCap: 'round' }} />
             )}
 
@@ -361,7 +456,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                 position={[place.lat, place.lng]}
                 icon={icons[place.key]}
                 ref={(m) => { markerRefs.current[place.key] = m; }}
-                eventHandlers={{ click: () => setActiveKey(place.key) }}
+                eventHandlers={{ click: () => { setActiveKey(place.key); pauseJourney(); } }}
               >
                 {canHover && (
                   <Tooltip direction="top" offset={[0, -10]} opacity={1}>
@@ -375,10 +470,67 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             ))}
           </MapContainer>
 
-          <label className="absolute bottom-6 left-2 z-[500] inline-flex items-center gap-2 bg-white/95 border border-gray-400 px-2.5 py-1.5 text-xs text-gray-800 cursor-pointer select-none">
+          <label className="absolute top-2 right-2 z-[1000] inline-flex items-center gap-2 bg-white/95 border border-gray-400 px-2.5 py-1.5 text-xs text-gray-800 cursor-pointer select-none">
             <input type="checkbox" checked={colorMap} onChange={(e) => setColorMap(e.target.checked)} className="w-3.5 h-3.5 accent-gray-800" />
             {t.map.colorMap}
           </label>
+
+          {/* Carte de l'œuvre courante pendant le voyage */}
+          {journey && currentStep && (
+            <div key={journey.index} className="wg-journey-card absolute left-2 right-2 sm:right-auto sm:w-80 bottom-[60px] z-[1000] flex gap-3 bg-white border border-gray-400 p-2.5 shadow-md" aria-live="polite">
+              {currentStep.work.main_image && (
+                <div className="relative w-16 h-16 flex-shrink-0 bg-gray-100 overflow-hidden">
+                  <Image src={`${IMAGE_BASE_URL}/vitraux/${currentStep.work.main_image}`} alt="" fill sizes="64px" className="object-cover" loader={s3ImageLoader} />
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="text-lg leading-none font-semibold tabular-nums" style={{ color: glassFor(currentStep.work.year) }}>{currentStep.work.year}</p>
+                <p className="mt-1 text-sm leading-snug text-gray-900">{currentStep.work.title_fr}</p>
+                <p className="text-xs text-gray-500 truncate">{currentStep.place.building_name}, {currentStep.place.city}</p>
+                <Link href={`/jeannette/catalogue/${currentStep.work.id}`} className="text-xs underline underline-offset-2 text-gray-800 hover:text-gray-950">{t.common.seeWork}</Link>
+              </div>
+            </div>
+          )}
+
+          {/* Barre du voyage : lancement, lecture, étapes */}
+          <div className="absolute bottom-0 inset-x-0 z-[1000] h-[52px] flex items-center gap-0.5 px-1.5 bg-white/95 border-t border-gray-300">
+            {!journey ? (
+              <button type="button" onClick={() => steps.length && setJourney({ index: 0, playing: true })} disabled={!steps.length} className="inline-flex items-center gap-2 h-10 px-3 text-sm font-medium text-gray-900 hover:bg-gray-100 disabled:opacity-40">
+                <Play className="w-4 h-4" fill="currentColor" aria-hidden="true" />
+                {t.map.journeyStart(steps[0]?.work.year ?? '', steps[steps.length - 1]?.work.year ?? '')}
+              </button>
+            ) : (
+              <>
+                <button type="button" onClick={togglePlay} aria-label={journey.playing ? t.map.pause : t.map.play} className="inline-flex items-center justify-center w-10 h-10 text-gray-900 hover:bg-gray-100">
+                  {journey.playing ? <Pause className="w-4 h-4" fill="currentColor" /> : <Play className="w-4 h-4" fill="currentColor" />}
+                </button>
+                <button type="button" onClick={() => goToStep(journey.index - 1)} disabled={journey.index === 0} aria-label={t.map.prevStep} className="inline-flex items-center justify-center w-9 h-10 text-gray-800 hover:bg-gray-100 disabled:opacity-30">
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button type="button" onClick={() => goToStep(journey.index + 1)} disabled={journey.index >= steps.length - 1} aria-label={t.map.nextStep} className="inline-flex items-center justify-center w-9 h-10 text-gray-800 hover:bg-gray-100 disabled:opacity-30">
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+                <div className="flex-1 flex items-end gap-[2px] h-4 mx-2" role="group" aria-label={t.map.steps}>
+                  {steps.map((st, i) => (
+                    <button
+                      key={st.work.id}
+                      type="button"
+                      onClick={() => goToStep(i)}
+                      aria-label={`${st.work.year}, ${st.work.title_fr}`}
+                      aria-current={i === journey.index ? 'step' : undefined}
+                      className="wg-step flex-1 h-2.5"
+                      data-state={i === journey.index ? 'current' : i < journey.index ? 'visited' : 'future'}
+                      style={{ ['--glass' as string]: glassFor(st.work.year) }}
+                    />
+                  ))}
+                </div>
+                <span className="w-11 text-right text-xs tabular-nums text-gray-600">{journey.index + 1}/{steps.length}</span>
+                <button type="button" onClick={() => setJourney(null)} aria-label={t.map.exitJourney} className="inline-flex items-center justify-center w-9 h-10 text-gray-700 hover:bg-gray-100">
+                  <X className="w-4 h-4" />
+                </button>
+              </>
+            )}
+          </div>
 
           {filtering && filteredPlaces.length === 0 && (
             <div className="absolute inset-0 z-[500] flex items-center justify-center pointer-events-none">
@@ -487,7 +639,32 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           border-radius: 2px;
           transform: rotate(45deg);
           box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
-          transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+          transition:
+            transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+            box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+            opacity 0.3s ease;
+        }
+        .wg-marker[data-journey='future'] .wg-quarry {
+          opacity: 0.25;
+        }
+        .wg-marker[data-journey='current'] .wg-quarry {
+          transform: rotate(45deg) scale(1.4);
+          box-shadow: 0 0 0 6px color-mix(in srgb, var(--glass) 30%, transparent);
+        }
+        .wg-map .leaflet-bottom {
+          bottom: 52px;
+        }
+        .wg-step {
+          background: var(--glass);
+          border: 1px solid rgba(20, 20, 20, 0.85);
+          transform-origin: center bottom;
+          transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .wg-step[data-state='future'] {
+          opacity: 0.3;
+        }
+        .wg-step[data-state='current'] {
+          transform: scaleY(1.6);
         }
         .wg-quarry > span {
           transform: rotate(-45deg);
@@ -495,7 +672,13 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           font: 700 11px/1 Arial, Helvetica, sans-serif;
           letter-spacing: -0.02em;
         }
-        .leaflet-marker-icon:hover .wg-quarry,
+        /* Survol réservé aux souris : au toucher, un faux survol resterait affiché */
+        @media (hover: hover) and (pointer: fine) {
+          .leaflet-marker-icon:hover .wg-quarry {
+            transform: rotate(45deg) scale(1.18);
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--glass) 28%, transparent);
+          }
+        }
         .leaflet-marker-icon:focus-visible .wg-quarry {
           transform: rotate(45deg) scale(1.18);
           box-shadow: 0 0 0 4px color-mix(in srgb, var(--glass) 28%, transparent);
@@ -545,8 +728,12 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           font-size: 12px;
         }
 
+        /* Mouvement réduit : les états restent lisibles, sans déplacement ni agrandissement animé */
         @media (prefers-reduced-motion: reduce) {
-          .wg-quarry { transition: none; }
+          .wg-quarry,
+          .wg-step {
+            transition: opacity 0.2s ease;
+          }
         }
       `}</style>
     </div>
