@@ -8,6 +8,13 @@ const imageHostname = new URL(imageBaseUrl).hostname
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
+  // Site bilingue : français par défaut (sans préfixe), anglais sous /en
+  i18n: {
+    locales: ['fr', 'en'],
+    defaultLocale: 'fr',
+    localeDetection: false,
+  },
+
   images: {
     remotePatterns: [
       {

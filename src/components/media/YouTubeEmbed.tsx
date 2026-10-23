@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Play } from 'lucide-react';
+import { useT } from '@/i18n';
 
 // Vignette cliquable : le lecteur YouTube (sans cookies) ne se charge qu'au clic,
 // ce qui garde la page légère et n'envoie rien à YouTube avant que le visiteur le décide.
 export default function YouTubeEmbed({ id, title }: { id: string; title: string }) {
+  const t = useT();
   const [active, setActive] = useState(false);
 
   return (
@@ -19,7 +21,7 @@ export default function YouTubeEmbed({ id, title }: { id: string; title: string 
           allowFullScreen
         />
       ) : (
-        <button type="button" onClick={() => setActive(true)} className="group absolute inset-0 w-full h-full" aria-label={`Lire la vidéo : ${title}`}>
+        <button type="button" onClick={() => setActive(true)} className="group absolute inset-0 w-full h-full" aria-label={`${t.video.play} : ${title}`}>
           <Image
             src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`}
             alt=""

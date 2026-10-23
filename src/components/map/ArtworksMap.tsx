@@ -12,6 +12,7 @@ import { IMAGE_BASE_URL } from '@/lib/images';
 import { s3ImageLoader } from '@/lib/imageLoader';
 import { decadeOf, matchesQuery } from '@/lib/text';
 import OtherVitrailLink from '@/components/layout/OtherVitrailLink';
+import { useT } from '@/i18n';
 
 const DECADE_COLORS: Record<number, string> = {
   1950: '#2563eb',
@@ -52,6 +53,7 @@ function workImages(work: Vitrail) {
 }
 
 function PlacePopup({ place }: { place: Place }) {
+  const t = useT();
   const [selected, setSelected] = useState(0);
   const [idx, setIdx] = useState(0);
   const work = place.works[Math.min(selected, place.works.length - 1)];
@@ -67,7 +69,7 @@ function PlacePopup({ place }: { place: Place }) {
       <p className="text-xs text-gray-600 mb-2">{[place.city, place.department].filter(Boolean).join(' · ')}</p>
 
       {place.works.length > 1 && (
-        <ul className="mb-2 space-y-1 max-h-28 sm:max-h-40 overflow-y-auto" aria-label="Réalisations dans cet édifice">
+        <ul className="mb-2 space-y-1 max-h-28 sm:max-h-40 overflow-y-auto" aria-label={t.map.worksInBuilding}>
           {place.works.map((w, i) => (
             <li key={w.id}>
               <button
@@ -90,17 +92,17 @@ function PlacePopup({ place }: { place: Place }) {
           </div>
           {images.length > 1 && (
             <div className="mt-2 flex items-center justify-between">
-              <button type="button" onClick={() => setIdx((i) => (i - 1 + images.length) % images.length)} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">Précédent</button>
+              <button type="button" onClick={() => setIdx((i) => (i - 1 + images.length) % images.length)} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">{t.common.previous}</button>
               <span className="text-xs text-gray-500">{idx + 1} / {images.length}</span>
-              <button type="button" onClick={() => setIdx((i) => (i + 1) % images.length)} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">Suivant</button>
+              <button type="button" onClick={() => setIdx((i) => (i + 1) % images.length)} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">{t.common.next}</button>
             </div>
           )}
         </div>
       )}
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        <Link href={`/jeannette/catalogue/${work.id}`} className="text-xs bg-blue-600 !text-white px-2.5 py-1.5 rounded hover:bg-blue-700 transition">Voir la fiche</Link>
-        <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs border border-gray-800 !text-gray-900 px-2.5 py-1.5 rounded hover:bg-gray-50 transition">Ouvrir dans Maps</a>
+        <Link href={`/jeannette/catalogue/${work.id}`} className="text-xs bg-blue-600 !text-white px-2.5 py-1.5 rounded hover:bg-blue-700 transition">{t.common.seeWork}</Link>
+        <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs border border-gray-800 !text-gray-900 px-2.5 py-1.5 rounded hover:bg-gray-50 transition">{t.common.openInMaps}</a>
       </div>
     </div>
   );
@@ -158,6 +160,7 @@ function MapController({ fit, focus, markers }: {
 }
 
 export default function ArtworksMap({ works }: { works: Vitrail[] }) {
+  const t = useT();
   const router = useRouter();
   const mapWrapperRef = useRef<HTMLDivElement>(null);
   const markerRefs = useRef<Record<string, L.Marker | null>>({});
@@ -283,14 +286,14 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher un lieu, une ville, une œuvre…"
-            aria-label="Rechercher sur la carte"
+            placeholder={t.map.searchPlaceholder}
+            aria-label={t.map.searchLabel}
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-md text-base"
           />
         </div>
 
         <div className="-mx-4 px-4 overflow-x-auto scrollbar-none">
-          <div className="flex gap-2 w-max" role="group" aria-label="Filtrer par décennie">
+          <div className="flex gap-2 w-max" role="group" aria-label={t.catalogue.decadeFilter}>
             {decades.map((d) => {
               const active = selectedDecades.includes(d);
               return (
@@ -304,17 +307,17 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-gray-600">Cadrer :</span>
-          {([['europe', 'France'], ['quebec', 'Québec'], ['all', 'Tout']] as [View, string][]).map(([v, label]) => (
+          <span className="text-gray-600">{t.map.frame}</span>
+          {([['europe', t.map.viewFrance], ['quebec', t.map.viewQuebec], ['all', t.map.viewAll]] as [View, string][]).map(([v, label]) => (
             <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)} className={chip(view === v)}>{label}</button>
           ))}
           <span className="mx-1 h-5 w-px bg-gray-300" aria-hidden="true" />
           <button type="button" aria-pressed={basemap === 'light'} onClick={() => setBasemap(basemap === 'osm' ? 'light' : 'osm')} className={chip(false)}>
-            Fond {basemap === 'osm' ? 'clair' : 'détaillé'}
+            {basemap === 'osm' ? t.map.lightBase : t.map.detailedBase}
           </button>
           <label className="inline-flex items-center gap-2 h-9 px-2 cursor-pointer select-none">
             <input type="checkbox" checked={showPath} onChange={(e) => setShowPath(e.target.checked)} className="w-4 h-4" />
-            Parcours chronologique
+            {t.map.path}
           </label>
         </div>
       </div>
@@ -354,7 +357,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
         {filtering && filteredPlaces.length === 0 && (
           <div className="absolute inset-0 z-[500] flex items-center justify-center pointer-events-none">
-            <p className="bg-white/90 backdrop-blur px-4 py-2 text-sm text-gray-700 rounded shadow">Aucune œuvre ne correspond à ces critères</p>
+            <p className="bg-white/90 backdrop-blur px-4 py-2 text-sm text-gray-700 rounded shadow">{t.map.noMatch}</p>
           </div>
         )}
       </div>
@@ -362,8 +365,8 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
       {/* Liste des lieux, synchronisée avec la carte */}
       <section className="mt-8" aria-labelledby="liste-lieux">
         <h2 id="liste-lieux" className="text-xl md:text-2xl font-light mb-3">
-          {filteredPlaces.length} lieu{filteredPlaces.length > 1 ? 'x' : ''}
-          {filtering && <span className="text-base text-gray-500"> correspondant{filteredPlaces.length > 1 ? 's' : ''}</span>}
+          {t.map.places(filteredPlaces.length)}
+          {filtering && <span className="text-base text-gray-500">{t.map.matching(filteredPlaces.length)}</span>}
         </h2>
         <ul className="divide-y divide-gray-200 border-y border-gray-200">
           {filteredPlaces.map((place) => (
@@ -374,7 +377,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                   <span className="block font-medium text-gray-900">{place.building_name}</span>
                   <span className="block text-sm text-gray-600">
                     {[place.city, place.department].filter(Boolean).join(' · ')} — {place.works.map((w) => w.year).join(', ')}
-                    {place.works.length > 1 && ` (${place.works.length} réalisations)`}
+                    {place.works.length > 1 && ` (${place.works.length} ${t.common.works(place.works.length)})`}
                   </span>
                 </span>
                 <MapPin className="w-4 h-4 mt-1 text-gray-400 flex-shrink-0" aria-hidden="true" />
@@ -385,7 +388,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
         {unlocated.length > 0 && (
           <p className="mt-4 text-sm text-gray-600">
-            Sans localisation précise sur la carte :{' '}
+            {t.map.unlocated}{' '}
             {unlocated.map((w, i) => (
               <span key={w.id}>
                 {i > 0 && ', '}

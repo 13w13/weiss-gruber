@@ -1,10 +1,12 @@
-// Génère public/sitemap.xml à partir du CSV : pages du site + une entrée par fiche d'œuvre.
+// Génère public/sitemap.xml à partir du CSV : pages du site + une entrée par fiche d'œuvre,
+// en français (sans préfixe) et en anglais (/en).
 // Lancé automatiquement avant chaque build (script "prebuild").
 import fs from 'node:fs'
 import path from 'node:path'
 import Papa from 'papaparse'
 
 const SITE_URL = 'https://www.weiss-gruber.art'
+const LOCALE_PREFIXES = ['', '/en']
 const root = process.cwd()
 const today = new Date().toISOString().slice(0, 10)
 
@@ -22,7 +24,7 @@ const works = data
   .filter((row) => row.id)
   .map((row) => ({ loc: `/jeannette/catalogue/${row.id}`, changefreq: 'yearly', priority: '0.6' }))
 
-const urls = [...pages, ...works]
+const urls = LOCALE_PREFIXES.flatMap((prefix) => [...pages, ...works].map((u) => ({ ...u, loc: `${prefix}${u.loc}` })))
   .map(({ loc, changefreq, priority }) => [
     '  <url>',
     `    <loc>${SITE_URL}${loc}</loc>`,
@@ -35,4 +37,4 @@ const urls = [...pages, ...works]
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
 fs.writeFileSync(path.join(root, 'public', 'sitemap.xml'), xml)
-console.log(`sitemap.xml : ${pages.length} pages + ${works.length} fiches`)
+console.log(`sitemap.xml : (${pages.length} pages + ${works.length} fiches) × ${LOCALE_PREFIXES.length} langues`)

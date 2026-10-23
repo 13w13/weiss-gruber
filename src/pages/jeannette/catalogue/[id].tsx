@@ -17,6 +17,7 @@ import { IMAGE_BASE_URL } from '@/lib/images';
 import { s3ImageLoader } from '@/lib/imageLoader';
 import { getWorks } from '@/lib/works';
 import { SITE_URL } from '@/lib/site';
+import { LOCALES, localePrefix, toLocale, useLocale, useT } from '@/i18n';
 import PageMeta from '@/components/layout/PageMeta'
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
@@ -32,6 +33,8 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
   position: number;
   total: number;
 }) {
+  const t = useT();
+  const locale = useLocale();
   const prevId = prev?.id ?? null;
   const nextId = next?.id ?? null;
   const router = useRouter();
@@ -83,20 +86,21 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
   const hasLongText = fullText.length > 80;
 
   // Métadonnées de partage et données structurées pour les moteurs de recherche
-  const pageUrl = `${SITE_URL}/jeannette/catalogue/${work.id}`;
+  const pageUrl = `${SITE_URL}${localePrefix(locale)}/jeannette/catalogue/${work.id}`;
   const ogImage = s3ImageLoader({ src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`, width: 1600 });
-  const summary = `Vitrail de Jeannette Weiss Gruber, ${work.year} — ${work.building_name}, ${work.city}.${fullText ? ` ${fullText}` : ''}`;
+  const summary = `${t.work.summary(work.year, work.building_name, work.city)}${fullText ? ` ${fullText}` : ''}`;
   const metaDescription = summary.length > 160 ? `${summary.slice(0, 157).replace(/\s+\S*$/, '')}…` : summary;
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'VisualArtwork',
     name: work.title_fr,
-    artform: 'Vitrail',
+    artform: t.work.artform,
+    inLanguage: locale,
     dateCreated: work.year,
     url: pageUrl,
     image: ogImage,
     description: metaDescription,
-    creator: { '@type': 'Person', name: 'Jeannette Weiss Gruber', birthDate: '1934', deathDate: '2026', url: `${SITE_URL}/jeannette` },
+    creator: { '@type': 'Person', name: 'Jeannette Weiss Gruber', birthDate: '1934', deathDate: '2026', url: `${SITE_URL}${localePrefix(locale)}/jeannette` },
   };
 
   // Build slides once per render (needs to be before effects that depend on it)
@@ -198,7 +202,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
   };
 
   if (router.isFallback) {
-    return <div>Chargement...</div>;
+    return <div>{t.common.loading}</div>;
   }
 
 
@@ -209,14 +213,14 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
       src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`,
       alt: work.title_fr,
       title: `${work.title_fr} (1/${slides.length})`,
-      description: `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${work.title_fr}\n\n${fullText || ''}`
+      description: `${work.building_name || t.work.noLocation}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${work.title_fr}\n\n${fullText || ''}`
     },
     ...(work.gallery_images?.map((img, idx) => {
       // Pour les galeries : titre principal + localisation, puis nom de l'image comme sous-titre
-      let desc = `${work.building_name || 'Sans localisation'}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}`;
+      let desc = `${work.building_name || t.work.noLocation}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}`;
       if (img.nom) desc += `\n\n${img.nom}`; // Nom de l'image comme sous-titre
       if (img.alt_fr) desc += `\n\n${img.alt_fr}`; // Description
-      if (img.credit) desc += `\n\nPhoto : ${img.credit}`; // Crédit
+      if (img.credit) desc += `\n\n${t.work.photo} ${img.credit}`; // Crédit
       
       return {
         src: `${IMAGE_BASE_URL}/vitraux/${img.url}`,
@@ -250,17 +254,17 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-light mb-3 md:mb-4">{work.title_fr}</h1>
             <p className="text-base md:text-lg text-gray-600 mb-4">{work.year} - {work.building_name}, {work.city}</p>
 
-            <nav className="hidden md:flex mb-6 justify-between items-center gap-4" aria-label="Œuvres voisines">
+            <nav className="hidden md:flex mb-6 justify-between items-center gap-4" aria-label={t.work.neighbours}>
               {prev ? (
                 <Link href={`/jeannette/catalogue/${prev.id}`} className="inline-flex items-center min-h-11 pr-3 text-gray-700 hover:text-blue-700 transition-colors">
                   <ChevronLeft className="w-5 h-5 mr-1 flex-shrink-0" />
-                  <span><span className="block text-xs text-gray-500">Précédent · {prev.year}</span>{prev.title}</span>
+                  <span><span className="block text-xs text-gray-500">{t.common.previous} · {prev.year}</span>{prev.title}</span>
                 </Link>
               ) : <span />}
               <span className="text-sm text-gray-500 whitespace-nowrap">{position} / {total}</span>
               {next ? (
                 <Link href={`/jeannette/catalogue/${next.id}`} className="inline-flex items-center min-h-11 pl-3 text-right text-gray-700 hover:text-blue-700 transition-colors">
-                  <span><span className="block text-xs text-gray-500">Suivant · {next.year}</span>{next.title}</span>
+                  <span><span className="block text-xs text-gray-500">{t.common.next} · {next.year}</span>{next.title}</span>
                   <ChevronRight className="w-5 h-5 ml-1 flex-shrink-0" />
                 </Link>
               ) : <span />}
@@ -376,7 +380,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                               transition: 'all 0.2s ease'
                             }}
                           >
-                            <span>Vitrail suivant</span>
+                            <span>{t.work.nextWindow}</span>
                             <ChevronRight style={{ width: '16px', height: '16px' }} />
                           </button>
                         </div>
@@ -432,7 +436,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                             </span>
                           </div>
                           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: window.innerWidth < 640 ? '11px' : (window.innerWidth < 768 ? '12px' : '13px'), margin: 0, lineHeight: '1.3' }}>
-                            {work.building_name || 'Sans localisation'}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
+                            {work.building_name || t.work.noLocation}{work.city ? `, ${work.city}` : ''}{work.year ? ` (${work.year})` : ''}
                           </p>
                         </div>
 
@@ -473,7 +477,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                                     userSelect: 'none'
                                   }}
                                 >
-                                  Voir moins
+                                  {t.work.readLess}
                                 </div>
                               </div>
                             ) : (
@@ -514,7 +518,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                                       userSelect: 'none'
                                     }}
                                   >
-                                    Lire plus
+                                    {t.work.readMore}
                                   </div>
                                 )}
                               </div>
@@ -553,7 +557,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                                       userSelect: 'none'
                                     }}
                                   >
-                                    Voir moins
+                                    {t.work.readLess}
                                   </div>
                                 )}
                               </div>
@@ -596,7 +600,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                                       userSelect: 'none'
                                     }}
                                   >
-                                    Lire plus
+                                    {t.work.readMore}
                                   </div>
                                 )}
                               </div>
@@ -607,7 +611,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                         {/* Gallery images: show photo credit */}
                         {currentMeta.credit && (
                           <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: window.innerWidth < 640 ? '11px' : '12px', fontStyle: 'italic', marginTop: window.innerWidth < 640 ? '4px' : '8px' }}>
-                            Photo : {currentMeta.credit}
+                            {t.work.photo} {currentMeta.credit}
                           </div>
                         )}
 
@@ -645,7 +649,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                                 }}
                               >
                                 <ChevronLeft style={{ width: '16px', height: '16px' }} />
-                                <span>Vitrail précédent</span>
+                                <span>{t.work.previousWindow}</span>
                               </button>
                             ) : (
                               <div style={{ flex: 1 }} />
@@ -682,7 +686,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
                                 }}
                               >
-                                <span>Vitrail suivant</span>
+                                <span>{t.work.nextWindow}</span>
                                 <ChevronRight style={{ width: '16px', height: '16px' }} />
                               </button>
                             ) : (
@@ -702,11 +706,11 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/80 text-white px-5 py-3 rounded-lg text-sm select-none pointer-events-none animate-fade shadow-lg z-50">
                   <div className="flex items-center gap-2">
                     <span>← →</span>
-                    <span>Navigation</span>
+                    <span>{t.work.hintNavigation}</span>
                     <span className="mx-2">•</span>
-                    <span>Molette : Zoom</span>
+                    <span>{t.work.hintZoom}</span>
                     <span className="mx-2">•</span>
-                    <span>Échap : Fermer</span>
+                    <span>{t.work.hintClose}</span>
                   </div>
                 </div>
               )}
@@ -726,7 +730,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
               )}
               <dl className="grid grid-cols-1 gap-y-3">
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-500">Lieu</dt>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">{t.work.place}</dt>
                   <dd className="text-gray-800">
                     {work.maps_url ? (
                       <a href={work.maps_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-blue-700 hover:text-blue-900 underline underline-offset-2">
@@ -739,21 +743,21 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                     {work.lat && work.lng && (
                       <Link href={`/jeannette/carte?oeuvre=${work.id}`} className="ml-3 inline-flex items-center text-sm text-gray-600 hover:text-blue-700 underline underline-offset-2">
                         <MapIcon className="w-4 h-4 mr-1" />
-                        Voir sur la carte
+                        {t.work.seeOnMap}
                       </Link>
                     )}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-500">Type d&apos;édifice</dt>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">{t.work.buildingType}</dt>
                   <dd className="text-gray-800">{work.building_type}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-500">Département</dt>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">{t.work.department}</dt>
                   <dd className="text-gray-800">{work.department}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-500">Emplacement</dt>
+                  <dt className="text-xs uppercase tracking-wide text-gray-500">{t.work.location}</dt>
                   <dd className="text-gray-800">{work.location_in_building}</dd>
                 </div>
               </dl>
@@ -761,7 +765,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
 
             {work.gallery_images && work.gallery_images.length > 0 && (
               <div>
-                <h2 className="text-xl md:text-2xl font-light mb-3 md:mb-4">Galerie</h2>
+                <h2 className="text-xl md:text-2xl font-light mb-3 md:mb-4">{t.work.gallery}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                   {work.gallery_images.map((image, index) => (
                     <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -781,7 +785,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
                       <div className="p-2 text-sm bg-gray-50">
                         <p className="font-semibold">{image.nom}</p>
                         {image.alt_fr && <p className="mt-1 text-xs text-gray-500">{image.alt_fr}</p>}
-                        {image.credit && <p className="mt-1 text-xs text-gray-400">Crédit photo : {image.credit}</p>}
+                        {image.credit && <p className="mt-1 text-xs text-gray-400">{t.work.photoCredit} {image.credit}</p>}
                       </div>
                     </div>
                   ))}
@@ -793,18 +797,18 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
       </main>
 
       {/* Navigation fixe sur mobile : grands boutons faciles à toucher */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[1050] bg-white/95 backdrop-blur border-t border-gray-200 pb-[env(safe-area-inset-bottom)]" aria-label="Œuvres voisines">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[1050] bg-white/95 backdrop-blur border-t border-gray-200 pb-[env(safe-area-inset-bottom)]" aria-label={t.work.neighbours}>
         <div className="flex items-stretch h-14">
           {prev ? (
             <Link href={`/jeannette/catalogue/${prev.id}`} className="flex-1 flex items-center gap-1 px-3 text-gray-800 active:bg-gray-100">
               <ChevronLeft className="w-5 h-5 flex-shrink-0" />
-              <span className="text-sm">Précédent</span>
+              <span className="text-sm">{t.common.previous}</span>
             </Link>
           ) : <span className="flex-1" />}
           <span className="flex items-center px-2 text-xs text-gray-500">{position} / {total}</span>
           {next ? (
             <Link href={`/jeannette/catalogue/${next.id}`} className="flex-1 flex items-center justify-end gap-1 px-3 text-gray-800 active:bg-gray-100">
-              <span className="text-sm">Suivant</span>
+              <span className="text-sm">{t.common.next}</span>
               <ChevronRight className="w-5 h-5 flex-shrink-0" />
             </Link>
           ) : <span className="flex-1" />}
@@ -821,9 +825,10 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
 // Génère les chemins pour chaque œuvre
 export const getStaticPaths: GetStaticPaths = async () => {
   const works = getWorks();
-  const paths = works.map(work => ({
+  const paths = LOCALES.flatMap((locale) => works.map((work) => ({
     params: { id: work.id },
-  }));
+    locale,
+  })));
 
   return {
     paths,
@@ -832,8 +837,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 // Récupère les données pour une œuvre spécifique
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const works = getWorks();
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+  const works = getWorks(toLocale(locale));
   const index = works.findIndex(w => w.id === params?.id);
   const work = index >= 0 ? works[index] : undefined;
 

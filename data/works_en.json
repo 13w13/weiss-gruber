@@ -1,0 +1,499 @@
+{
+  "jw_1955_sceaux_01": {
+    "title": "Façade rose window",
+    "location_in_building": "Façade",
+    "text": "Referenced in Les vitraux de l'église Saint-Jean-Baptiste de Sceaux, with the author's congratulations. Without my knowledge, this window was restored with disparate, incoherent elements placed at its center. My creations can still be seen around the center.",
+    "gallery": {}
+  },
+  "jw_1960_mantes_01": {
+    "title": "Three façade lancets beneath the 13th-century rose window",
+    "location_in_building": "Façade",
+    "text": "Recorded in the heritage inventory",
+    "gallery": {}
+  },
+  "jw_1964_stcrepin_01": {
+    "title": "Two choir windows",
+    "location_in_building": "Choir",
+    "text": "For these windows, I did not go to the site; the background patterns were imposed.",
+    "gallery": {}
+  },
+  "jw_1965_pierrefonds_01": {
+    "title": "Three choir windows",
+    "location_in_building": "Choir",
+    "text": "For these windows too, I did not go to the site; the background patterns were imposed.",
+    "gallery": {
+      "1965_pierrefonds_detail_01.jpeg": {
+        "nom": "One window"
+      },
+      "1965_pierrefonds_detail_02.jpeg": {
+        "nom": "Detail of the tracery"
+      },
+      "1965_pierrefonds_detail_03.jpeg": {
+        "nom": "Another window"
+      },
+      "1965_pierrefonds_detail_04.jpeg": {
+        "nom": "Detail of a window"
+      }
+    }
+  },
+  "jw_1966_caudebec_01": {
+    "title": "Choir window",
+    "location_in_building": "Choir",
+    "text": "",
+    "gallery": {
+      "1966_caudebec_01.jpg": {
+        "nom": "Detail of the window",
+        "alt": "The Dormition of the Virgin with, on the left, the Tiburtine Sibyl (cf. the Vision of Augustus) and, on the right, Rebecca, the wife of Isaac, with her sons Jacob and Esau"
+      },
+      "1966_caudebec_02.jpg": {
+        "nom": "Detail",
+        "alt": "The Assumption of the Virgin with, on the left, the Erythraean Sibyl (cf. Dies Irae) and, on the right, Sarah and her son Isaac"
+      },
+      "1966_caudebec_03.jpg": {
+        "nom": "Detail",
+        "alt": "The Weighing of Souls by Saint Michael (the Archangel) between Adam and Eve"
+      }
+    }
+  },
+  "jw_1969_lyon_01": {
+    "title": "East window of the Chapel of the Virgin",
+    "location_in_building": "Chapel of the Virgin",
+    "text": "",
+    "gallery": {
+      "1969_lyon_vierge_est_detail_1.jpeg": {
+        "nom": "One window"
+      },
+      "1969_lyon_vierge_est_detail_2.jpeg": {
+        "nom": "Top of the window"
+      },
+      "1969_lyon_vierge_est_detail_3.jpeg": {
+        "nom": "Detail"
+      },
+      "1969_lyon_vierge_est_detail_4.jpeg": {
+        "nom": "Detail"
+      },
+      "1969_lyon_vierge_est_detail_5.jpeg": {
+        "nom": "Quatrefoil"
+      },
+      "1969_lyon_vierge_est_detail_6.jpeg": {
+        "nom": "Detail of a small king"
+      }
+    }
+  },
+  "jw_1970_lyon_03": {
+    "title": "South window of the Chapel of the Virgin",
+    "location_in_building": "Chapel of the Virgin",
+    "text": "For the window next to it, I only made the cartoon. Here, the window in the photo is one I made entirely myself.",
+    "gallery": {
+      "1970_lyon_vierge_sud_sud_01.jpeg": {
+        "nom": "Overall view of the window"
+      },
+      "1970_lyon_vierge_sud_sud_02.jpeg": {
+        "nom": "Detail of the lower section"
+      },
+      "1970_lyon_vierge_sud_sud_03.jpeg": {
+        "nom": "Detail of the middle section"
+      }
+    }
+  },
+  "jw_1969_montreal_01": {
+    "title": "Iode Ssouvie and her friend flying over Montréal in a hot-air balloon",
+    "location_in_building": "",
+    "text": "1969: Departure for Québec. Based on a novel by Réjean Ducharme, L'Avalée des avalés. Exhibited at the French Pavilion in Montréal; the photo is of poor quality.",
+    "gallery": {}
+  },
+  "jw_1970_montreal_02": {
+    "title": "Aluchromies and various exhibitions",
+    "location_in_building": "",
+    "text": "At the request of the Alcan plants, Jeannette experimented with oxidized aluminum and pigments derived from wool dyeing: thus her aluchromies were born. Exhibitions: Galerie Art Pictural, 1971; S.A.P.Q, Place Bonaventure, Montréal, 1972; Université de Montréal, January 1973; Salon de l'aluminium de Chicoutimi, May 1973; Université de Sherbrooke, May 1973.",
+    "gallery": {
+      "alu/alu_2.jpeg": {
+        "nom": "Blue and Yellow"
+      },
+      "alu/alu_3.jpeg": {
+        "nom": "Blue Triptych"
+      },
+      "alu/alu_4.jpeg": {
+        "nom": "Aluchromy"
+      },
+      "alu/alu_5.jpeg": {
+        "nom": "Aluchromy"
+      },
+      "alu/alu_6.jpg": {
+        "nom": "Newspaper article"
+      },
+      "alu/alu_7.jpg": {
+        "nom": "Exhibition poster"
+      },
+      "alu/alu_8.jpeg": {
+        "nom": "Aluchromy"
+      },
+      "alu/alu_9.jpeg": {
+        "nom": "Red"
+      },
+      "alu/alu_10.jpg": {
+        "nom": "Aluchromy",
+        "alt": "Made at the Alcan plants"
+      },
+      "alu/alu_11.jpeg": {
+        "nom": "Exhibition"
+      },
+      "alu/alu_12.jpeg": {
+        "nom": "Exhibition"
+      },
+      "alu/alu_13.jpeg": {
+        "nom": "Aluchromy"
+      },
+      "alu/alu_14.jpeg": {
+        "nom": "Triptych"
+      }
+    }
+  },
+  "jw_1978_lyon_03": {
+    "title": "Two north windows of the Chapel of Saint Joseph",
+    "location_in_building": "Chapel of Saint Joseph",
+    "text": "Back from Québec, 1974: a work order was issued for the Chapel of Saint Joseph. Canon Manien chose the theme of the genealogy of Christ and followed its iconography; the execution, carried out “with a comb” in the family workshop, was completed quickly.",
+    "gallery": {
+      "1969_lyon_vierge_sud_detail_1.jpeg": {
+        "nom": "Detail"
+      }
+    }
+  },
+  "jw_1978_paris_04": {
+    "title": "Stained-glass window for a laboratory",
+    "location_in_building": "",
+    "text": "Stained-glass window for my husband, Bernard Weiss, in his laboratory on rue Manin. Now in a private collection.",
+    "gallery": {}
+  },
+  "jw_1980_paris_05": {
+    "title": "Workshop door",
+    "location_in_building": "",
+    "text": "Opening of her own workshop in 1980, Villa d'Alésia.",
+    "gallery": {}
+  },
+  "jw_1980_paris_06": {
+    "title": "Figure emerging from the glass",
+    "location_in_building": "",
+    "text": "Published in the 1st Salon du Vitrail of the Centre International du Vitrail (1980) and in Métiers d'Art (1982) by Françoise Perrot.",
+    "gallery": {}
+  },
+  "jw_1981_etioles_01": {
+    "title": "Façade window",
+    "location_in_building": "Façade",
+    "text": "Poor-quality photo.",
+    "gallery": {}
+  },
+  "jw_1981_beauvais_01": {
+    "title": "The Life of Tobias",
+    "location_in_building": "Choir aisle",
+    "text": "The Life of Tobias, along with two abstract infills (next page) made for the Église Saint-Étienne de Beauvais, enters into dialogue with the windows of the Le Prince family, 16th-century glassmakers from Beauvais. My intention was to rebalance the composition of lancets taken from different windows while keeping my own personal graphic style. I worked with grisaille and silver stain to reconcile the figurative elements inherited from the 16th century with contemporary figurative idioms — sometimes abstract — and to blend them into a single harmony, preserving the soft light characteristic of the Le Prince windows. Referenced in an article by Chantal Bouchon.",
+    "gallery": {
+      "1980_beauvais_tobie_02.jpg": {
+        "nom": "Detail of the middle section"
+      },
+      "1980_beauvais_tobie_03.jpg": {
+        "nom": "Detail of the lower section"
+      },
+      "1980_beauvais_tobie_03b.jpg": {
+        "nom": "Detail"
+      },
+      "1980_beauvais_complement_05.jpg": {
+        "nom": "The maquette"
+      }
+    }
+  },
+  "jw_1983_beauvais_03": {
+    "title": "Two infills",
+    "location_in_building": "Choir aisle",
+    "text": "The first infill is a window dedicated to Saint Nicholas, containing at the top of the left lancet a very fine ship by Jean Le Prince. The two right-hand lancets hold panels that came from another window.",
+    "gallery": {
+      "1983_beauvais_nicolas_02.jpg": {
+        "nom": "Window before the infill"
+      },
+      "1983_beauvais_main_01.jpg": {
+        "nom": "First infill"
+      },
+      "1983_beauvais_nicolas_01.jpg": {
+        "nom": "Detail of the infill"
+      },
+      "1983_beauvais_fontaine_03.jpg": {
+        "nom": "Window before the infill"
+      },
+      "1983_beauvais_fontaine_01.jpg": {
+        "nom": "Second infill",
+        "alt": "In the second infill, in the left lancet, on panels executed by Engrand Le Prince, a tall figure points to the soul rising from the dead man being carried to his tomb. The panels of the next two lancets show the Fountain of Life attributed to the Master of Montmorency, which should have been laid out across all three lancets. Jean Taralon, Inspector General of Historic Monuments, had told me that after the surviving elements from different windows were reinstalled in these two bays, he, my father and Louis Grodecki had marveled at these panels, whose beauty had been brought back to light. I obtained scaffolding beneath the windows so that I could execute the accompanying cartoons for the work, which was meant to showcase and rebalance the mismatched old panels. Up on that scaffolding I felt an incredible happiness, among the Le Princes and the Master of Montmorency. The photos show the windows before and after the infills."
+      },
+      "1983_beauvais_fontaine_02.jpg": {
+        "nom": "Detail of the second infill"
+      }
+    }
+  },
+  "jw_1981_kerfeunten_01": {
+    "title": "A window in the north nave",
+    "location_in_building": "North nave",
+    "text": "Bigouden procession",
+    "gallery": {}
+  },
+  "jw_1982_villecroze_01": {
+    "title": "Five small stained-glass windows and an oculus",
+    "location_in_building": "",
+    "text": "Trial panel accepted by Anne Gruner Schlumberger",
+    "gallery": {}
+  },
+  "jw_1984_darmannes_02": {
+    "title": "Two stained-glass windows in the transept",
+    "location_in_building": "Transept",
+    "text": "For the Romanesque transept, whose 19th-century ironwork was kept, I made the light play with brown and black grisailles on clear glass. Jean Taralon regarded this work as an exemplary creation for its integration into Romanesque architecture (Métier d'Art, no. 32, October 1986).",
+    "gallery": {
+      "1984_darmannes_transept_01.jpg": {
+        "nom": "Cartoon"
+      }
+    }
+  },
+  "jw_1985_beauvais_04": {
+    "title": "A window in the south transept chapel",
+    "location_in_building": "Chapel of Saint Vincent de Paul",
+    "text": "Creation of 20 m² of accompanying glass to showcase a 15th-century Picard donor and, on the left, a later figure. In homage to the 15th century, I used, as in their sumptuous glazing, many expanses of glass painted in grisaille.",
+    "gallery": {
+      "1985_beauvais_cathedrale_detail_01.jpg": {
+        "nom": "Detail"
+      },
+      "1985_beauvais_cathedrale_detail_02.jpg": {
+        "nom": "Maquette"
+      },
+      "1985_beauvais_cathedrale_detail_03.jpg": {
+        "nom": "Letter from the DRAC Picardie"
+      }
+    }
+  },
+  "jw_1986_champagne_01": {
+    "title": "Twelve stained-glass windows in the nave",
+    "location_in_building": "Nave",
+    "text": "Twelve stained-glass windows in the nave, one window in the portal of the south nave, two windows in the north and south transept arms, and a small façade rose window.",
+    "gallery": {
+      "1986_champagne_13.jpg": {
+        "nom": "Adam and Eve"
+      },
+      "1986_champagne_00.jpg": {
+        "nom": "Cartoon"
+      },
+      "1986_champagne_000.jpg": {
+        "nom": "View of the two windows"
+      },
+      "1986_champagne_02.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_03.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_04.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_05.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_06.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_07.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_08.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_09.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_10.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_11.jpg": {
+        "nom": "Stained-glass window"
+      },
+      "1986_champagne_12.jpg": {
+        "nom": "Stained-glass window"
+      }
+    }
+  },
+  "jw_1988_pontstemaxence_02": {
+    "title": "Two windows in the south nave",
+    "location_in_building": "South nave",
+    "text": "In this very dark nave, I proposed very light windows on maquettes, and I executed them mostly in clear glass painted with grisaille, accompanied by a few touches of silver stain and small pieces of green glass. It is one of my favorite works, because it was a true work of light, the building being very dark.",
+    "gallery": {
+      "1988_pontstemaxence_nefnord_01.jpg": {
+        "nom": "Maquette"
+      },
+      "1988_pontstemaxence_nefnord_02.jpg": {
+        "nom": "Maquette for the north nave"
+      }
+    }
+  },
+  "jw_1991_niort_01": {
+    "title": "Tree of Jesse - Infills and restoration",
+    "location_in_building": "",
+    "text": "My proposal for showcasing the Tree of Jesse won the competition. Some of the kings date from the 15th century; the other old panels are from the 17th and 19th centuries. My infills are abstract, except for 4 kings, whose crowns I replaced with hats. Because of the tie bars running through the mullions, I had to place the large 17th-century prophet in a register at the base, the only register in which the panel could fit in its entirety. Nathalie Frachon-Gielarek, who was in charge of the restoration, followed my work in a spirit of friendship. To my great joy, two kings were rediscovered, which I was able to set higher up in place of mine, and the large prophet in place of one of my abstract panels.",
+    "gallery": {
+      "1990_niort_detail.jpg": {
+        "nom": "Proposal shown on a maquette"
+      }
+    }
+  },
+  "jw_1991_amiens_01": {
+    "title": "Creation and restoration with infills",
+    "location_in_building": "Chapel of Saint Francis of Assisi",
+    "text": "I was entrusted with the rearrangement of the 13th-century stained glass from the cathedral choir. The windows, removed during the First World War, had been ravaged by a fire that broke out in a cabinetmaker's workshop: the remaining panels were incomplete, with molten lead on charred and shattered glass. The main photo shows the final state. With the approval of Historic Monuments, I chose not to make my creations and infills in the central window too dark, unlike the eighteen charred borders and the 13th-century elements of the five medallions. My creations are simply a little less light than those of the two windows on either side of it. My work was overseen by Nathalie Frachon-Gielarek, stained-glass historian and research officer.",
+    "gallery": {
+      "1991_amiens_stfrancois_01.png": {
+        "nom": "Final state in black",
+        "alt": "The original parts are shown in black. The rest, the accompanying creations and the infills completing the fragments, is in full color."
+      },
+      "1991_amiens_stfrancois_02.png": {
+        "nom": "Infill and creation – 1st window"
+      },
+      "1991_amiens_stfrancois_03.png": {
+        "nom": "Cartoon",
+        "alt": "After copying onto the cartoon, and completing, the 13th-century elements of the Tree of Jesse laid out on my glass table, I work out the newly created panels with the same gestures."
+      },
+      "1991_amiens_stfrancois_04.png": {
+        "nom": "Axial window “Childhood of the Virgin”",
+        "alt": "The three old medallions at the base of the right lancet, completed and restored, are accompanied by abstract medallions that suggest iconographic scenes."
+      },
+      "1991_amiens_stfrancois_05.png": {
+        "nom": "Survey drawing by Nathalie Frachon-Gielarek",
+        "alt": "Survey drawing showing all the old elements available for the axial window."
+      },
+      "1991_amiens_stfrancois_06.png": {
+        "nom": "Infills and creation",
+        "alt": "Third window: 15 newly created quatrefoils mingle with the 9 old quatrefoils devoted to the Passion."
+      },
+      "1991_amiens_stfrancois_07.png": {
+        "nom": "Quatrefoil",
+        "alt": "Original quatrefoil depicting Herod ordering the Massacre of the Innocents."
+      },
+      "1991_amiens_stfrancois_08.png": {
+        "nom": "Quatrefoil - Herod ordering the Massacre of the Innocents (completed)"
+      },
+      "1991_amiens_stfrancois_09.png": {
+        "nom": "Quatrefoil - The Resurrection"
+      },
+      "1991_amiens_stfrancois_10.png": {
+        "nom": "Quatrefoil - The Miraculous Draught of Fishes"
+      },
+      "1991_amiens_stfrancois_11.png": {
+        "nom": "Quatrefoil - The Dormition of the Virgin"
+      },
+      "1991_amiens_stfrancois_12.png": {
+        "nom": "Quatrefoil - The First Outrages"
+      },
+      "1991_amiens_stfrancois_13.png": {
+        "nom": "Quatrefoil - The Crucifixion"
+      },
+      "1991_amiens_stfrancois_14.png": {
+        "nom": "Quatrefoil - The Angels' Message at the Empty Tomb"
+      },
+      "1991_amiens_stfrancois_15.png": {
+        "nom": "Quatrefoil - The Annunciation"
+      },
+      "1991_amiens_stfrancois_16.png": {
+        "nom": "Quatrefoil - Adoration by One of the Magi"
+      },
+      "1991_amiens_stfrancois_17.png": {
+        "nom": "Quatrefoil - The Arrest of Jesus"
+      },
+      "1991_amiens_stfrancois_18.png": {
+        "nom": "Cartoon",
+        "alt": "Upper part of the cartoon for the background pattern planned for window 18, accompanying the newly created quatrefoils (project approved, then abandoned because the 19th-century surrounds were rediscovered)."
+      },
+      "1991_amiens_stfrancois_19.png": {
+        "nom": "Cartoon",
+        "alt": "Layout of the medallions on the new background pattern."
+      },
+      "1991_amiens_stfrancois_20.png": {
+        "nom": "Restoration of a king from the Tree of Jesse",
+        "alt": "A king from the Tree of Jesse, before restoration"
+      },
+      "1991_amiens_stfrancois_21.png": {
+        "nom": "Restoration of a king from the Tree of Jesse",
+        "alt": "A king from the Tree of Jesse, after restoration"
+      }
+    }
+  },
+  "jw_1994_martyre_01": {
+    "title": "Infills for the 16th-century Breton Tree of Jesse",
+    "location_in_building": "North nave",
+    "text": "Having won the competition with abstract maquettes, I proposed to Historic Monuments that I adapt to the wishes of the master, the rector and the parishioners by designing, in alternation, allusive or figurative windows relating to an iconography. I spent a month in La Martyre completing in situ the full-size colored cartoon of the 16th-century Tree of Jesse, in order to immerse myself in the atmosphere inside the church and to harmonize my infills with the magnificent Dormition, a 16th-century Breton stained-glass window located in a choir chapel next to the Tree of Jesse.",
+    "gallery": {
+      "1994_martyre_jessé_02.png": {
+        "nom": "Maquette",
+        "alt": "Abstract maquette"
+      },
+      "1994_martyre_jessé_01.png": {
+        "nom": "Cartoon",
+        "alt": "Allusive cartoon for the Tree of Jesse"
+      },
+      "1994_martyre_jessé_03.png": {
+        "nom": "Detail",
+        "alt": "Working on the cartoon of the Tree of Jesse inside the church"
+      },
+      "1994_martyre_jessé_04.png": {
+        "nom": "Detail",
+        "alt": "Laid out on the glass table, the elements of the 5 panels of the 16th-century Breton Tree of Jesse. I copied them onto my full-size cartoon before completing it in the church of the Enclos de la Martyre."
+      }
+    }
+  },
+  "jw_1994_martyre_02": {
+    "title": "Five windows in harmony with the Tree of Jesse",
+    "location_in_building": "North nave",
+    "text": "For all the windows, the palette and the main color accents of the abstract maquettes were retained. The project, carried out with excellent momentum, was praised. A later defect, however, browned the windows: the grisaille used, although certified, turned out to be non-compliant. Laboratory investigations are underway. Here, the main photo shows, from left to right, Jacob's Ladder, the Manna in the Desert during the Exodus, and the Tree of Jesse presented earlier.",
+    "gallery": {
+      "1994_martyre_nefnord_01.png": {
+        "nom": "Three windows",
+        "alt": "From right to left: the Descendants of Abraham, the Flood, the Song of Songs"
+      },
+      "1994_martyre_nefnord_B.png": {
+        "nom": "Song of Songs: the two lovers"
+      },
+      "1996_martyre_nefsud_01.png": {
+        "nom": "The angel of Jacob's Ladder"
+      },
+      "1996_martyre_nefsud_02.jpg": {
+        "nom": "The Seraph"
+      },
+      "1996_martyre_nefsud_03.jpg": {
+        "nom": "Cartoon of the Seraph"
+      },
+      "1994_martyre_nefnord_02.png": {
+        "nom": "Abstract maquettes, except for the completed Tree of Jesse"
+      },
+      "1994_martyre_nefnord_03.png": {
+        "nom": "Full-size allusive or figurative cartoons"
+      },
+      "1994_martyre_nefnord_05.png": {
+        "nom": "Cartoon",
+        "alt": "The beginning of the cartoon for the window next to the Tree of Jesse. I think simultaneously about the patches of color and about the leading, on tracing paper over the full-size cartoon."
+      }
+    }
+  },
+  "jw_1994_martyre_03": {
+    "title": "Allusive window on Pentecost",
+    "location_in_building": "South nave",
+    "text": "",
+    "gallery": {}
+  },
+  "jw_2001_saverne_01": {
+    "title": "Eighteen stained-glass windows in the north and south naves",
+    "location_in_building": "Naves",
+    "text": "The embankment, with its trees, and the mountain barely let any light into the north nave. The coloring of the cartoons corresponds to the colors chosen for the execution of these windows. After the cartoons had been made to the dimensions of the windows, the masons narrowed all the openings. All the cartoons had to be redone to the new dimensions. This work suffered the same damage as La Martyre.",
+    "gallery": {
+      "2001_saverne_01.png": {
+        "nom": "Exploratory work on a cartoon"
+      },
+      "2001_saverne_02.png": {
+        "nom": "Creation"
+      },
+      "2001_saverne_03.png": {
+        "nom": "Exploratory work on a cartoon"
+      }
+    }
+  }
+}

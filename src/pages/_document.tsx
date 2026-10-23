@@ -3,7 +3,7 @@ import { IMAGE_BASE_URL } from '@/lib/images';
 
 export default function Document() {
   return (
-    <Html lang="fr">
+    <Html>
       <Head>
         {/* Favicon */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -16,7 +16,6 @@ export default function Document() {
 
         {/* Meta tags communs ; titre, description et image sont définis page par page (PageMeta) */}
         <meta property="og:site_name" content="Weiss Gruber" />
-        <meta property="og:locale" content="fr_FR" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <body className="antialiased">
