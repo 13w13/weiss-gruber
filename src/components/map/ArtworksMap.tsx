@@ -117,15 +117,17 @@ function PlacePopup({ place }: { place: Place }) {
   );
 }
 
-// Cabochon de verre serti de plomb ; un chiffre quand l'édifice compte plusieurs réalisations
+// Losange de verre (comme les vitreries losangées en grisaille), en aplat ;
+// un chiffre quand l'édifice compte plusieurs réalisations
 function markerIcon(color: string, count: number) {
-  const size = count > 1 ? 26 : 18;
+  const side = count > 1 ? 20 : 13;
+  const box = Math.ceil(side * Math.SQRT2) + 2;
   return L.divIcon({
-    className: '',
-    html: `<span class="wg-glass" style="--glass:${color};width:${size}px;height:${size}px">${count > 1 ? count : ''}</span>`,
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-    popupAnchor: [0, -size / 2],
+    className: 'wg-marker',
+    html: `<span class="wg-quarry" style="--glass:${color};--side:${side}px"><span>${count > 1 ? count : ''}</span></span>`,
+    iconSize: [box, box],
+    iconAnchor: [box / 2, box / 2],
+    popupAnchor: [0, -box / 2],
   });
 }
 
@@ -332,7 +334,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                     onClick={() => toggleDecade(d)}
                     className={`group flex flex-col items-stretch pt-1 pb-1 text-left transition-opacity ${dimmed ? 'opacity-35 hover:opacity-80' : ''}`}
                   >
-                    <span className="wg-pane block h-3.5" style={{ ['--glass' as string]: GLASS[d] ?? '#7a7a7a' }} data-active={active} aria-hidden="true" />
+                    <span className="wg-pane block h-2.5" style={{ ['--glass' as string]: GLASS[d] ?? '#7a7a7a' }} data-active={active} aria-hidden="true" />
                     <span className={`mt-1.5 text-[13px] tabular-nums ${active ? 'text-gray-950 font-semibold' : 'text-gray-600 group-hover:text-gray-900'}`}>{d}</span>
                   </button>
                 );
@@ -425,7 +427,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                     style={active ? { borderLeftColor: glassFor(place.works[0].year) } : undefined}
                   >
                     <span className="flex items-center gap-2 tabular-nums text-sm text-gray-900 pt-0.5">
-                      <span className="wg-glass wg-glass--sm" style={{ ['--glass' as string]: glassFor(place.works[0].year) }} aria-hidden="true" />
+                      <span className="wg-quarry wg-quarry--sm" style={{ ['--glass' as string]: glassFor(place.works[0].year) }} aria-hidden="true" />
                       {place.works[0].year}
                     </span>
                     <span>
@@ -468,39 +470,51 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           font: inherit;
         }
 
-        /* Cabochon de verre serti de plomb */
-        .wg-glass {
+        /* Losange de verre en aplat, cerné d'un trait sombre */
+        .wg-marker {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .wg-quarry {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          border-radius: 9999px;
-          border: 2px solid ${LEAD};
-          background:
-            radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.75) 0 14%, rgba(255, 255, 255, 0) 38%),
-            radial-gradient(circle at 50% 50%, var(--glass) 0 55%, color-mix(in srgb, var(--glass) 70%, #000) 100%);
+          width: var(--side);
+          height: var(--side);
+          background: var(--glass);
+          border: 1.5px solid rgba(20, 20, 20, 0.85);
+          border-radius: 2px;
+          transform: rotate(45deg);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+          transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        }
+        .wg-quarry > span {
+          transform: rotate(-45deg);
           color: #fff;
-          font: 600 11px/1 Arial, Helvetica, sans-serif;
-          text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
-          transition: box-shadow 0.15s ease-out;
+          font: 700 11px/1 Arial, Helvetica, sans-serif;
+          letter-spacing: -0.02em;
         }
-        .leaflet-marker-icon:hover .wg-glass,
-        .leaflet-marker-icon:focus-visible .wg-glass {
-          box-shadow: 0 0 0 5px color-mix(in srgb, var(--glass) 30%, transparent);
+        .leaflet-marker-icon:hover .wg-quarry,
+        .leaflet-marker-icon:focus-visible .wg-quarry {
+          transform: rotate(45deg) scale(1.18);
+          box-shadow: 0 0 0 4px color-mix(in srgb, var(--glass) 28%, transparent);
         }
-        .wg-glass--sm {
-          width: 10px;
-          height: 10px;
-          border-width: 1.5px;
+        .wg-quarry--sm {
+          --side: 8px;
+          border-width: 1px;
           flex-shrink: 0;
+          box-shadow: none;
         }
 
-        /* Bande des décennies : petits panneaux de verre sertis */
+        /* Bande des décennies : aplats cernés du même trait */
         .wg-pane {
-          border: 1.5px solid ${LEAD};
-          background: linear-gradient(180deg, color-mix(in srgb, var(--glass) 70%, #fff) 0%, var(--glass) 60%, color-mix(in srgb, var(--glass) 80%, #000) 100%);
+          background: var(--glass);
+          border: 1px solid rgba(20, 20, 20, 0.85);
+          border-radius: 1px;
         }
         .wg-pane[data-active='true'] {
-          box-shadow: 0 0 0 3px color-mix(in srgb, var(--glass) 25%, transparent);
+          box-shadow: 0 0 0 3px color-mix(in srgb, var(--glass) 28%, transparent);
         }
 
         /* Bulles et commandes Leaflet sobres */
@@ -532,7 +546,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .wg-glass { transition: none; }
+          .wg-quarry { transition: none; }
         }
       `}</style>
     </div>
