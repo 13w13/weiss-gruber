@@ -31,10 +31,8 @@ const CONTENT = {
       '« J\'ai beaucoup admiré la lumière que mon grand-père obtenait avec trois superpositions de verre et la gravure. Contrai­rement à lui, amoureuse du vitrail, j\'ai cherché la lumière avec mon travail de la grisaille. »',
       '« À 11 ans, j\'ai reçu une pierre de 30 kg sur la main droite… Après douze heures de train, la main a été remise de travers sur le poignet. Donc je suis une para-artiste. »',
     ],
-    interviewLabel: 'Interview',
     interviewTitle: 'Une vie dans le vitrail',
-    interviewNote: 'Vidéo publiée par François Weiss sur YouTube. Elle ne se charge qu\'au clic.',
-    openOnYoutube: 'Ouvrir sur YouTube',
+    interviewNote: 'Interview réalisée par son fils',
     beauvaisAlt: 'Baie Beauvais 1985',
     beauvaisTitle: 'Une baie dans une chapelle sud du transept',
     beauvaisLink: 'Voir la fiche de l\'œuvre',
@@ -89,10 +87,8 @@ const CONTENT = {
       '“I greatly admired the light my grandfather achieved with three superimposed layers of glass and engraving. Unlike him, being in love with stained glass, I sought light through my work in grisaille.”',
       '“When I was 11, a 30 kg stone fell on my right hand… After twelve hours on a train, the hand was set back crooked on the wrist. So I am a para-artist.”',
     ],
-    interviewLabel: 'Interview',
     interviewTitle: 'A life in stained glass',
-    interviewNote: 'Video in French, published by François Weiss on YouTube. It only loads when you click.',
-    openOnYoutube: 'Open on YouTube',
+    interviewNote: 'Interview by her son (in French)',
     beauvaisAlt: 'Beauvais window, 1985',
     beauvaisTitle: 'A window in a south transept chapel',
     beauvaisLink: 'View the work’s page',
@@ -187,19 +183,6 @@ export default function JeannetteFrontPage() {
           </div>
         </section>
 
-        {/* Interview */}
-        <section id="interview" className="bg-gray-950 py-12 md:py-20 scroll-mt-16">
-          <div className="max-w-4xl mx-auto px-4">
-            <p className="text-xs uppercase tracking-widest text-gray-400 mb-2 text-center">{c.interviewLabel}</p>
-            <h2 className="text-2xl md:text-4xl font-light text-white text-center mb-6 md:mb-10">{c.interviewTitle}</h2>
-            <YouTubeEmbed id={INTERVIEW_ID} title="Jeannette Weiss-Gruber, Une vie dans le vitrail" />
-            <p className="mt-3 text-xs md:text-sm text-gray-400 text-center">
-              {c.interviewNote}{' '}
-              <a href={`https://www.youtube.com/watch?v=${INTERVIEW_ID}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-white">{c.openOnYoutube}</a>
-            </p>
-          </div>
-        </section>
-
         {/* Oeuvre Beauvais */}
         <section className="bg-black py-16 md:py-24">
           <div className="container mx-auto px-4 flex justify-center">
@@ -237,6 +220,15 @@ export default function JeannetteFrontPage() {
                 <Image src={taralonVerso} alt={c.taralonVerso.alt} className="rounded shadow-lg" width={300} height={420} />
               </button>
             </div>
+          </div>
+        </section>
+
+        {/* Interview */}
+        <section id="interview" className="bg-gray-950 py-12 md:py-20 scroll-mt-16">
+          <div className="max-w-4xl mx-auto px-4">
+            <h2 className="text-2xl md:text-4xl font-light text-white text-center mb-6 md:mb-10">{c.interviewTitle}</h2>
+            <YouTubeEmbed id={INTERVIEW_ID} title="Jeannette Weiss-Gruber, Une vie dans le vitrail" />
+            <p className="mt-3 text-sm text-gray-400 text-center">{c.interviewNote}</p>
           </div>
         </section>
 

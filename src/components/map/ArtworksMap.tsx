@@ -143,7 +143,7 @@ function MapController({ fit, focus, markers }: {
 
   useEffect(() => {
     if (!fit.places.length) return;
-    map.fitBounds(boundsOf(fit.places), { padding: [36, 36], maxZoom: 12 });
+    map.fitBounds(boundsOf(fit.places), { padding: [28, 28], maxZoom: 12 });
   }, [map, fit.token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -262,9 +262,11 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     [filteredPlaces],
   );
 
-  // Parcours chronologique des réalisations affichées, tracé comme une ligne de plomb
+  // Parcours chronologique des lieux de la vue affichée, tracé comme une ligne de plomb
+  // (en vue France, pas de lignes qui partent vers le Québec hors du cadre)
   const path = useMemo(() => {
-    const pts = filteredPlaces
+    const inView = view === 'all' ? filteredPlaces : filteredPlaces.filter((p) => (view === 'europe' ? isEurope(p) : !isEurope(p)));
+    const pts = (inView.length ? inView : filteredPlaces)
       .flatMap((p) => p.works.map((w) => ({ year: parseInt(w.year) || 0, lat: p.lat, lng: p.lng })))
       .sort((a, b) => a.year - b.year);
     const line: [number, number][] = [];
@@ -273,7 +275,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
       if (!last || last[0] !== p.lat || last[1] !== p.lng) line.push([p.lat, p.lng]);
     }
     return line;
-  }, [filteredPlaces]);
+  }, [filteredPlaces, view]);
 
   // ?oeuvre=<id> : ouvre directement le lieu de cette œuvre
   useEffect(() => {
@@ -301,23 +303,24 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
   return (
     <div className="wg-map" data-grisaille={!colorMap}>
-      {/* Recherche, décennies (légende et filtre à la fois) et cadrage */}
-      <div className="mb-5 space-y-4">
-        <div className="relative max-w-xl">
-          <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" aria-hidden="true" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t.map.searchPlaceholder}
-            aria-label={t.map.searchLabel}
-            className="w-full h-11 pl-7 pr-2 bg-transparent border-0 border-b border-gray-300 focus:border-gray-900 focus:outline-none text-base placeholder:text-gray-400"
-          />
-        </div>
+      {/* Mobile : réglages, carte, index. Ordinateur : carte à gauche sur toute la hauteur, réglages et index à droite */}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_23rem] xl:grid-cols-[minmax(0,1fr)_25rem] lg:gap-x-10 lg:gap-y-6 lg:items-start">
+        {/* Recherche, décennies (légende et filtre à la fois) et cadrage */}
+        <div className="space-y-5 lg:col-start-2 lg:row-start-1">
+          <div className="relative">
+            <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" aria-hidden="true" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t.map.searchPlaceholder}
+              aria-label={t.map.searchLabel}
+              className="w-full h-11 pl-7 pr-2 bg-transparent border-0 border-b border-gray-300 focus:border-gray-900 focus:outline-none text-base placeholder:text-gray-400"
+            />
+          </div>
 
-        <div>
-          <div className="-mx-4 px-4 overflow-x-auto scrollbar-none">
-            <div className="flex w-max" role="group" aria-label={t.catalogue.decadeFilter}>
+          <div>
+            <div className="grid grid-cols-6 gap-2" role="group" aria-label={t.catalogue.decadeFilter}>
               {decades.map((d) => {
                 const active = selectedDecades.includes(d);
                 const dimmed = selectedDecades.length > 0 && !active;
@@ -327,41 +330,20 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                     type="button"
                     aria-pressed={active}
                     onClick={() => toggleDecade(d)}
-                    className={`group flex flex-col items-start pr-5 sm:pr-7 pt-1 pb-1.5 text-left transition-opacity ${dimmed ? 'opacity-35 hover:opacity-80' : ''}`}
+                    className={`group flex flex-col items-stretch pt-1 pb-1 text-left transition-opacity ${dimmed ? 'opacity-35 hover:opacity-80' : ''}`}
                   >
-                    <span className="wg-pane block w-12 sm:w-16 h-3" style={{ ['--glass' as string]: GLASS[d] ?? '#7a7a7a' }} data-active={active} aria-hidden="true" />
-                    <span className={`mt-1.5 text-sm tabular-nums ${active ? 'text-gray-950 font-semibold' : 'text-gray-600 group-hover:text-gray-900'}`}>{d}</span>
+                    <span className="wg-pane block h-3.5" style={{ ['--glass' as string]: GLASS[d] ?? '#7a7a7a' }} data-active={active} aria-hidden="true" />
+                    <span className={`mt-1.5 text-[13px] tabular-nums ${active ? 'text-gray-950 font-semibold' : 'text-gray-600 group-hover:text-gray-900'}`}>{d}</span>
                   </button>
                 );
               })}
             </div>
+            <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{t.map.legend}</p>
           </div>
-          <p className="mt-1 text-xs text-gray-500">{t.map.legend}</p>
+
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1">
-          <div role="group" aria-label={t.map.frame} className="flex gap-5 text-sm">
-            {views.map(([v, label]) => (
-              <button
-                key={v}
-                type="button"
-                aria-pressed={view === v}
-                onClick={() => setView(v)}
-                className={`h-9 border-b-2 ${view === v ? 'border-gray-900 text-gray-950' : 'border-transparent text-gray-500 hover:text-gray-900'}`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          <label className="inline-flex items-center gap-2 h-9 text-sm text-gray-700 cursor-pointer select-none">
-            <input type="checkbox" checked={showPath} onChange={(e) => setShowPath(e.target.checked)} className="w-4 h-4 accent-gray-800" />
-            {t.map.path}
-          </label>
-        </div>
-      </div>
-
-      <div className="lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-10 lg:items-start">
-        <div ref={mapWrapperRef} className="relative h-[55vh] lg:h-[calc(100vh-8rem)] lg:sticky lg:top-24 border border-gray-300">
+        <div ref={mapWrapperRef} className="relative h-[60vh] lg:h-[calc(100vh-6.5rem)] lg:sticky lg:top-20 lg:self-start lg:col-start-1 lg:row-start-1 lg:row-span-3 border border-gray-300">
           <MapContainer center={[46.6, 2.5]} zoom={6} style={{ height: '100%', width: '100%' }} {...FULLSCREEN_OPTION}>
             <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
@@ -403,8 +385,29 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
           )}
         </div>
 
+        {/* Cadrage et parcours : sous la carte sur mobile */}
+        <div className="-mt-2 lg:mt-0 lg:col-start-2 lg:row-start-2 flex flex-wrap items-center justify-between gap-x-5 gap-y-1">
+          <div role="group" aria-label={t.map.frame} className="flex gap-5 text-sm">
+            {views.map(([v, label]) => (
+              <button
+                key={v}
+                type="button"
+                aria-pressed={view === v}
+                onClick={() => setView(v)}
+                className={`h-9 border-b-2 ${view === v ? 'border-gray-900 text-gray-950' : 'border-transparent text-gray-500 hover:text-gray-900'}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <label className="inline-flex items-center gap-2 h-9 text-sm text-gray-700 cursor-pointer select-none">
+            <input type="checkbox" checked={showPath} onChange={(e) => setShowPath(e.target.checked)} className="w-4 h-4 accent-gray-800" />
+            {t.map.path}
+          </label>
+        </div>
+
         {/* Index des lieux, synchronisé avec la carte */}
-        <section className="mt-8 lg:mt-0" aria-labelledby="liste-lieux">
+        <section className="lg:col-start-2 lg:row-start-3" aria-labelledby="liste-lieux">
           <h2 id="liste-lieux" className="text-lg font-light text-gray-900 mb-2">
             {t.map.places(filteredPlaces.length)}
             {filtering && <span className="text-gray-500">{t.map.matching(filteredPlaces.length)}</span>}
@@ -458,7 +461,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
       <style jsx global>{`
         /* Fond en grisaille : la carte s'efface pour laisser la couleur aux vitraux */
         .wg-map[data-grisaille='true'] .leaflet-tile-pane {
-          filter: grayscale(1) contrast(0.85) brightness(1.06);
+          filter: grayscale(1) contrast(0.7) brightness(1.12);
         }
         .wg-map .leaflet-container {
           background: #eceae6;
