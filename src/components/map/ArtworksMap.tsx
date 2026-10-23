@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, Tooltip, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, CircleMarker, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet.fullscreen/Control.FullScreen.css';
 import 'leaflet.fullscreen';
 import Image from 'next/image';
@@ -189,13 +189,93 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
 const QUOTES = interviewQuotes as InterviewQuote[];
 
 // Durée du déplacement entre deux étapes : aucun, glissé court, ou vol (plus long au-dessus de l'Atlantique)
+const GLIDE_MS = 1600; // glissé entre lieux proches
+const FLIGHT_MS = 2400; // vol au-delà de 250 km
+const OCEAN_MS = 3600; // traversée de l'Atlantique
+
 function journeyMoveMs(from: [number, number] | null, to: [number, number] | null) {
   if (!to) return 0;
-  if (!from) return 1800;
+  if (!from) return FLIGHT_MS;
   const d = L.latLng(from).distanceTo(L.latLng(to));
   if (d < 1) return 0;
-  if (d < 250_000) return 1100;
-  return d > 1_000_000 ? 3000 : 1800;
+  if (d < 250_000) return GLIDE_MS;
+  return d > 1_000_000 ? OCEAN_MS : FLIGHT_MS;
+}
+
+// Arc souple entre deux lieux (courbe de Bézier quadratique, toujours bombée du même côté)
+function curvePoints(a: [number, number], b: [number, number], n = 48, bend = 0.2): [number, number][] {
+  const [lat1, lng1] = a;
+  const [lat2, lng2] = b;
+  const ctrlLat = (lat1 + lat2) / 2 + (lng2 - lng1) * bend;
+  const ctrlLng = (lng1 + lng2) / 2 - (lat2 - lat1) * bend;
+  const pts: [number, number][] = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const u = 1 - t;
+    pts.push([u * u * lat1 + 2 * u * t * ctrlLat + t * t * lat2, u * u * lng1 + 2 * u * t * ctrlLng + t * t * lng2]);
+  }
+  return pts;
+}
+
+// Suite de lieux reliés par des arcs
+function curvedPath(points: [number, number][]): [number, number][] {
+  const out: [number, number][] = [];
+  for (let i = 1; i < points.length; i++) out.push(...curvePoints(points[i - 1], points[i]).slice(i === 1 ? 0 : 1));
+  return out;
+}
+
+// Accélération puis ralentissement doux, pour le dessin du tracé
+const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+// Tronçon en cours : il se dessine de l'ancien lieu vers le nouveau, à la couleur de verre de la décennie,
+// avec un halo léger et une perle en tête de trait. Mis à jour image par image sans repasser par React.
+function JourneySegment({ from, to, color, durationMs }: {
+  from: [number, number];
+  to: [number, number];
+  color: string;
+  durationMs: number;
+}) {
+  const lineRef = useRef<L.Polyline | null>(null);
+  const glowRef = useRef<L.Polyline | null>(null);
+  const tipRef = useRef<L.CircleMarker | null>(null);
+  const points = useMemo(() => curvePoints(from, to, 64), [from, to]);
+  const initial = useMemo(() => points.slice(0, 2), [points]);
+
+  useEffect(() => {
+    const apply = (k: number) => {
+      const count = Math.max(2, Math.round(k * (points.length - 1)) + 1);
+      const part = points.slice(0, count);
+      lineRef.current?.setLatLngs(part);
+      glowRef.current?.setLatLngs(part);
+      tipRef.current?.setLatLng(part[part.length - 1]);
+    };
+    const hideTip = () => tipRef.current?.setStyle({ opacity: 0, fillOpacity: 0 });
+    if (prefersReducedMotion()) {
+      apply(1);
+      hideTip();
+      return;
+    }
+    tipRef.current?.setStyle({ opacity: 1, fillOpacity: 1 });
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / durationMs);
+      apply(easeInOutCubic(t));
+      if (t < 1) raf = requestAnimationFrame(tick);
+      else hideTip();
+    };
+    apply(0);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [points, durationMs]);
+
+  return (
+    <>
+      <Polyline ref={glowRef} positions={initial} interactive={false} pathOptions={{ color, weight: 10, opacity: 0.16, lineCap: 'round', lineJoin: 'round' }} />
+      <Polyline ref={lineRef} positions={initial} interactive={false} pathOptions={{ color, weight: 2.5, opacity: 0.95, lineCap: 'round', lineJoin: 'round' }} />
+      <CircleMarker ref={tipRef} center={initial[0]} radius={4} interactive={false} pathOptions={{ color: '#fff', weight: 1.5, fillColor: color, fillOpacity: 1 }} />
+    </>
+  );
 }
 
 // Temps d'arrêt : assez pour lire, plus long quand il y a du texte, plafonné
@@ -224,8 +304,8 @@ function JourneyCamera({ target, previous, active, offsetY, fitPlaces }: {
       const center = map.unproject(map.project(L.latLng(target), JOURNEY_ZOOM).add([0, offsetY]), JOURNEY_ZOOM);
       const move = journeyMoveMs(previous, target);
       if (prefersReducedMotion()) map.setView(center, JOURNEY_ZOOM, { animate: false });
-      else if (move === 1100 && map.getZoom() === JOURNEY_ZOOM) map.panTo(center, { animate: true, duration: 1.1, easeLinearity: 0.3 });
-      else if (move > 0 || map.getZoom() !== JOURNEY_ZOOM) map.flyTo(center, JOURNEY_ZOOM, { duration: Math.max(move, 1800) / 1000, easeLinearity: 0.25 });
+      else if (move === GLIDE_MS && map.getZoom() === JOURNEY_ZOOM) map.panTo(center, { animate: true, duration: GLIDE_MS / 1000, easeLinearity: 0.2 });
+      else if (move > 0 || map.getZoom() !== JOURNEY_ZOOM) map.flyTo(center, JOURNEY_ZOOM, { duration: Math.max(move, FLIGHT_MS) / 1000, easeLinearity: 0.2 });
     } else if (!active && wasActive.current && fitPlaces.length) {
       map.fitBounds(boundsOf(fitPlaces), { padding: [28, 28], maxZoom: 12 });
     }
@@ -497,6 +577,18 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const currentLatLng = journey ? positionUpTo(journey.index) : null;
   const previousLatLng = journey ? positionUpTo(journey.index - 1) : null;
   const lifeMarker = currentStep?.kind === 'life' ? stepLatLng(currentStep) : null;
+  // Tronçon à dessiner : de la position précédente à la nouvelle, quand le lieu change
+  const segment = useMemo(() => {
+    if (!previousLatLng || !currentLatLng) return null;
+    if (previousLatLng[0] === currentLatLng[0] && previousLatLng[1] === currentLatLng[1]) return null;
+    return { from: previousLatLng, to: currentLatLng };
+  }, [previousLatLng?.[0], previousLatLng?.[1], currentLatLng?.[0], currentLatLng?.[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Tracé déjà parcouru (sans le tronçon en cours de dessin), en arcs
+  const journeyTrail = useMemo(
+    () => curvedPath(segment ? journeyPath.slice(0, -1) : journeyPath),
+    [journeyPath, segment],
+  );
+  const curvedStaticPath = useMemo(() => curvedPath(path), [path]);
 
   const focusPlace = (key: string) => {
     pauseJourney();
@@ -560,12 +652,21 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             <JourneyCamera target={currentLatLng} previous={previousLatLng} active={!!journey} offsetY={isDesktop ? 0 : 190} fitPlaces={fit.places} />
             {lifeMarker && <Marker position={lifeMarker} icon={lifeIcon} interactive={false} keyboard={false} />}
 
-            {journey && journeyPath.length >= 2 && (
-              <Polyline positions={journeyPath} pathOptions={{ color: LEAD, weight: 2, opacity: 0.75, lineCap: 'round', lineJoin: 'round' }} />
+            {journey && journeyTrail.length >= 2 && (
+              <Polyline positions={journeyTrail} interactive={false} pathOptions={{ color: LEAD, weight: 1.5, opacity: 0.55, lineCap: 'round', lineJoin: 'round' }} />
+            )}
+            {journey && segment && currentStep && (
+              <JourneySegment
+                key={`${segment.from.join(',')}>${segment.to.join(',')}`}
+                from={segment.from}
+                to={segment.to}
+                color={stepColor(currentStep)}
+                durationMs={journeyMoveMs(segment.from, segment.to) + 600}
+              />
             )}
 
             {!journey && showPath && path.length >= 2 && (
-              <Polyline positions={path} pathOptions={{ color: LEAD, weight: 1.5, opacity: 0.6, dashArray: '1 5', lineCap: 'round' }} />
+              <Polyline positions={curvedStaticPath} interactive={false} pathOptions={{ color: LEAD, weight: 1.5, opacity: 0.6, dashArray: '1 5', lineCap: 'round' }} />
             )}
 
             {filteredPlaces.map((place) => (
