@@ -160,3 +160,37 @@ body {
     }
   }
 }
+
+/* Voyage chronologique : invitation de première visite et signal sur le bouton de lancement */
+.wg-hint {
+  transition:
+    opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1) 0.6s,
+    transform 0.25s cubic-bezier(0.23, 1, 0.32, 1) 0.6s;
+}
+@starting-style {
+  .wg-hint {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes wg-attention {
+  from { box-shadow: 0 0 0 0 rgba(31, 78, 156, 0.45); }
+  to { box-shadow: 0 0 0 10px rgba(31, 78, 156, 0); }
+}
+.wg-start[data-attention] {
+  animation: wg-attention 1.4s cubic-bezier(0.23, 1, 0.32, 1) 0.8s 3;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wg-hint {
+    transition: opacity 0.2s ease 0.6s;
+  }
+  @starting-style {
+    .wg-hint {
+      transform: none;
+    }
+  }
+  .wg-start[data-attention] {
+    animation: none;
+    box-shadow: 0 0 0 2px rgba(31, 78, 156, 0.5);
+  }
+}

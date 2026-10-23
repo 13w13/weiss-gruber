@@ -12,7 +12,11 @@ import { IMAGE_BASE_URL } from '@/lib/images';
 import { s3ImageLoader } from '@/lib/imageLoader';
 import { decadeOf, matchesQuery } from '@/lib/text';
 import OtherVitrailLink from '@/components/layout/OtherVitrailLink';
-import { useT } from '@/i18n';
+import JourneyPanel from '@/components/map/JourneyPanel';
+import { LIFE_MILESTONES, excerpt, stepLatLng, type InterviewQuote, type JourneyStep } from '@/lib/journey';
+import { optimizedImageUrl } from '@/lib/imageLoader';
+import interviewQuotes from '../../../data/interview_quotes.json';
+import { useLocale, useT } from '@/i18n';
 
 // Couleurs de verre par décennie : cobalt, émeraude, améthyste, jaune d'argent, rubis, opalescent
 const GLASS: Record<number, string> = {
@@ -177,41 +181,67 @@ function MapController({ fit, focus, markers }: {
   return null;
 }
 
-interface JourneyStep {
-  work: Vitrail;
-  place: Place;
+// Voyage chronologique : rythme et déplacements de la caméra
+const JOURNEY_ZOOM = 9;
+const LIFE_COLOR = '#4b4b4b';
+const HINT_KEY = 'wg-journey-hint-v1';
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const QUOTES = interviewQuotes as InterviewQuote[];
+
+// Durée du déplacement entre deux étapes : aucun, glissé court, ou vol (plus long au-dessus de l'Atlantique)
+function journeyMoveMs(from: [number, number] | null, to: [number, number] | null) {
+  if (!to) return 0;
+  if (!from) return 1800;
+  const d = L.latLng(from).distanceTo(L.latLng(to));
+  if (d < 1) return 0;
+  if (d < 250_000) return 1100;
+  return d > 1_000_000 ? 3000 : 1800;
 }
 
-// Voyage chronologique : temps passé sur chaque œuvre après le vol, et durée du vol
-const JOURNEY_DWELL_MS = 2600;
-const journeyFlightSeconds = (from: JourneyStep | undefined, to: JourneyStep) =>
-  from && L.latLng(from.place.lat, from.place.lng).distanceTo(L.latLng(to.place.lat, to.place.lng)) > 1_000_000 ? 2.6 : 1.6;
-const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Temps d'arrêt : assez pour lire, plus long quand il y a du texte, plafonné
+const journeyDwellMs = (textLength: number) => Math.min(10_000, Math.max(3500, 3500 + textLength * 22));
 
-// Caméra du voyage : vole vers l'œuvre courante ; à la sortie du voyage, recadre l'ensemble
-function JourneyCamera({ step, previous, active, fitPlaces }: {
-  step: JourneyStep | undefined;
-  previous: JourneyStep | undefined;
+// Caméra du voyage. Sur mobile, la carte d'information couvre le bas : le lieu est décalé vers le haut.
+// Glissé simple entre lieux proches (pas de rechargement de tuiles), vol seulement pour les longues distances.
+function JourneyCamera({ target, previous, active, offsetY, fitPlaces }: {
+  target: [number, number] | null;
+  previous: [number, number] | null;
   active: boolean;
+  offsetY: number;
   fitPlaces: Place[];
 }) {
   const map = useMap();
   const wasActive = useRef(false);
 
   useEffect(() => {
-    if (active && step) {
+    const timer = setTimeout(() => map.invalidateSize({ pan: false }), 0);
+    return () => clearTimeout(timer);
+  }, [map, active]);
+
+  useEffect(() => {
+    if (active && target) {
       map.closePopup();
-      const target = L.latLng(step.place.lat, step.place.lng);
-      if (prefersReducedMotion()) map.setView(target, 9);
-      else map.flyTo(target, 9, { duration: journeyFlightSeconds(previous, step), easeLinearity: 0.2 });
+      const center = map.unproject(map.project(L.latLng(target), JOURNEY_ZOOM).add([0, offsetY]), JOURNEY_ZOOM);
+      const move = journeyMoveMs(previous, target);
+      if (prefersReducedMotion()) map.setView(center, JOURNEY_ZOOM, { animate: false });
+      else if (move === 1100 && map.getZoom() === JOURNEY_ZOOM) map.panTo(center, { animate: true, duration: 1.1, easeLinearity: 0.3 });
+      else if (move > 0 || map.getZoom() !== JOURNEY_ZOOM) map.flyTo(center, JOURNEY_ZOOM, { duration: Math.max(move, 1800) / 1000, easeLinearity: 0.25 });
     } else if (!active && wasActive.current && fitPlaces.length) {
       map.fitBounds(boundsOf(fitPlaces), { padding: [28, 28], maxZoom: 12 });
     }
     wasActive.current = active;
-  }, [map, active, step]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [map, active, target?.[0], target?.[1]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
 }
+
+// Repère d'une étape de vie (losange blanc cerné) : pas une œuvre, donc pas de couleur de décennie
+const lifeIcon = L.divIcon({
+  className: 'wg-marker',
+  html: '<span class="wg-quarry wg-quarry--life" style="--side:12px"><span></span></span>',
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
 
 export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const t = useT();
@@ -226,6 +256,16 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const [focus, setFocus] = useState<{ key: string; token: number } | null>(null);
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [journey, setJourney] = useState<{ index: number; playing: boolean } | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const locale = useLocale();
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
   const [canHover, setCanHover] = useState(false);
 
   useEffect(() => setCanHover(window.matchMedia('(hover: hover)').matches), []);
@@ -329,32 +369,75 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     return () => clearTimeout(timer);
   }, [router.query.oeuvre, places]);
 
-  // Étapes du voyage : les œuvres localisées et affichées, dans l'ordre chronologique du catalogue
+  // Étapes du voyage : œuvres localisées et affichées, plus les étapes de vie (sauf pendant une recherche),
+  // par ordre d'année ; à année égale, la vie avant les œuvres
   const steps = useMemo<JourneyStep[]>(() => {
     const placeOf = new Map<string, Place>();
     for (const p of filteredPlaces) for (const w of p.works) placeOf.set(w.id, p);
-    return works.filter((w) => placeOf.has(w.id)).map((w) => ({ work: w, place: placeOf.get(w.id) as Place }));
-  }, [works, filteredPlaces]);
+    const workSteps: JourneyStep[] = works
+      .filter((w) => placeOf.has(w.id))
+      .map((w) => ({ kind: 'work', id: w.id, year: w.year, work: w, place: placeOf.get(w.id) as Place }));
+    const decadeOk = (year: string) => selectedDecades.length === 0 || selectedDecades.includes(decadeOf(year) ?? -1);
+    const lifeSteps: JourneyStep[] = query.trim()
+      ? []
+      : LIFE_MILESTONES.filter((m) => decadeOk(m.year)).map((m) => ({ kind: 'life', id: m.id, year: m.year, milestone: m }));
+    return [...lifeSteps, ...workSteps]
+      .map((step, i) => ({ step, i }))
+      .sort((a, b) => (parseInt(a.step.year) || 0) - (parseInt(b.step.year) || 0)
+        || (a.step.kind === 'life' ? 0 : 1) - (b.step.kind === 'life' ? 0 : 1)
+        || a.i - b.i)
+      .map(({ step }) => step);
+  }, [works, filteredPlaces, selectedDecades, query]);
+
+  const quoteFor = (step: JourneyStep | undefined) => (step ? QUOTES.find((q) => q.anchor === step.id) : undefined);
+  const stepColor = (step: JourneyStep) => (step.kind === 'work' ? glassFor(step.year) : LIFE_COLOR);
+  const stepTextLength = (step: JourneyStep) => {
+    const quote = quoteFor(step);
+    const body = step.kind === 'work' ? excerpt(step.work.text_fr, 320) : step.milestone.text[locale];
+    return body.length + (quote ? quote[locale].length : 0);
+  };
+
+  // Dernière position connue jusqu'à l'étape i (une étape de vie sans lieu ne déplace pas la carte)
+  const positionUpTo = (i: number): [number, number] | null => {
+    for (let k = i; k >= 0; k--) {
+      const ll = steps[k] && stepLatLng(steps[k]);
+      if (ll) return ll;
+    }
+    return null;
+  };
 
   // Un changement de filtre arrête le voyage
   useEffect(() => setJourney(null), [selectedDecades, query]);
 
-  // Lecture automatique : étape suivante après le vol et un temps d'arrêt ; pause à la dernière œuvre
+  // Lecture automatique : étape suivante après le déplacement et un temps de lecture ; pause à la fin
   useEffect(() => {
     if (!journey?.playing) return;
     if (journey.index >= steps.length - 1) {
       setJourney((j) => (j ? { ...j, playing: false } : j));
       return;
     }
-    const flight = prefersReducedMotion() ? 0 : journeyFlightSeconds(steps[journey.index - 1], steps[journey.index]) * 1000;
-    const timer = setTimeout(() => setJourney((j) => (j && j.playing ? { ...j, index: j.index + 1 } : j)), flight + JOURNEY_DWELL_MS);
+    const step = steps[journey.index];
+    const move = prefersReducedMotion() ? 0 : journeyMoveMs(positionUpTo(journey.index - 1), stepLatLng(step));
+    const timer = setTimeout(
+      () => setJourney((j) => (j && j.playing ? { ...j, index: j.index + 1 } : j)),
+      move + journeyDwellMs(stepTextLength(step)),
+    );
+    // Précharge l'image de l'étape suivante pendant l'arrêt, pour qu'elle s'affiche sans à-coup
+    const next = steps[journey.index + 1];
+    const nextImage = next && (next.kind === 'work'
+      ? next.work.main_image && `${IMAGE_BASE_URL}/vitraux/${next.work.main_image}`
+      : next.milestone.image && `${IMAGE_BASE_URL}/${next.milestone.image}`);
+    if (nextImage) new window.Image().src = optimizedImageUrl(nextImage, 800);
     return () => clearTimeout(timer);
-  }, [journey, steps]);
+  }, [journey, steps]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // État des points pendant le voyage : déjà visités, courant, à venir (estompés)
   useEffect(() => {
-    const current = journey ? steps[journey.index]?.place.key : undefined;
-    const visited = new Set(journey ? steps.slice(0, journey.index + 1).map((s) => s.place.key) : []);
+    const step = journey ? steps[journey.index] : undefined;
+    const current = step?.kind === 'work' ? step.place.key : undefined;
+    const visited = new Set(
+      journey ? steps.slice(0, journey.index + 1).flatMap((st) => (st.kind === 'work' ? [st.place.key] : [])) : [],
+    );
     for (const p of filteredPlaces) {
       const el = markerRefs.current[p.key]?.getElement();
       if (!el) continue;
@@ -363,16 +446,47 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
     }
   }, [journey, steps, filteredPlaces]);
 
-  // Tracé du voyage : il s'allonge à chaque étape
+  // Tracé du voyage : il s'allonge à chaque étape qui a un lieu
   const journeyPath = useMemo(() => {
     const line: [number, number][] = [];
     if (!journey) return line;
     for (const st of steps.slice(0, journey.index + 1)) {
+      const ll = stepLatLng(st);
       const last = line[line.length - 1];
-      if (!last || last[0] !== st.place.lat || last[1] !== st.place.lng) line.push([st.place.lat, st.place.lng]);
+      if (ll && (!last || last[0] !== ll[0] || last[1] !== ll[1])) line.push(ll);
     }
     return line;
   }, [journey, steps]);
+
+  // Guide de première visite : affiché tant que le visiteur n'a ni lancé ni fermé l'invitation
+  const [showHint, setShowHint] = useState(false);
+  useEffect(() => {
+    try {
+      if (!window.localStorage.getItem(HINT_KEY)) setShowHint(true);
+    } catch {
+      setShowHint(true);
+    }
+  }, []);
+  const dismissHint = () => {
+    setShowHint(false);
+    try {
+      window.localStorage.setItem(HINT_KEY, '1');
+    } catch {
+      // stockage indisponible (navigation privée) : l'invitation reviendra, sans gravité
+    }
+  };
+  const startJourney = () => {
+    if (!steps.length) return;
+    dismissHint();
+    setJourney({ index: 0, playing: true });
+  };
+
+  // ?voyage=1 (lien depuis l'accueil) : lance le voyage dès l'arrivée
+  useEffect(() => {
+    if (router.query.voyage !== '1' || !steps.length) return;
+    const timer = setTimeout(startJourney, 700);
+    return () => clearTimeout(timer);
+  }, [router.query.voyage, steps.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pauseJourney = () => setJourney((j) => (j ? { ...j, playing: false } : j));
   const goToStep = (index: number) =>
@@ -380,6 +494,9 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
   const togglePlay = () =>
     setJourney((j) => (j ? { index: !j.playing && j.index >= steps.length - 1 ? 0 : j.index, playing: !j.playing } : j));
   const currentStep = journey ? steps[journey.index] : undefined;
+  const currentLatLng = journey ? positionUpTo(journey.index) : null;
+  const previousLatLng = journey ? positionUpTo(journey.index - 1) : null;
+  const lifeMarker = currentStep?.kind === 'life' ? stepLatLng(currentStep) : null;
 
   const focusPlace = (key: string) => {
     pauseJourney();
@@ -398,7 +515,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
       {/* Mobile : réglages, carte, index. Ordinateur : carte à gauche sur toute la hauteur, réglages et index à droite */}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_23rem] xl:grid-cols-[minmax(0,1fr)_25rem] lg:gap-x-10 lg:gap-y-6 lg:items-start">
         {/* Recherche, décennies (légende et filtre à la fois) et cadrage */}
-        <div className="space-y-5 lg:col-start-2 lg:row-start-1">
+        <div className={`space-y-5 lg:col-start-2 lg:row-start-1 ${journey && isDesktop ? 'hidden' : ''}`}>
           <div className="relative">
             <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" aria-hidden="true" />
             <input
@@ -435,12 +552,13 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
         </div>
 
-        <div ref={mapWrapperRef} className="relative h-[60vh] lg:h-[calc(100vh-6.5rem)] lg:sticky lg:top-20 lg:self-start lg:col-start-1 lg:row-start-1 lg:row-span-3 border border-gray-300">
+        <div ref={mapWrapperRef} className={`relative ${journey && !isDesktop ? 'h-[78vh]' : 'h-[60vh]'} lg:h-[calc(100vh-6.5rem)] lg:sticky lg:top-20 lg:self-start lg:col-start-1 lg:row-start-1 lg:row-span-3 border border-gray-300`}>
           <MapContainer center={[46.6, 2.5]} zoom={6} style={{ height: '100%', width: '100%' }} {...FULLSCREEN_OPTION}>
-            <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" updateWhenZooming={false} keepBuffer={4} />
 
             <MapController fit={fit} focus={focus} markers={markerRefs} />
-            <JourneyCamera step={currentStep} previous={journey ? steps[journey.index - 1] : undefined} active={!!journey} fitPlaces={fit.places} />
+            <JourneyCamera target={currentLatLng} previous={previousLatLng} active={!!journey} offsetY={isDesktop ? 0 : 140} fitPlaces={fit.places} />
+            {lifeMarker && <Marker position={lifeMarker} icon={lifeIcon} interactive={false} keyboard={false} />}
 
             {journey && journeyPath.length >= 2 && (
               <Polyline positions={journeyPath} pathOptions={{ color: LEAD, weight: 2, opacity: 0.75, lineCap: 'round', lineJoin: 'round' }} />
@@ -475,29 +593,30 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             {t.map.colorMap}
           </label>
 
-          {/* Carte de l'œuvre courante pendant le voyage */}
-          {journey && currentStep && (
-            <div key={journey.index} className="wg-journey-card absolute left-2 right-2 sm:right-auto sm:w-80 bottom-[60px] z-[1000] flex gap-3 bg-white border border-gray-400 p-2.5 shadow-md" aria-live="polite">
-              {currentStep.work.main_image && (
-                <div className="relative w-16 h-16 flex-shrink-0 bg-gray-100 overflow-hidden">
-                  <Image src={`${IMAGE_BASE_URL}/vitraux/${currentStep.work.main_image}`} alt="" fill sizes="64px" className="object-cover" loader={s3ImageLoader} />
-                </div>
-              )}
-              <div className="min-w-0">
-                <p className="text-lg leading-none font-semibold tabular-nums" style={{ color: glassFor(currentStep.work.year) }}>{currentStep.work.year}</p>
-                <p className="mt-1 text-sm leading-snug text-gray-900">{currentStep.work.title_fr}</p>
-                <p className="text-xs text-gray-500 truncate">{currentStep.place.building_name}, {currentStep.place.city}</p>
-                <Link href={`/jeannette/catalogue/${currentStep.work.id}`} className="text-xs underline underline-offset-2 text-gray-800 hover:text-gray-950">{t.common.seeWork}</Link>
-              </div>
+          {/* Mobile : l'étape courante posée sur la carte, vitrail en grand */}
+          {journey && currentStep && !isDesktop && (
+            <div key={currentStep.id} className="absolute left-2 right-2 bottom-[60px] z-[1000]">
+              <JourneyPanel step={currentStep} quote={quoteFor(currentStep)} color={stepColor(currentStep)} variant="overlay" />
+            </div>
+          )}
+
+          {/* Première visite : invitation à lancer le voyage */}
+          {!journey && showHint && (
+            <div className="wg-hint absolute left-2 bottom-[60px] z-[1000] max-w-[18rem] bg-white border border-gray-400 shadow-md p-3 pr-8" role="note">
+              <p className="text-sm font-medium text-gray-950">{t.map.hintTitle}</p>
+              <p className="mt-0.5 text-sm text-gray-600">{t.map.hintText(steps[0]?.year ?? '', steps[steps.length - 1]?.year ?? '')}</p>
+              <button type="button" onClick={dismissHint} aria-label={t.map.hintClose} className="absolute top-1 right-1 inline-flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-900">
+                <X className="w-4 h-4" />
+              </button>
             </div>
           )}
 
           {/* Barre du voyage : lancement, lecture, étapes */}
           <div className="absolute bottom-0 inset-x-0 z-[1000] h-[52px] flex items-center gap-0.5 px-1.5 bg-white/95 border-t border-gray-300">
             {!journey ? (
-              <button type="button" onClick={() => steps.length && setJourney({ index: 0, playing: true })} disabled={!steps.length} className="inline-flex items-center gap-2 h-10 px-3 text-sm font-medium text-gray-900 hover:bg-gray-100 disabled:opacity-40">
+              <button type="button" onClick={startJourney} disabled={!steps.length} data-attention={showHint || undefined} className="wg-start inline-flex items-center gap-2 h-10 px-3 text-sm font-medium text-gray-900 hover:bg-gray-100 disabled:opacity-40">
                 <Play className="w-4 h-4" fill="currentColor" aria-hidden="true" />
-                {t.map.journeyStart(steps[0]?.work.year ?? '', steps[steps.length - 1]?.work.year ?? '')}
+                {t.map.journeyStart(steps[0]?.year ?? '', steps[steps.length - 1]?.year ?? '')}
               </button>
             ) : (
               <>
@@ -513,14 +632,14 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
                 <div className="flex-1 flex items-end gap-[2px] h-4 mx-2" role="group" aria-label={t.map.steps}>
                   {steps.map((st, i) => (
                     <button
-                      key={st.work.id}
+                      key={st.id}
                       type="button"
                       onClick={() => goToStep(i)}
-                      aria-label={`${st.work.year}, ${st.work.title_fr}`}
+                      aria-label={`${st.year}, ${st.kind === 'work' ? st.work.title_fr : st.milestone.title[locale]}`}
                       aria-current={i === journey.index ? 'step' : undefined}
                       className="wg-step flex-1 h-2.5"
                       data-state={i === journey.index ? 'current' : i < journey.index ? 'visited' : 'future'}
-                      style={{ ['--glass' as string]: glassFor(st.work.year) }}
+                      style={{ ['--glass' as string]: stepColor(st) }}
                     />
                   ))}
                 </div>
@@ -540,7 +659,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         </div>
 
         {/* Cadrage et parcours : sous la carte sur mobile */}
-        <div className="-mt-2 lg:mt-0 lg:col-start-2 lg:row-start-2 flex flex-wrap items-center justify-between gap-x-5 gap-y-1">
+        <div className={`-mt-2 lg:mt-0 lg:col-start-2 lg:row-start-2 flex flex-wrap items-center justify-between gap-x-5 gap-y-1 ${journey && isDesktop ? 'hidden' : ''}`}>
           <div role="group" aria-label={t.map.frame} className="flex gap-5 text-sm">
             {views.map(([v, label]) => (
               <button
@@ -561,7 +680,14 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
         </div>
 
         {/* Index des lieux, synchronisé avec la carte */}
-        <section className="lg:col-start-2 lg:row-start-3" aria-labelledby="liste-lieux">
+        {/* Ordinateur : l'étape courante en grand dans la colonne de droite */}
+        {journey && currentStep && isDesktop && (
+          <div key={currentStep.id} className="lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:sticky lg:top-20 lg:self-start">
+            <JourneyPanel step={currentStep} quote={quoteFor(currentStep)} color={stepColor(currentStep)} variant="panel" />
+          </div>
+        )}
+
+        <section className={`lg:col-start-2 lg:row-start-3 ${journey && isDesktop ? 'hidden' : ''}`} aria-labelledby="liste-lieux">
           <h2 id="liste-lieux" className="text-lg font-light text-gray-900 mb-2">
             {t.map.places(filteredPlaces.length)}
             {filtering && <span className="text-gray-500">{t.map.matching(filteredPlaces.length)}</span>}
@@ -614,7 +740,8 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
 
       <style jsx global>{`
         /* Fond en grisaille : la carte s'efface pour laisser la couleur aux vitraux */
-        .wg-map[data-grisaille='true'] .leaflet-tile-pane {
+        /* Filtre posé tuile par tuile (et non sur tout le calque) : moins coûteux pendant les déplacements */
+        .wg-map[data-grisaille='true'] .leaflet-tile {
           filter: grayscale(1) contrast(0.7) brightness(1.12);
         }
         .wg-map .leaflet-container {
@@ -643,6 +770,10 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
             box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
             opacity 0.3s ease;
+        }
+        .wg-quarry--life {
+          background: #fff;
+          border-width: 2px;
         }
         .wg-marker[data-journey='future'] .wg-quarry {
           opacity: 0.25;

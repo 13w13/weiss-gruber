@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronRight, X } from 'lucide-react'
+import { ChevronRight, Play, X } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useLocale } from '@/i18n'
 import { CONTACT_EMAIL } from '@/lib/site'
@@ -77,6 +77,7 @@ const CONTENT = {
     ctaTitle: 'Explorer l\'œuvre de Jeannette Weiss Gruber',
     ctaCatalogue: 'Catalogue Raisonné',
     ctaMap: 'Parcours sur la Carte',
+    ctaJourney: 'Voyage chronologique',
   },
   en: {
     metaTitle: 'Jeannette Weiss Gruber — Stained-glass painter (1934–2026)',
@@ -133,6 +134,7 @@ const CONTENT = {
     ctaTitle: 'Explore the work of Jeannette Weiss Gruber',
     ctaCatalogue: 'Catalogue raisonné',
     ctaMap: 'Explore the map',
+    ctaJourney: 'Chronological journey',
   },
 }
 
@@ -291,6 +293,9 @@ export default function JeannetteFrontPage() {
             </Link>
             <Link href="/jeannette/carte" className="inline-flex items-center justify-center px-6 py-3 bg-white border border-blue-600 text-blue-700 rounded hover:bg-blue-50 transition">
               {c.ctaMap} <ChevronRight className="ml-2 w-4 h-4" />
+            </Link>
+            <Link href="/jeannette/carte?voyage=1" className="inline-flex items-center justify-center px-6 py-3 bg-white border border-blue-600 text-blue-700 rounded hover:bg-blue-50 transition">
+              <Play className="mr-2 w-4 h-4" fill="currentColor" aria-hidden="true" /> {c.ctaJourney}
             </Link>
           </div>
         </section>
