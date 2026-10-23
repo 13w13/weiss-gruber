@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
@@ -6,6 +5,9 @@ import 'yet-another-react-lightbox/styles.css'
 import { useState } from 'react'
 import { IMAGE_BASE_URL } from '@/lib/images'
 import { s3ImageLoader } from '@/lib/imageLoader'
+import PageMeta from '@/components/layout/PageMeta'
+import SiteHeader from '@/components/layout/SiteHeader'
+import SiteFooter from '@/components/layout/SiteFooter'
 
 
 interface Section {
@@ -162,24 +164,13 @@ export default function BiographyPage() {
   const lightboxSlides = bioLightboxImages.map((f) => ({ src: `${IMAGE_BASE_URL}/bio/${f}` }));
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
-        <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
-              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
-              <span className="inline sm:hidden">Jeannette WG</span>
-            </Link>
-            <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
-              <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">{t.nav.home}</Link></li>
-              <li><Link href="/jeannette/biography" className="text-blue-600 whitespace-nowrap"><span className="hidden md:inline">{t.nav.biography}</span><span className="inline md:hidden">Bio</span></Link></li>
-              <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">{t.nav.catalogue}</span><span className="inline md:hidden">Catalogue</span></Link></li>
-              <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors whitespace-nowrap">{t.nav.carte}</Link></li>
-              <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">{t.nav.publications}</span><span className="inline md:hidden">Publi</span></Link></li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+    <div className="min-h-screen flex flex-col bg-white text-gray-900">
+      <PageMeta
+        title="Biographie"
+        description="Biographie de Jeannette Weiss Gruber (1934–2026), peintre-verrier formée dans l’atelier familial de la Villa d’Alésia à Paris."
+        path="/jeannette/biography"
+      />
+      <SiteHeader />
 
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
@@ -260,11 +251,7 @@ export default function BiographyPage() {
         index={lightboxIndex}
       />
 
-      <footer className="bg-gray-100 py-8">
-        <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss Gruber. Tous droits réservés.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

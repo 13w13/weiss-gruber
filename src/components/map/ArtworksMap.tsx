@@ -1,262 +1,412 @@
-import { useMemo, useState, type ComponentType, useEffect } from 'react';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet.fullscreen/Control.FullScreen.css';
 import 'leaflet.fullscreen';
 import Image from 'next/image';
-import type { Vitrail } from '@/types/images';
 import L from 'leaflet';
+import { Search, MapPin } from 'lucide-react';
+import type { Vitrail } from '@/types/images';
 import { IMAGE_BASE_URL } from '@/lib/images';
 import { s3ImageLoader } from '@/lib/imageLoader';
+import { decadeOf, matchesQuery } from '@/lib/text';
 
-function PopupContent({ work }: { work: Vitrail }) {
-  const images = useMemo(() => {
-    const s3Base = `${IMAGE_BASE_URL}/vitraux/`;
-    const list: { src: string; alt: string }[] = [];
-    if (work.main_image) list.push({ src: `${s3Base}${work.main_image}`, alt: work.title_fr });
-    if (Array.isArray(work.gallery_images)) {
-      for (const g of work.gallery_images) {
-        if (g?.url) list.push({ src: g.url.startsWith('http') ? g.url : `${s3Base}${g.url}`, alt: g.alt_fr || work.title_fr });
-      }
-    }
-    return list;
-  }, [work]);
+const DECADE_COLORS: Record<number, string> = {
+  1950: '#2563eb',
+  1960: '#059669',
+  1970: '#a855f7',
+  1980: '#f59e0b',
+  1990: '#dc2626',
+  2000: '#0ea5e9',
+};
+// Option ajoutée par leaflet.fullscreen, absente des types de react-leaflet
+const FULLSCREEN_OPTION = { fullscreenControl: true } as Record<string, unknown>;
 
+const colorFor = (year?: string) => DECADE_COLORS[decadeOf(year) ?? 0] ?? '#6b7280';
+
+// Une œuvre appartient à l'Europe si elle est à l'est de -30° de longitude (sinon : Québec)
+const isEurope = (p: Place) => p.lng > -30;
+
+interface Place {
+  key: string;
+  lat: number;
+  lng: number;
+  building_name: string;
+  city: string;
+  department: string;
+  works: Vitrail[];
+}
+
+type View = 'europe' | 'quebec' | 'all';
+
+function workImages(work: Vitrail) {
+  const s3Base = `${IMAGE_BASE_URL}/vitraux/`;
+  const list: { src: string; alt: string }[] = [];
+  if (work.main_image) list.push({ src: `${s3Base}${work.main_image}`, alt: work.title_fr });
+  for (const g of work.gallery_images ?? []) {
+    if (g?.url) list.push({ src: g.url.startsWith('http') ? g.url : `${s3Base}${g.url}`, alt: g.alt_fr || work.title_fr });
+  }
+  return list;
+}
+
+function PlacePopup({ place }: { place: Place }) {
+  const [selected, setSelected] = useState(0);
   const [idx, setIdx] = useState(0);
-  const hasImages = images.length > 0;
+  const work = place.works[Math.min(selected, place.works.length - 1)];
+  const images = useMemo(() => workImages(work), [work]);
 
-  const next = () => setIdx((i) => (i + 1) % images.length);
-  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
+  useEffect(() => setIdx(0), [selected]);
 
-  const mapsHref = useMemo(() => {
-    if (work.maps_url && work.maps_url.trim().length > 0) return work.maps_url;
-    if (work.lat && work.lng) return `https://www.google.com/maps?q=${work.lat},${work.lng}`;
-    return undefined;
-  }, [work]);
+  const mapsHref = work.maps_url?.trim() || `https://www.google.com/maps?q=${place.lat},${place.lng}`;
 
   return (
-    <div className="w-64">
-      <div className="mb-2">
-        <p className="text-sm text-gray-800 mb-1 font-medium">{work.building_name}</p>
-        <div className="flex flex-wrap gap-1 items-center text-[11px] text-gray-600">
-          <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5">{work.city}</span>
-          {work.department && (
-            <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5">{work.department}</span>
-          )}
-          {work.year && (
-            <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5">{work.year}</span>
-          )}
-        </div>
-        <p className="text-xs text-gray-600 mt-1">{work.title_fr}</p>
-      </div>
-      {hasImages && (
+    <div className="w-60 sm:w-64">
+      <p className="text-sm text-gray-900 font-medium leading-snug">{place.building_name}</p>
+      <p className="text-xs text-gray-600 mb-2">{[place.city, place.department].filter(Boolean).join(' · ')}</p>
+
+      {place.works.length > 1 && (
+        <ul className="mb-2 space-y-1 max-h-28 sm:max-h-40 overflow-y-auto" aria-label="Réalisations dans cet édifice">
+          {place.works.map((w, i) => (
+            <li key={w.id}>
+              <button
+                type="button"
+                onClick={() => setSelected(i)}
+                className={`w-full text-left text-xs px-2 py-1.5 rounded border ${i === selected ? 'border-blue-600 bg-blue-50 text-blue-800' : 'border-gray-200 hover:bg-gray-50 text-gray-800'}`}
+              >
+                <span className="font-semibold">{w.year}</span> — {w.title_fr}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {place.works.length === 1 && <p className="text-xs text-gray-700 mb-2"><span className="font-semibold">{work.year}</span> — {work.title_fr}</p>}
+
+      {images.length > 0 && (
         <div>
-          <div className="relative w-full h-36 bg-gray-100 rounded overflow-hidden">
-            <Image
-              src={images[idx].src}
-              alt={images[idx].alt}
-              fill
-              sizes="256px"
-              className="object-cover"
-              loader={s3ImageLoader}
-            />
+          <div className="relative w-full h-28 sm:h-36 bg-gray-100 rounded overflow-hidden">
+            <Image src={images[idx].src} alt={images[idx].alt} fill sizes="256px" className="object-cover" loader={s3ImageLoader} />
           </div>
           {images.length > 1 && (
             <div className="mt-2 flex items-center justify-between">
-              <button onClick={prev} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">Précédent</button>
+              <button type="button" onClick={() => setIdx((i) => (i - 1 + images.length) % images.length)} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">Précédent</button>
               <span className="text-xs text-gray-500">{idx + 1} / {images.length}</span>
-              <button onClick={next} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">Suivant</button>
+              <button type="button" onClick={() => setIdx((i) => (i + 1) % images.length)} className="px-2 py-1 text-xs border rounded hover:bg-gray-50">Suivant</button>
             </div>
           )}
         </div>
       )}
-      <div className="mt-3 flex items-center">
-        <a href={`/jeannette/catalogue/${work.id}`} className="text-xs bg-white border border-blue-600 text-blue-700 px-2 py-1 rounded hover:bg-blue-50 transition">Voir la fiche</a>
-        {mapsHref && (
-          <>
-            <span className="mx-2 text-gray-300">•</span>
-            <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs bg-white border border-gray-800 text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition">Ouvrir dans Maps</a>
-          </>
-        )}
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <Link href={`/jeannette/catalogue/${work.id}`} className="text-xs bg-blue-600 !text-white px-2.5 py-1.5 rounded hover:bg-blue-700 transition">Voir la fiche</Link>
+        <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="text-xs border border-gray-800 !text-gray-900 px-2.5 py-1.5 rounded hover:bg-gray-50 transition">Ouvrir dans Maps</a>
       </div>
     </div>
   );
 }
 
+function markerIcon(color: string, count: number) {
+  const size = count > 1 ? 30 : 24;
+  return L.divIcon({
+    className: '',
+    html: `<span class="wg-marker" style="background:${color};width:${size}px;height:${size}px">${count > 1 ? count : ''}</span>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2],
+  });
+}
+
+function boundsOf(places: Place[]) {
+  return L.latLngBounds(places.map((p) => L.latLng(p.lat, p.lng)));
+}
+
+// Pilote la carte : cadrage quand les filtres changent, zoom molette au clic, centrage sur un lieu demandé
+function MapController({ fit, focus, markers }: {
+  fit: { places: Place[]; token: string };
+  focus: { key: string; token: number } | null;
+  markers: RefObject<Record<string, L.Marker | null>>;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!fit.places.length) return;
+    map.fitBounds(boundsOf(fit.places), { padding: [32, 32], maxZoom: 12 });
+  }, [map, fit.token]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!focus) return;
+    const marker = markers.current[focus.key];
+    if (!marker) return;
+    map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 12), { duration: 0.8 });
+    map.once('moveend', () => marker.openPopup());
+  }, [map, focus, markers]);
+
+  useEffect(() => {
+    map.scrollWheelZoom.disable();
+    const enable = () => map.scrollWheelZoom.enable();
+    const disable = () => map.scrollWheelZoom.disable();
+    map.on('click', enable);
+    map.on('mouseout', disable);
+    return () => {
+      map.off('click', enable);
+      map.off('mouseout', disable);
+    };
+  }, [map]);
+
+  return null;
+}
+
 export default function ArtworksMap({ works }: { works: Vitrail[] }) {
-  const points = useMemo(() => {
-    const raw = works
-      .map((w) => ({
-        work: w,
-        lat: w.lat ? parseFloat(w.lat) : undefined,
-        lng: w.lng ? parseFloat(w.lng) : undefined,
-        yearNum: w.year ? parseInt(String(w.year), 10) : Number.NaN,
-      }))
-      .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lng)) as { work: Vitrail; lat: number; lng: number; yearNum: number; }[];
-    raw.sort((a, b) => (a.yearNum || 0) - (b.yearNum || 0));
-    return raw;
-  }, [works]);
-
-  const center = points.length > 0 ? [points[0].lat, points[0].lng] as [number, number] : [48.8566, 2.3522];
-
-  // Radius adaptatif mobile
-  const radius = typeof window !== 'undefined' && window.innerWidth < 480 ? 5 : 7;
-
-  const polyline: [number, number][] = points.map(p => [p.lat, p.lng]);
+  const router = useRouter();
+  const mapWrapperRef = useRef<HTMLDivElement>(null);
+  const markerRefs = useRef<Record<string, L.Marker | null>>({});
 
   const [basemap, setBasemap] = useState<'osm' | 'light'>('osm');
+  const [showPath, setShowPath] = useState(true);
+  const [query, setQuery] = useState('');
+  const [view, setView] = useState<View>('europe');
+  const [focus, setFocus] = useState<{ key: string; token: number } | null>(null);
+  const [canHover, setCanHover] = useState(false);
 
-  // Décennies sélectionnées via URL
-  const router = useRouter();
-  const [selectedDecades, setSelectedDecades] = useState<number[]>([]);
-  useEffect(() => {
-    const q = router.query.decades as string | undefined;
-    if (q) {
-      const arr = q.split(',').map((s)=>parseInt(s,10)).filter(n=>!Number.isNaN(n));
-      setSelectedDecades(arr);
-    } else {
-      setSelectedDecades([]);
+  useEffect(() => setCanHover(window.matchMedia('(hover: hover)').matches), []);
+
+  // Regroupe les œuvres par édifice (mêmes coordonnées)
+  const { places, unlocated } = useMemo(() => {
+    const byKey = new Map<string, Place>();
+    const without: Vitrail[] = [];
+    for (const w of works) {
+      const lat = parseFloat(w.lat ?? '');
+      const lng = parseFloat(w.lng ?? '');
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+        without.push(w);
+        continue;
+      }
+      const key = `${lat.toFixed(4)},${lng.toFixed(4)}`;
+      const place = byKey.get(key) ?? { key, lat, lng, building_name: w.building_name, city: w.city, department: w.department, works: [] };
+      place.works.push(w);
+      byKey.set(key, place);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return { places: Array.from(byKey.values()), unlocated: without };
+  }, [works]);
+
+  // Décennies sélectionnées, gardées dans l'URL (?decades=1960,1980)
+  const selectedDecades = useMemo(() => {
+    const q = router.query.decades;
+    return typeof q === 'string' ? q.split(',').map((s) => parseInt(s, 10)).filter((n) => !Number.isNaN(n)) : [];
   }, [router.query.decades]);
 
   const toggleDecade = (d: number) => {
-    setSelectedDecades(prev => {
-      const next = prev.includes(d) ? prev.filter(x=>x!==d) : [...prev, d];
-      const query = { ...router.query } as Record<string, string | string[]>;
-      if (next.length) query.decades = next.sort().join(','); else delete query.decades;
-      router.push({ pathname: router.pathname, query }, undefined, { shallow: true });
-      return next;
-    });
-  };
-
-  const decadeColor = (y?: number) => {
-    if (!y || !Number.isFinite(y)) return '#ef4444';
-    const d = Math.floor(y / 10) * 10;
-    const map: Record<number, string> = {
-      1950: '#2563eb',
-      1960: '#059669',
-      1970: '#a855f7',
-      1980: '#f59e0b',
-      1990: '#dc2626',
-      2000: '#0ea5e9',
-    };
-    return map[d] || '#6b7280';
+    const next = selectedDecades.includes(d) ? selectedDecades.filter((x) => x !== d) : [...selectedDecades, d].sort();
+    const q = { ...router.query } as Record<string, string | string[]>;
+    if (next.length) q.decades = next.join(','); else delete q.decades;
+    router.replace({ pathname: router.pathname, query: q }, undefined, { shallow: true, scroll: false });
   };
 
   const decades = useMemo(() => {
     const s = new Set<number>();
-    for (const p of points) {
-      if (Number.isFinite(p.yearNum)) s.add(Math.floor(p.yearNum / 10) * 10);
+    for (const w of works) {
+      const d = decadeOf(w.year);
+      if (d !== undefined) s.add(d);
     }
     return Array.from(s).sort((a, b) => a - b);
-  }, [points]);
+  }, [works]);
 
-  const filteredPoints = useMemo(() => {
-    if (selectedDecades.length === 0) return points;
-    return points.filter(p => {
-      const d = Number.isFinite(p.yearNum) ? Math.floor(p.yearNum/10)*10 : undefined;
-      return d ? selectedDecades.includes(d) : false;
-    });
-  }, [points, selectedDecades]);
+  const workMatches = (w: Vitrail) => {
+    const d = decadeOf(w.year);
+    const decadeOk = selectedDecades.length === 0 || (d !== undefined && selectedDecades.includes(d));
+    return decadeOk && matchesQuery(query, [w.building_name, w.city, w.department, w.title_fr, w.year, w.building_type]);
+  };
 
-  const MC = MapContainer as unknown as ComponentType<Record<string, unknown>>;
-  const TL = TileLayer as unknown as ComponentType<Record<string, unknown>>;
-  const CM = CircleMarker as unknown as ComponentType<Record<string, unknown>>;
-  const PP = Popup as unknown as ComponentType<Record<string, unknown>>;
-  const PL = Polyline as unknown as ComponentType<Record<string, unknown>>;
+  const filteredPlaces = useMemo(() => {
+    return places
+      .map((p) => ({ ...p, works: p.works.filter(workMatches) }))
+      .filter((p) => p.works.length > 0)
+      .sort((a, b) => (parseInt(a.works[0].year) || 0) - (parseInt(b.works[0].year) || 0));
+  }, [places, selectedDecades, query]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const filtering = selectedDecades.length > 0 || query.trim().length > 0;
 
+  // Lieux à cadrer selon la vue choisie ; si la vue est vide après filtrage, on cadre tous les résultats
+  const fit = useMemo(() => {
+    let target = filteredPlaces;
+    if (view !== 'all') {
+      const inView = filteredPlaces.filter((p) => (view === 'europe' ? isEurope(p) : !isEurope(p)));
+      if (inView.length) target = inView;
+    }
+    return { places: target, token: `${view}|${selectedDecades.join(',')}|${query}` };
+  }, [filteredPlaces, view, selectedDecades, query]);
 
-  function FitToBounds({ positions }: { positions: [number, number][] }) {
-    const map = useMap();
-    useEffect(() => {
-      if (!positions.length) return;
-      const bounds = L.latLngBounds(positions.map(([lat, lng]) => L.latLng(lat, lng)));
-      map.fitBounds(bounds, { padding: [40, 40] });
-    }, [map, positions]);
-    return null;
-  }
+  const icons = useMemo(
+    () => Object.fromEntries(filteredPlaces.map((p) => [p.key, markerIcon(colorFor(p.works[0].year), p.works.length)])),
+    [filteredPlaces],
+  );
+
+  // Parcours chronologique des réalisations affichées
+  const path = useMemo(() => {
+    const pts = filteredPlaces
+      .flatMap((p) => p.works.map((w) => ({ year: parseInt(w.year) || 0, lat: p.lat, lng: p.lng })))
+      .sort((a, b) => a.year - b.year);
+    const line: [number, number][] = [];
+    for (const p of pts) {
+      const last = line[line.length - 1];
+      if (!last || last[0] !== p.lat || last[1] !== p.lng) line.push([p.lat, p.lng]);
+    }
+    return line;
+  }, [filteredPlaces]);
+
+  // ?oeuvre=<id> : ouvre directement le lieu de cette œuvre
+  useEffect(() => {
+    const id = router.query.oeuvre;
+    if (typeof id !== 'string') return;
+    const place = places.find((p) => p.works.some((w) => w.id === id));
+    if (!place) return;
+    const t = setTimeout(() => setFocus({ key: place.key, token: Date.now() }), 400);
+    return () => clearTimeout(t);
+  }, [router.query.oeuvre, places]);
+
+  const focusPlace = (key: string) => {
+    mapWrapperRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setFocus({ key, token: Date.now() });
+  };
+
+  const chip = (active: boolean) =>
+    `inline-flex items-center gap-1.5 px-3 h-9 rounded-full border text-sm whitespace-nowrap transition-colors ${active ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50'}`;
 
   return (
-    <div className="relative">
-      <MC center={center} zoom={6} style={{ height: '60vh', width: '100%', borderRadius: '0.75rem' }} scrollWheelZoom={true} fullscreenControl>
-        {basemap === 'osm' ? (
-          <TL
-            attribution='&copy; OpenStreetMap contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    <div>
+      {/* Outils au-dessus de la carte, pour ne pas la masquer sur mobile */}
+      <div className="mb-3 space-y-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Rechercher un lieu, une ville, une œuvre…"
+            aria-label="Rechercher sur la carte"
+            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-md text-base"
           />
-        ) : (
-          <TL
-            attribution='&copy; OpenStreetMap contributors &copy; CARTO'
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-          />
-        )}
-
-        <FitToBounds positions={(selectedDecades.length ? filteredPoints : points).map(p=>[p.lat,p.lng])} />
-
-        {/* Overlay empty state */}
-        {(selectedDecades.length && filteredPoints.length===0) && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <p className="bg-white/80 backdrop-blur px-4 py-2 text-sm text-gray-600 rounded">Aucune œuvre dans cette plage</p>
-          </div>
-        )}
-
-        {polyline.length >= 2 && (
-          <PL positions={polyline} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.55 }} />
-        )}
-        {(selectedDecades.length ? filteredPoints : points).map(({ work, lat, lng, yearNum }) => {
-          const color = decadeColor(yearNum);
-          return (
-            <CM
-              key={work.id}
-              center={[lat, lng]}
-              radius={radius}
-              pathOptions={{ color, weight: 1, fillColor: color, fillOpacity: 0.95 }}
-            >
-              <Tooltip direction="top" offset={[0, -4]} opacity={1}>
-                {work.building_name} — {work.year}
-              </Tooltip>
-              <PP>
-                <PopupContent work={work} />
-              </PP>
-            </CM>
-          );
-        })}
-      </MC>
-
-
-      <div className="absolute top-3 right-3 z-[4000] flex flex-col items-end gap-2 pointer-events-auto">
-        <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs flex items-center gap-2">
-          <span className="text-gray-700 font-medium">Fond</span>
-          <button onClick={() => setBasemap('osm')} className={`px-2 py-0.5 rounded ${basemap==='osm' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>OSM</button>
-          <button onClick={() => setBasemap('light')} className={`px-2 py-0.5 rounded ${basemap==='light' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>Light</button>
         </div>
-        {decades.length > 0 && (
-          <div className="bg-white border border-gray-300 rounded shadow-2xl px-3 py-2 text-xs w-56">
-            <div className="font-medium text-gray-800 mb-2">Filtrer par décennie</div>
-            <div className="flex flex-wrap gap-2">
-              {decades.map(d => {
-                const active = selectedDecades.includes(d);
-                return (
-                  <button key={d} onClick={()=>toggleDecade(d)} className={`px-2 py-0.5 rounded-full border ${active ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50'}`}>{d}s</button>
-                );
-              })}
-            </div>
+
+        <div className="-mx-4 px-4 overflow-x-auto scrollbar-none">
+          <div className="flex gap-2 w-max" role="group" aria-label="Filtrer par décennie">
+            {decades.map((d) => {
+              const active = selectedDecades.includes(d);
+              return (
+                <button key={d} type="button" aria-pressed={active} onClick={() => toggleDecade(d)} className={chip(active)}>
+                  <span className="w-2.5 h-2.5 rounded-full border border-white/60" style={{ background: DECADE_COLORS[d] ?? '#6b7280' }} aria-hidden="true" />
+                  {d}s
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-gray-600">Cadrer :</span>
+          {([['europe', 'France'], ['quebec', 'Québec'], ['all', 'Tout']] as [View, string][]).map(([v, label]) => (
+            <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)} className={chip(view === v)}>{label}</button>
+          ))}
+          <span className="mx-1 h-5 w-px bg-gray-300" aria-hidden="true" />
+          <button type="button" aria-pressed={basemap === 'light'} onClick={() => setBasemap(basemap === 'osm' ? 'light' : 'osm')} className={chip(false)}>
+            Fond {basemap === 'osm' ? 'clair' : 'détaillé'}
+          </button>
+          <label className="inline-flex items-center gap-2 h-9 px-2 cursor-pointer select-none">
+            <input type="checkbox" checked={showPath} onChange={(e) => setShowPath(e.target.checked)} className="w-4 h-4" />
+            Parcours chronologique
+          </label>
+        </div>
+      </div>
+
+      <div ref={mapWrapperRef} className="relative h-[55vh] md:h-[65vh] rounded-xl overflow-hidden border border-gray-200">
+        <MapContainer center={[46.6, 2.5]} zoom={6} style={{ height: '100%', width: '100%' }} {...FULLSCREEN_OPTION}>
+          {basemap === 'osm' ? (
+            <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          ) : (
+            <TileLayer attribution="&copy; OpenStreetMap contributors &copy; CARTO" url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+          )}
+
+          <MapController fit={fit} focus={focus} markers={markerRefs} />
+
+          {showPath && path.length >= 2 && (
+            <Polyline positions={path} pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.5 }} />
+          )}
+
+          {filteredPlaces.map((place) => (
+            <Marker
+              key={place.key}
+              position={[place.lat, place.lng]}
+              icon={icons[place.key]}
+              ref={(m) => { markerRefs.current[place.key] = m; }}
+            >
+              {canHover && (
+                <Tooltip direction="top" offset={[0, -12]} opacity={1}>
+                  {place.building_name} — {place.works.map((w) => w.year).join(', ')}
+                </Tooltip>
+              )}
+              <Popup>
+                <PlacePopup place={place} />
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+
+        {filtering && filteredPlaces.length === 0 && (
+          <div className="absolute inset-0 z-[500] flex items-center justify-center pointer-events-none">
+            <p className="bg-white/90 backdrop-blur px-4 py-2 text-sm text-gray-700 rounded shadow">Aucune œuvre ne correspond à ces critères</p>
           </div>
         )}
       </div>
+
+      {/* Liste des lieux, synchronisée avec la carte */}
+      <section className="mt-8" aria-labelledby="liste-lieux">
+        <h2 id="liste-lieux" className="text-xl md:text-2xl font-light mb-3">
+          {filteredPlaces.length} lieu{filteredPlaces.length > 1 ? 'x' : ''}
+          {filtering && <span className="text-base text-gray-500"> correspondant{filteredPlaces.length > 1 ? 's' : ''}</span>}
+        </h2>
+        <ul className="divide-y divide-gray-200 border-y border-gray-200">
+          {filteredPlaces.map((place) => (
+            <li key={place.key}>
+              <button type="button" onClick={() => focusPlace(place.key)} className="w-full text-left flex items-start gap-3 py-3 px-1 hover:bg-gray-50">
+                <span className="mt-1.5 w-3 h-3 rounded-full flex-shrink-0" style={{ background: colorFor(place.works[0].year) }} aria-hidden="true" />
+                <span className="flex-1 min-w-0">
+                  <span className="block font-medium text-gray-900">{place.building_name}</span>
+                  <span className="block text-sm text-gray-600">
+                    {[place.city, place.department].filter(Boolean).join(' · ')} — {place.works.map((w) => w.year).join(', ')}
+                    {place.works.length > 1 && ` (${place.works.length} réalisations)`}
+                  </span>
+                </span>
+                <MapPin className="w-4 h-4 mt-1 text-gray-400 flex-shrink-0" aria-hidden="true" />
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {unlocated.length > 0 && (
+          <p className="mt-4 text-sm text-gray-600">
+            Sans localisation précise sur la carte :{' '}
+            {unlocated.map((w, i) => (
+              <span key={w.id}>
+                {i > 0 && ', '}
+                <Link href={`/jeannette/catalogue/${w.id}`} className="underline hover:text-blue-700">{w.title_fr} ({w.year}, {w.city})</Link>
+              </span>
+            ))}
+            .
+          </p>
+        )}
+      </section>
+
       <style jsx global>{`
-        .leaflet-overlay-pane .animated-polyline {
-          stroke-dasharray: 1200;
-          animation: wg-dash 2.6s ease-out forwards;
+        .wg-marker {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 9999px;
+          border: 2px solid #fff;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+          color: #fff;
+          font: 600 12px/1 Arial, Helvetica, sans-serif;
         }
-        @keyframes wg-dash {
-          from { stroke-dashoffset: 1200; }
-          to { stroke-dashoffset: 0; }
-        }
-              .marker-point { transition: transform .15s ease-out; }
-        .marker-point:hover { transform: scale(1.1); filter: drop-shadow(0 0 4px rgba(0,0,0,.3)); }
       `}</style>
     </div>
   );

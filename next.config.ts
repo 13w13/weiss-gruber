@@ -16,13 +16,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'xrarrp4wrvauwge7.public.blob.vercel-storage.com',
-        port: '',
-        pathname: '/**',
-      },
     ],
+  },
+
+  // La racine renvoie vers la page de Jeannette (sans fonction serveur)
+  async redirects() {
+    return [{ source: '/', destination: '/jeannette', permanent: false }]
   },
 
   // Headers de sécurité

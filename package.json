@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "optimize-images": "node scripts/optimize-images.mjs",
-    "upload-images": "aws s3 sync images/vitraux-optimized s3://weiss-gruber-jeanette/vitraux-optimized --endpoint-url https://s3.fr-par.scw.cloud --acl public-read && aws s3 sync images/bio-optimized s3://weiss-gruber-jeanette/bio-optimized --endpoint-url https://s3.fr-par.scw.cloud --acl public-read"
+    "upload-images": "aws s3 sync images/vitraux-optimized s3://weiss-gruber-jeanette/vitraux-optimized --endpoint-url https://s3.fr-par.scw.cloud --acl public-read && aws s3 sync images/bio-optimized s3://weiss-gruber-jeanette/bio-optimized --endpoint-url https://s3.fr-par.scw.cloud --acl public-read",
+    "generate-sitemap": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",

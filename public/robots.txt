@@ -2,11 +2,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /api/
 
 # Sitemap
 Sitemap: https://www.weiss-gruber.art/sitemap.xml
-
-# Disallow admin and API routes
-Disallow: /api/
-Disallow: /_next/
-Disallow: /static/

@@ -1,52 +1,78 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import Head from 'next/head'
-import { ChevronRight, X } from 'lucide-react'
-import { useState } from 'react'
+import type { GetStaticProps } from 'next'
+import { ChevronRight, Play, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { IMAGE_BASE_URL } from '@/lib/images'
+import { s3ImageLoader } from '@/lib/imageLoader'
+import { getWorks } from '@/lib/works'
+import { decadeOf } from '@/lib/text'
+import PageMeta from '@/components/layout/PageMeta'
+import YouTubeEmbed from '@/components/media/YouTubeEmbed'
 
 // Static images (relative to project root)
 import heroImg from '../../../images/frontpage/main.jpg'
 import beauvaisImg from '../../../images/frontpage/1985_beauvais_cathedrale_principal.png'
 import taralonRecto from '../../../images/frontpage/taralon-recto.jpg'
 import taralonVerso from '../../../images/frontpage/taralon-verso.jpg'
+import SiteHeader from '@/components/layout/SiteHeader'
+import SiteFooter from '@/components/layout/SiteFooter'
 
-export default function JeannetteFrontPage() {
+interface FeaturedWork {
+  id: string
+  title: string
+  year: string
+  building: string
+  city: string
+  image: string
+}
+
+interface Stats {
+  works: number
+  buildings: number
+  cities: number
+  firstYear: string
+  lastYear: string
+}
+
+const INTERVIEW_ID = 'Wlh5VD3t_pQ'
+
+export default function JeannetteFrontPage({ featured, stats }: { featured: FeaturedWork[]; stats: Stats }) {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
+
+  // Échap ferme l'agrandissement des fiches Taralon
+  useEffect(() => {
+    if (!lightboxImage) return
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxImage(null) }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [lightboxImage])
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <Head>
-        <title>Jeannette Weiss Gruber — Peintre-verrier</title>
-        <meta name="description" content="Catalogue raisonné, biographie et carte des œuvres de Jeannette Weiss Gruber." />
-        <link rel="canonical" href="https://www.weiss-gruber.art/jeannette" />
-        <meta property="og:title" content="Jeannette Weiss Gruber — Peintre-verrier" />
-        <meta property="og:description" content="Catalogue raisonné, biographie et carte des œuvres de Jeannette Weiss Gruber." />
-      </Head>
+      <PageMeta
+        title="Jeannette Weiss Gruber — Peintre-verrier (1934–2026)"
+        description={`Catalogue raisonné, biographie, carte et interview de Jeannette Weiss Gruber, peintre-verrier : ${stats.works} réalisations dans ${stats.buildings} édifices, de ${stats.firstYear} à ${stats.lastYear}.`}
+        path="/jeannette"
+      />
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
-        <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
-              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
-              <span className="inline sm:hidden">Jeannette WG</span>
-            </Link>
-            <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
-              <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
-              <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
-              <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Catalogue Raisonné</span><span className="inline md:hidden">Catalogue</span></Link></li>
-              <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors whitespace-nowrap">Carte</Link></li>
-              <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Publications</span><span className="inline md:hidden">Publi</span></Link></li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+      <SiteHeader />
 
-      <main className="pt-16">
+      <main className="pt-14 md:pt-16">
         {/* Hero */}
         <section className="relative h-[70vh] sm:h-[80vh] md:h-[90vh]">
           <Image src={heroImg} alt="Jeannette peignant" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white font-light mb-4 md:mb-6">Jeannette Weiss Gruber</h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light">Peintre-verrier (1934&nbsp;&ndash;&nbsp;2026)</p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-xs sm:max-w-none sm:w-auto">
+              <Link href="/jeannette/catalogue" className="inline-flex items-center justify-center h-12 px-6 bg-white text-gray-900 rounded hover:bg-gray-100 transition">
+                Voir les œuvres <ChevronRight className="ml-2 w-4 h-4" />
+              </Link>
+              <a href="#interview" className="inline-flex items-center justify-center h-12 px-6 border border-white/80 text-white rounded hover:bg-white/10 transition">
+                <Play className="mr-2 w-4 h-4" fill="currentColor" aria-hidden="true" /> Regarder l&apos;interview
+              </a>
+            </div>
           </div>
           <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 text-white text-xs sm:text-sm opacity-70">
             Photo © Jean-Luc Vallet
@@ -66,6 +92,19 @@ export default function JeannetteFrontPage() {
           </div>
         </section>
 
+        {/* Interview */}
+        <section id="interview" className="bg-gray-950 py-12 md:py-20 scroll-mt-16">
+          <div className="max-w-4xl mx-auto px-4">
+            <p className="text-xs uppercase tracking-widest text-gray-400 mb-2 text-center">Interview</p>
+            <h2 className="text-2xl md:text-4xl font-light text-white text-center mb-6 md:mb-10">Une vie dans le vitrail</h2>
+            <YouTubeEmbed id={INTERVIEW_ID} title="Jeannette Weiss-Gruber, Une vie dans le vitrail" />
+            <p className="mt-3 text-xs md:text-sm text-gray-400 text-center">
+              Vidéo publiée par François Weiss sur YouTube. Elle ne se charge qu&apos;au clic.{' '}
+              <a href={`https://www.youtube.com/watch?v=${INTERVIEW_ID}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-white">Ouvrir sur YouTube</a>
+            </p>
+          </div>
+        </section>
+
         {/* Oeuvre Beauvais */}
         <section className="bg-black py-16 md:py-24">
           <div className="container mx-auto px-4 flex justify-center">
@@ -81,7 +120,41 @@ export default function JeannetteFrontPage() {
               <div className="text-gray-300 text-lg">
                 <p>Une baie dans une chapelle sud du transept</p>
                 <p className="text-base text-gray-400">1985 - Cathédrale Saint-Pierre de Beauvais, Beauvais</p>
+                <Link href="/jeannette/catalogue/jw_1985_beauvais_04" className="mt-4 inline-flex items-center text-sm text-gray-200 underline underline-offset-4 hover:text-white">
+                  Voir la fiche de l&apos;œuvre <ChevronRight className="ml-1 w-4 h-4" />
+                </Link>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Une œuvre par décennie */}
+        <section className="py-12 md:py-20 bg-white">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <h2 className="text-2xl md:text-4xl font-light text-center mb-3">Une œuvre par décennie</h2>
+            <p className="text-center text-gray-600 mb-8 md:mb-12">
+              <strong>{stats.works}</strong> réalisations · <strong>{stats.buildings}</strong> édifices · <strong>{stats.cities}</strong> villes · <span className="whitespace-nowrap">{stats.firstYear}–{stats.lastYear}</span>
+            </p>
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+              {featured.map((work) => (
+                <Link key={work.id} href={`/jeannette/catalogue/${work.id}`} className="group flex flex-col rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="relative h-40 sm:h-64">
+                    <Image
+                      src={work.image}
+                      alt={work.title}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      loader={s3ImageLoader}
+                    />
+                    <span className="absolute top-2 left-2 bg-black/70 text-white text-xs sm:text-sm font-semibold px-2 py-1 rounded">{work.year}</span>
+                  </div>
+                  <div className="flex-1 p-2.5 sm:p-4">
+                    <p className="text-sm sm:text-base font-medium leading-snug">{work.title}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{work.building}, {work.city}</p>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -93,10 +166,10 @@ export default function JeannetteFrontPage() {
               Jeannette Weiss Gruber a réalisé des vitraux dans l&apos;atelier familial d&apos;après ses maquettes, ses cartons colorés et la peinture à la grisaille toujours à la lumière du jour. Ses créations ont été recensées par Jean Taralon :
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-6 md:gap-8">
-              <button onClick={() => setLightboxImage(taralonRecto.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
+              <button onClick={() => setLightboxImage(taralonRecto.src)} aria-label="Agrandir la fiche Taralon (recto)" className="cursor-pointer transform hover:scale-105 transition-transform">
                 <Image src={taralonRecto} alt="Taralon recto" className="rounded shadow-lg" width={300} height={420} />
               </button>
-              <button onClick={() => setLightboxImage(taralonVerso.src)} className="cursor-pointer transform hover:scale-105 transition-transform">
+              <button onClick={() => setLightboxImage(taralonVerso.src)} aria-label="Agrandir la fiche Taralon (verso)" className="cursor-pointer transform hover:scale-105 transition-transform">
                 <Image src={taralonVerso} alt="Taralon verso" className="rounded shadow-lg" width={300} height={420} />
               </button>
             </div>
@@ -226,17 +299,19 @@ export default function JeannetteFrontPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-100 py-8 text-center text-gray-600 text-sm">
-        &copy; {new Date().getFullYear()} Weiss Gruber. Tous droits réservés.
-      </footer>
+      <SiteFooter />
 
       {lightboxImage && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[1200] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Fiche Taralon agrandie"
           onClick={() => setLightboxImage(null)}
         >
           <button 
             className="absolute top-4 right-4 text-white hover:text-gray-300"
+            aria-label="Fermer"
             onClick={() => setLightboxImage(null)}
           >
             <X size={32} />
@@ -254,4 +329,36 @@ export default function JeannetteFrontPage() {
       )}
     </div>
   )
+}
+
+// Une œuvre par décennie (la mieux documentée en photos) et quelques chiffres, calculés au build
+export const getStaticProps: GetStaticProps = async () => {
+  const works = getWorks()
+  const byDecade = new Map<number, (typeof works)[number]>()
+  for (const w of works) {
+    const d = decadeOf(w.year)
+    if (d === undefined || !w.main_image) continue
+    const current = byDecade.get(d)
+    if (!current || (w.gallery_images?.length ?? 0) > (current.gallery_images?.length ?? 0)) byDecade.set(d, w)
+  }
+  const featured: FeaturedWork[] = Array.from(byDecade.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([, w]) => ({
+      id: w.id,
+      title: w.title_fr,
+      year: w.year,
+      building: w.building_name,
+      city: w.city,
+      image: `${IMAGE_BASE_URL}/vitraux/${w.main_image}`,
+    }))
+
+  const stats: Stats = {
+    works: works.length,
+    buildings: new Set(works.map((w) => w.building_name)).size,
+    cities: new Set(works.map((w) => w.city)).size,
+    firstYear: works[0]?.year ?? '',
+    lastYear: works[works.length - 1]?.year ?? '',
+  }
+
+  return { props: { featured, stats } }
 }

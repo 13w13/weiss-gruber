@@ -1,90 +1,45 @@
 import { GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
-import fs from 'fs';
-import path from 'path';
-import Papa from 'papaparse';
-import Link from 'next/link';
-import { Vitrail, GalleryImage } from '@/types/images';
-import { IMAGE_BASE_URL } from '@/lib/images';
+import { Vitrail } from '@/types/images';
+import { getWorks } from '@/lib/works';
+import PageMeta from '@/components/layout/PageMeta'
+import SiteHeader from '@/components/layout/SiteHeader'
+import SiteFooter from '@/components/layout/SiteFooter'
 
-const ArtworksMap = dynamic(() => import('@/components/map/ArtworksMap'), { ssr: false });
-
-function getWorks(): Vitrail[] {
-  const csvFilePath = path.join(process.cwd(), 'vitraux_metadata.csv');
-  const csvFileContent = fs.readFileSync(csvFilePath, 'utf-8');
-  const result = Papa.parse(csvFileContent, { header: true, skipEmptyLines: true });
-
-  const works = (result.data as Record<string, string>[]).map((work) => {
-    let gallery_images: GalleryImage[] = [];
-    if (work.gallery_images && work.gallery_images.trim().startsWith('[')) {
-      try {
-        const cleanedJsonString = work.gallery_images.replace(/""/g, '"');
-        gallery_images = JSON.parse(cleanedJsonString) as GalleryImage[];
-        gallery_images.forEach((image) => {
-          image.url = `${IMAGE_BASE_URL}/vitraux/${image.url}`;
-        });
-      } catch {
-        console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, work.gallery_images);
-      }
-    }
-    return { ...work, gallery_images } as unknown as Vitrail;
-  });
-
-  return works as Vitrail[];
-}
+const ArtworksMap = dynamic(() => import('@/components/map/ArtworksMap'), {
+  ssr: false,
+  loading: () => <div className="h-[55vh] md:h-[65vh] rounded-xl bg-gray-100 animate-pulse" />,
+});
 
 export const getStaticProps: GetStaticProps = async () => {
-  const works = getWorks();
-  return { props: { works } };
+  return { props: { works: getWorks() } };
 };
 
 export default function Carte({ works }: { works: Vitrail[] }) {
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900">
-      <header className="fixed top-0 left-0 right-0 bg-white border-b z-50">
-        <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
-              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
-              <span className="inline sm:hidden">Jeannette WG</span>
-            </Link>
-            <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
-              <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
-              <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
-              <li><Link href="/jeannette/catalogue" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Catalogue Raisonné</span><span className="inline md:hidden">Catalogue</span></Link></li>
-              <li><Link href="/jeannette/carte" className="text-blue-600 whitespace-nowrap">Carte</Link></li>
-              <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Publications</span><span className="inline md:hidden">Publi</span></Link></li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+      <PageMeta
+        title="Carte des vitraux"
+        description="Carte des lieux où se trouvent les vitraux de Jeannette Weiss Gruber, en France et au Québec, avec photos et fiches détaillées."
+        path="/jeannette/carte"
+      />
+      <SiteHeader />
 
-      <main className="pt-24 pb-16">
+      <main className="pt-20 md:pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-6xl">
           <h1 className="text-3xl md:text-4xl font-light mb-2">Carte des vitraux</h1>
-          <p className="text-gray-600 mb-6">
-  Parcourez les lieux où se trouvent les vitraux principaux de Jeannette Weiss&nbsp;Gruber.<br />
-  <span className="block sm:inline">Cliquez sur un point pour voir les images et ouvrir la fiche.</span><br />
-  <span className="mt-1 inline-block text-xs text-gray-500">
-    La ligne bleue suit chronologiquement les réalisations&nbsp;; elle relie les lieux par ordre d&rsquo;année.<br />
-    La couleur de chaque point indique la décennie&nbsp;: <span className="font-semibold" style={{color:'#2563eb'}}>● 1950s</span>,
-    <span className="font-semibold" style={{color:'#059669'}}> ● 1960s</span>,
-    <span className="font-semibold" style={{color:'#a855f7'}}> ● 1970s</span>,
-    <span className="font-semibold" style={{color:'#f59e0b'}}> ● 1980s</span>,
-    <span className="font-semibold" style={{color:'#dc2626'}}> ● 1990s</span>,
-    <span className="font-semibold" style={{color:'#0ea5e9'}}> ● 2000s</span>.
-  </span>
-</p>
+          <p className="text-gray-600 mb-5">
+            Parcourez les lieux où se trouvent les vitraux de Jeannette Weiss&nbsp;Gruber. Touchez un point ou un lieu de la liste pour voir les images et ouvrir la fiche.
+            <span className="block mt-1 text-sm text-gray-500">
+              La couleur indique la décennie ; un chiffre signale plusieurs réalisations dans le même édifice. La ligne bleue relie les lieux par ordre chronologique.
+            </span>
+          </p>
 
           <ArtworksMap works={works} />
         </div>
       </main>
 
-      <footer className="bg-gray-100 py-8 mt-auto">
-        <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss Gruber. Tous droits réservés.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

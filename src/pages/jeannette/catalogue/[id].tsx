@@ -1,12 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import fs from 'fs';
-import path from 'path';
-import Papa from 'papaparse';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, MapPin, Map as MapIcon } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
@@ -18,30 +15,27 @@ import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
 import { IMAGE_BASE_URL } from '@/lib/images';
 import { s3ImageLoader } from '@/lib/imageLoader';
-
-interface CsvRow {
-  id: string;
-  year: string;
-  building_name: string;
-  building_type: string;
-  city: string;
-  department: string;
-  location_in_building: string;
-  title_fr: string;
-  main_image: string;
-  caption_fr: string;
-  photo_status: string;
-  description_fr: string;
-  gallery_images: string;
-  maps_url: string;
-  lat: string;
-  lng: string;
-}
-
+import { getWorks } from '@/lib/works';
+import { SITE_URL } from '@/lib/site';
+import PageMeta from '@/components/layout/PageMeta'
+import SiteHeader from '@/components/layout/SiteHeader'
+import SiteFooter from '@/components/layout/SiteFooter'
 
 // Le composant pour la page de détail
-export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: { work: Vitrail; prevId?: string | null; nextId?: string | null; nextMainImage?: string | null }) {
+interface Neighbour { id: string; title: string; year: string }
+
+export default function VitrailDetail({ work, prev, next, nextMainImage, position, total }: {
+  work: Vitrail;
+  prev: Neighbour | null;
+  next: Neighbour | null;
+  nextMainImage?: string | null;
+  position: number;
+  total: number;
+}) {
+  const prevId = prev?.id ?? null;
+  const nextId = next?.id ?? null;
   const router = useRouter();
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [showHint, setShowHint] = useState(false);
@@ -87,6 +81,23 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   // Use new text_fr field, or fallback to merged caption_fr + description_fr for backward compatibility
   const fullText = work.text_fr || [work.caption_fr, work.description_fr].filter(Boolean).join(' ');
   const hasLongText = fullText.length > 80;
+
+  // Métadonnées de partage et données structurées pour les moteurs de recherche
+  const pageUrl = `${SITE_URL}/jeannette/catalogue/${work.id}`;
+  const ogImage = s3ImageLoader({ src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`, width: 1600 });
+  const summary = `Vitrail de Jeannette Weiss Gruber, ${work.year} — ${work.building_name}, ${work.city}.${fullText ? ` ${fullText}` : ''}`;
+  const metaDescription = summary.length > 160 ? `${summary.slice(0, 157).replace(/\s+\S*$/, '')}…` : summary;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'VisualArtwork',
+    name: work.title_fr,
+    artform: 'Vitrail',
+    dateCreated: work.year,
+    url: pageUrl,
+    image: ogImage,
+    description: metaDescription,
+    creator: { '@type': 'Person', name: 'Jeannette Weiss Gruber', birthDate: '1934', deathDate: '2026', url: `${SITE_URL}/jeannette` },
+  };
 
   // Build slides once per render (needs to be before effects that depend on it)
   const slides = [
@@ -169,6 +180,23 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [open, prevId, nextId, router]);
 
+  // Glisser horizontalement sur la page (hors plein écran) pour passer à l'œuvre voisine
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start || open) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (dx < 0 && nextId) router.push(`/jeannette/catalogue/${nextId}`);
+    if (dx > 0 && prevId) router.push(`/jeannette/catalogue/${prevId}`);
+  };
+
   if (router.isFallback) {
     return <div>Chargement...</div>;
   }
@@ -205,47 +233,38 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
   if (slides.length > 4) plugins.push(Thumbnails);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
-        <nav className="container mx-auto px-2 md:px-4 py-3 md:py-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <Link href="/jeannette" className="text-base md:text-xl font-semibold">
-              <span className="hidden sm:inline">Jeannette Weiss Gruber</span>
-              <span className="inline sm:hidden">Jeannette WG</span>
-            </Link>
-            <ul className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-base">
-              <li><Link href="/jeannette" className="hover:text-blue-600 transition-colors whitespace-nowrap">Accueil</Link></li>
-              <li><Link href="/jeannette/biography" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Biographie</span><span className="inline md:hidden">Bio</span></Link></li>
-              <li><Link href="/jeannette/catalogue" className="text-blue-600 whitespace-nowrap"><span className="hidden md:inline">Catalogue Raisonné</span><span className="inline md:hidden">Catalogue</span></Link></li>
-              <li><Link href="/jeannette/carte" className="hover:text-blue-600 transition-colors whitespace-nowrap">Carte</Link></li>
-              <li><Link href="/jeannette/publications" className="hover:text-blue-600 transition-colors whitespace-nowrap"><span className="hidden md:inline">Publications</span><span className="inline md:hidden">Publi</span></Link></li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+    <div className="min-h-screen flex flex-col bg-white text-gray-900">
+      <PageMeta
+        title={`${work.title_fr} (${work.year}) — ${work.building_name}, ${work.city}`}
+        description={metaDescription}
+        path={`/jeannette/catalogue/${work.id}`}
+        image={ogImage}
+        type="article"
+        jsonLd={jsonLd}
+      />
+      <SiteHeader />
 
-      <main className="pt-20 md:pt-24 pb-12 md:pb-16">
+      <main className="pt-20 md:pt-24 pb-24 md:pb-16" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <div className="container mx-auto px-3 md:px-4">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-light mb-3 md:mb-4">{work.title_fr}</h1>
             <p className="text-base md:text-lg text-gray-600 mb-4">{work.year} - {work.building_name}, {work.city}</p>
 
-            <div className="mb-4 md:mb-6 flex justify-between items-center text-sm md:text-base">
-              {prevId ? (
-                <Link href={`/jeannette/catalogue/${prevId}`} className="inline-flex items-center text-gray-700 hover:text-blue-600 transition-colors">
-                  <ChevronLeft className="w-4 h-4 mr-1" />
-                  Précédent
+            <nav className="hidden md:flex mb-6 justify-between items-center gap-4" aria-label="Œuvres voisines">
+              {prev ? (
+                <Link href={`/jeannette/catalogue/${prev.id}`} className="inline-flex items-center min-h-11 pr-3 text-gray-700 hover:text-blue-700 transition-colors">
+                  <ChevronLeft className="w-5 h-5 mr-1 flex-shrink-0" />
+                  <span><span className="block text-xs text-gray-500">Précédent · {prev.year}</span>{prev.title}</span>
                 </Link>
-              ) : (
-                <span />
-              )}
-              {nextId && (
-                <Link href={`/jeannette/catalogue/${nextId}`} className="inline-flex items-center text-gray-700 hover:text-blue-600 transition-colors">
-                  Suivant
-                  <ChevronRight className="w-4 h-4 ml-1" />
+              ) : <span />}
+              <span className="text-sm text-gray-500 whitespace-nowrap">{position} / {total}</span>
+              {next ? (
+                <Link href={`/jeannette/catalogue/${next.id}`} className="inline-flex items-center min-h-11 pl-3 text-right text-gray-700 hover:text-blue-700 transition-colors">
+                  <span><span className="block text-xs text-gray-500">Suivant · {next.year}</span>{next.title}</span>
+                  <ChevronRight className="w-5 h-5 ml-1 flex-shrink-0" />
                 </Link>
-              )}
-            </div>
+              ) : <span />}
+            </nav>
 
                         <div className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] mb-4 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => { setIndex(0); setOpen(true); }}>
               <Image
@@ -717,6 +736,12 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
                     ) : (
                       <span>{work.building_name}, {work.city}</span>
                     )}
+                    {work.lat && work.lng && (
+                      <Link href={`/jeannette/carte?oeuvre=${work.id}`} className="ml-3 inline-flex items-center text-sm text-gray-600 hover:text-blue-700 underline underline-offset-2">
+                        <MapIcon className="w-4 h-4 mr-1" />
+                        Voir sur la carte
+                      </Link>
+                    )}
                   </dd>
                 </div>
                 <div>
@@ -767,40 +792,31 @@ export default function VitrailDetail({ work, prevId, nextId, nextMainImage }: {
         </div>
       </main>
 
-      <footer className="bg-gray-100 py-8">
-        <div className="container mx-auto px-4 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Weiss Gruber. Tous droits réservés.</p>
+      {/* Navigation fixe sur mobile : grands boutons faciles à toucher */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[1050] bg-white/95 backdrop-blur border-t border-gray-200 pb-[env(safe-area-inset-bottom)]" aria-label="Œuvres voisines">
+        <div className="flex items-stretch h-14">
+          {prev ? (
+            <Link href={`/jeannette/catalogue/${prev.id}`} className="flex-1 flex items-center gap-1 px-3 text-gray-800 active:bg-gray-100">
+              <ChevronLeft className="w-5 h-5 flex-shrink-0" />
+              <span className="text-sm">Précédent</span>
+            </Link>
+          ) : <span className="flex-1" />}
+          <span className="flex items-center px-2 text-xs text-gray-500">{position} / {total}</span>
+          {next ? (
+            <Link href={`/jeannette/catalogue/${next.id}`} className="flex-1 flex items-center justify-end gap-1 px-3 text-gray-800 active:bg-gray-100">
+              <span className="text-sm">Suivant</span>
+              <ChevronRight className="w-5 h-5 flex-shrink-0" />
+            </Link>
+          ) : <span className="flex-1" />}
         </div>
-      </footer>
+      </nav>
+
+      <SiteFooter />
+      {/* Réserve la place de la barre fixe pour que le pied de page reste lisible */}
+      <div className="md:hidden h-14" aria-hidden="true" />
     </div>
   );
 }
-
-// Fonction pour lire et parser le CSV
-const getWorks = () => {
-  const csvFilePath = path.join(process.cwd(), 'vitraux_metadata.csv');
-  const csvFileContent = fs.readFileSync(csvFilePath, 'utf-8');
-  const result = Papa.parse<CsvRow>(csvFileContent, {
-    header: true,
-    skipEmptyLines: true,
-  });
-
-  // Traitement pour parser la colonne gallery_images
-          const works = result.data.map(work => {
-    let gallery_images = [];
-    if (typeof work.gallery_images === 'string' && work.gallery_images.trim().startsWith('[')) {
-      try {
-        gallery_images = JSON.parse(work.gallery_images);
-      } catch (e) {
-        console.error(`Erreur de parsing JSON pour l'œuvre ${work.id}:`, e);
-        gallery_images = [];
-      }
-    }
-    return { ...work, gallery_images };
-  });
-
-  return works as Vitrail[];
-};
 
 // Génère les chemins pour chaque œuvre
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -825,16 +841,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true };
   }
 
-    const prevId = index > 0 ? works[index - 1].id : null;
-  const nextId = index < works.length - 1 ? works[index + 1].id : null;
-  const nextMainImage = nextId ? works[index + 1].main_image : null;
+  const neighbour = (w?: Vitrail) => (w ? { id: w.id, title: w.title_fr, year: w.year } : null);
+  const nextWork = works[index + 1];
 
   return {
     props: {
       work,
-      prevId,
-      nextId,
-      nextMainImage,
+      prev: neighbour(works[index - 1]),
+      next: neighbour(nextWork),
+      nextMainImage: nextWork?.main_image ?? null,
+      position: index + 1,
+      total: works.length,
     },
   };
 };

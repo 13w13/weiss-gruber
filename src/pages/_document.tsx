@@ -13,14 +13,8 @@ export default function Document() {
         
         {/* Preconnects */}
         <link rel="preconnect" href={IMAGE_BASE_URL} crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://xrarrp4wrvauwge7.public.blob.vercel-storage.com" crossOrigin="anonymous" />
 
-        {/* Meta tags */}
-        <meta name="description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss Gruber" />
-        <meta property="og:title" content="Jeannette Weiss Gruber - Peintre-verrier" />
-        <meta property="og:description" content="Explorer les réalisations de la peintre-verrier Jeannette Weiss Gruber" />
-        <meta property="og:image" content="/android-chrome-512x512.png" />
-        <meta property="og:type" content="website" />
+        {/* Meta tags communs ; titre, description et image sont définis page par page (PageMeta) */}
         <meta property="og:site_name" content="Weiss Gruber" />
         <meta property="og:locale" content="fr_FR" />
         <meta name="twitter:card" content="summary_large_image" />
