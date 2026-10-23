@@ -4,7 +4,7 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import { useState } from 'react'
 import { IMAGE_BASE_URL } from '@/lib/images'
-import { s3ImageLoader } from '@/lib/imageLoader'
+import { optimizedImageUrl, s3ImageLoader } from '@/lib/imageLoader'
 import { useLocale } from '@/i18n'
 import PageMeta from '@/components/layout/PageMeta'
 import SiteHeader from '@/components/layout/SiteHeader'
@@ -135,7 +135,8 @@ const content: Record<'fr' | 'en', ContentStructure> = {
   },
 }
 
-// Images placées à côté d'un paragraphe (section, paragraphe), identiques dans les deux langues
+// Images placées à côté d'un paragraphe (section, paragraphe), identiques dans les deux langues.
+// `file` est le chemin dans le bucket.
 interface ImagePlacement {
   section: number;
   paragraph: number;
@@ -145,18 +146,18 @@ interface ImagePlacement {
 }
 
 const IMAGES: ImagePlacement[] = [
-  { section: 0, paragraph: 0, file: 'photo_miminette_bio_1.jpg', align: 'right', caption: { fr: 'Photo de Jeannette Weiss Gruber', en: 'Photo of Jeannette Weiss Gruber' } },
-  { section: 1, paragraph: 0, file: 'photo_miminette_bio_atelier.jpg', align: 'left', caption: { fr: 'Atelier, 10 villa d’Alésia', en: 'The workshop, 10 Villa d’Alésia' } },
-  { section: 1, paragraph: 2, file: 'photo_miminette_bio_miro.jpg', align: 'left', caption: { fr: 'Vitraux de Miró, chapelle Saint-Frambourg, Senlis', en: 'Miró’s windows, Chapelle Saint-Frambourg, Senlis' } },
-  { section: 1, paragraph: 4, file: 'alu_6.jpg', align: 'right', caption: { fr: 'Article québécois sur son travail', en: 'Quebec newspaper article about her work' } },
-  { section: 1, paragraph: 5, file: 'photo_miminette_bio_4.png', align: 'right', caption: { fr: 'Début du carton de la verrière voisine de l’Arbre de Jessé', en: 'Early stage of the cartoon for the window next to the Tree of Jesse' } },
-  { section: 2, paragraph: 2, file: 'photo_miminette_bio_5.png', align: 'right', caption: { fr: 'Jeannette au travail sur les médaillons de la cathédrale d’Amiens', en: 'Jeannette at work on the medallions of Amiens Cathedral' } },
-  { section: 2, paragraph: 5, file: 'photo_miminette_bio_3.png', align: 'left', caption: { fr: 'Travail sur le carton de l’Arbre de Jessé, in situ', en: 'Working on the Tree of Jesse cartoon, in situ' } },
-  { section: 4, paragraph: 1, file: 'photo_miminette_bio_6.jpg', align: 'center', caption: { fr: 'Jeannette marche', en: 'Jeannette walking' } },
+  { section: 0, paragraph: 0, file: 'bio/photo_miminette_bio_1.jpg', align: 'right', caption: { fr: 'Photo de Jeannette Weiss Gruber', en: 'Photo of Jeannette Weiss Gruber' } },
+  { section: 1, paragraph: 0, file: 'bio/photo_miminette_bio_atelier.jpg', align: 'left', caption: { fr: 'Atelier, 10 villa d’Alésia', en: 'The workshop, 10 Villa d’Alésia' } },
+  { section: 1, paragraph: 2, file: 'bio/photo_miminette_bio_miro.jpg', align: 'left', caption: { fr: 'Vitraux de Miró, chapelle Saint-Frambourg, Senlis', en: 'Miró’s windows, Chapelle Saint-Frambourg, Senlis' } },
+  { section: 1, paragraph: 4, file: 'vitraux/alu/alu_6.jpeg', align: 'right', caption: { fr: 'Article québécois sur son travail', en: 'Quebec newspaper article about her work' } },
+  { section: 1, paragraph: 5, file: 'bio/photo_miminette_bio_4.png', align: 'right', caption: { fr: 'Début du carton de la verrière voisine de l’Arbre de Jessé', en: 'Early stage of the cartoon for the window next to the Tree of Jesse' } },
+  { section: 2, paragraph: 2, file: 'bio/photo_miminette_bio_5.png', align: 'right', caption: { fr: 'Jeannette au travail sur les médaillons de la cathédrale d’Amiens', en: 'Jeannette at work on the medallions of Amiens Cathedral' } },
+  { section: 2, paragraph: 5, file: 'bio/photo_miminette_bio_3.png', align: 'left', caption: { fr: 'Travail sur le carton de l’Arbre de Jessé, in situ', en: 'Working on the Tree of Jesse cartoon, in situ' } },
+  { section: 4, paragraph: 1, file: 'bio/photo_miminette_bio_6.jpg', align: 'center', caption: { fr: 'Jeannette marche', en: 'Jeannette walking' } },
 ];
 
 // Toutes les images de la visionneuse (la signature n'apparaît que dans la visionneuse)
-const LIGHTBOX_IMAGES = [...IMAGES.map((img) => img.file), 'photo_miminette_bio_signature.jpg'];
+const LIGHTBOX_IMAGES = [...IMAGES.map((img) => img.file), 'bio/photo_miminette_bio_signature.jpg'];
 
 export default function BiographyPage() {
   const locale = useLocale()
@@ -164,7 +165,7 @@ export default function BiographyPage() {
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const lightboxSlides = LIGHTBOX_IMAGES.map((f) => ({ src: `${IMAGE_BASE_URL}/bio/${f}` }));
+  const lightboxSlides = LIGHTBOX_IMAGES.map((f) => ({ src: optimizedImageUrl(`${IMAGE_BASE_URL}/${f}`) }));
   const openImage = (file: string) => {
     const idx = LIGHTBOX_IMAGES.indexOf(file);
     if (idx >= 0) { setLightboxIndex(idx); setLightboxOpen(true); }
@@ -205,7 +206,7 @@ export default function BiographyPage() {
                           <figure className={`md:row-span-full ${mapping.align === 'left' ? 'md:order-1' : 'md:order-2'}`}>
                             <Image
                               onClick={() => openImage(mapping.file)}
-                              src={`${IMAGE_BASE_URL}/bio/${mapping.file}`}
+                              src={`${IMAGE_BASE_URL}/${mapping.file}`}
                               alt={caption ?? ''}
                               width={500}
                               height={375}
@@ -224,7 +225,7 @@ export default function BiographyPage() {
                           <div className="mt-6 flex justify-center">
                             <Image
                               onClick={() => openImage(mapping.file)}
-                              src={`${IMAGE_BASE_URL}/bio/${mapping.file}`}
+                              src={`${IMAGE_BASE_URL}/${mapping.file}`}
                               alt={caption ?? ''}
                               width={800}
                               height={600}

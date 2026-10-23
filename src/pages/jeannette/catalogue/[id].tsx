@@ -14,7 +14,7 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import { Vitrail } from '@/types/images';
 import { IMAGE_BASE_URL } from '@/lib/images';
-import { s3ImageLoader } from '@/lib/imageLoader';
+import { optimizedImageUrl, s3ImageLoader } from '@/lib/imageLoader';
 import { getWorks } from '@/lib/works';
 import { SITE_URL } from '@/lib/site';
 import { LOCALES, localePrefix, toLocale, useLocale, useT } from '@/i18n';
@@ -46,11 +46,11 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
   const [showFullAlt, setShowFullAlt] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Prefetch hero of next artwork for instant loading (client only)
+  // Précharge la grande variante optimisée de l'œuvre suivante (jamais l'original)
   useEffect(() => {
     if (typeof window !== 'undefined' && nextMainImage) {
       const img = new window.Image();
-      img.src = `${IMAGE_BASE_URL}/vitraux/${nextMainImage}`;
+      img.src = optimizedImageUrl(`${IMAGE_BASE_URL}/vitraux/${nextMainImage}`);
     }
   }, [nextMainImage]);
 
@@ -87,7 +87,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
 
   // Métadonnées de partage et données structurées pour les moteurs de recherche
   const pageUrl = `${SITE_URL}${localePrefix(locale)}/jeannette/catalogue/${work.id}`;
-  const ogImage = s3ImageLoader({ src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`, width: 1600 });
+  const ogImage = s3ImageLoader({ src: optimizedImageUrl(`${IMAGE_BASE_URL}/vitraux/${work.main_image}`), width: 1600 });
   const summary = `${t.work.summary(work.year, work.building_name, work.city)}${fullText ? ` ${fullText}` : ''}`;
   const metaDescription = summary.length > 160 ? `${summary.slice(0, 157).replace(/\s+\S*$/, '')}…` : summary;
   const jsonLd = {
@@ -106,13 +106,13 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
   // Build slides once per render (needs to be before effects that depend on it)
   const slides = [
     { 
-      src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`,
+      src: optimizedImageUrl(`${IMAGE_BASE_URL}/vitraux/${work.main_image}`),
       alt: work.title_fr,
       title: work.title_fr,
       description: '' // We'll handle text display separately
     },
     ...(work.gallery_images?.map(img => ({
-      src: `${IMAGE_BASE_URL}/vitraux/${img.url}`,
+      src: optimizedImageUrl(`${IMAGE_BASE_URL}/vitraux/${img.url}`),
       alt: img.alt_fr || img.nom || work.title_fr,
       description: '' // Keep gallery items without text overlay
     })) || [])
@@ -210,7 +210,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
   // Slides with captions for mobile
   const slidesWithCaptions = [
     {
-      src: `${IMAGE_BASE_URL}/vitraux/${work.main_image}`,
+      src: optimizedImageUrl(`${IMAGE_BASE_URL}/vitraux/${work.main_image}`),
       alt: work.title_fr,
       title: `${work.title_fr} (1/${slides.length})`,
       description: `${work.building_name || t.work.noLocation}${work.city ? `, ${work.city}` : ''}${work.year ? ` (${work.year})` : ''}\n\n${work.title_fr}\n\n${fullText || ''}`
@@ -223,7 +223,7 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
       if (img.credit) desc += `\n\n${t.work.photo} ${img.credit}`; // Crédit
       
       return {
-        src: `${IMAGE_BASE_URL}/vitraux/${img.url}`,
+        src: optimizedImageUrl(`${IMAGE_BASE_URL}/vitraux/${img.url}`),
         alt: img.alt_fr || img.nom || work.title_fr,
         title: `${work.title_fr} (${idx + 2}/${slides.length})`, // Toujours le titre principal du vitrail
         description: desc

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CONTACT_EMAIL, NAV_ITEMS } from '@/lib/site';
 import { useT } from '@/i18n';
+import ViewCounter from './ViewCounter';
 
 export default function SiteFooter() {
   const t = useT();
@@ -20,6 +21,7 @@ export default function SiteFooter() {
           </ul>
         </nav>
         <p>&copy; {new Date().getFullYear()} Weiss Gruber. {t.nav.rights}</p>
+        <ViewCounter />
       </div>
     </footer>
   );

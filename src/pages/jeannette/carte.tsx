@@ -9,7 +9,7 @@ import SiteFooter from '@/components/layout/SiteFooter'
 
 const ArtworksMap = dynamic(() => import('@/components/map/ArtworksMap'), {
   ssr: false,
-  loading: () => <div className="h-[55vh] md:h-[65vh] rounded-xl bg-gray-100 animate-pulse" />,
+  loading: () => <div className="h-[55vh] lg:h-[calc(100vh-8rem)] bg-gray-100 border border-gray-300" />,
 });
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -28,14 +28,9 @@ export default function Carte({ works }: { works: Vitrail[] }) {
       <SiteHeader />
 
       <main className="pt-20 md:pt-24 pb-16">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-7xl">
           <h1 className="text-3xl md:text-4xl font-light mb-2">{t.map.title}</h1>
-          <p className="text-gray-600 mb-5">
-            {t.map.intro}
-            <span className="block mt-1 text-sm text-gray-500">
-              {t.map.legend}
-            </span>
-          </p>
+          <p className="text-gray-600 mb-6 max-w-2xl">{t.map.intro}</p>
 
           <ArtworksMap works={works} />
         </div>

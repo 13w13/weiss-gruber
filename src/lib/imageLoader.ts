@@ -20,3 +20,10 @@ export const s3ImageLoader: ImageLoader = ({ src, width }) => {
   const closest = VARIANTS.find((v) => v >= width) ?? VARIANTS[VARIANTS.length - 1]
   return `${host}/${dir}-optimized/${name}_${closest}w.webp`
 }
+
+/**
+ * URL de la plus grande variante WebP (1600 px) d'une image du bucket.
+ * Utilisée pour le plein écran et le préchargement : le site n'appelle plus
+ * les originaux, qui peuvent ainsi rester privés.
+ */
+export const optimizedImageUrl = (src: string, width = 1600) => s3ImageLoader({ src, width })
