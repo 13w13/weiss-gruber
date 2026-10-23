@@ -557,7 +557,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" updateWhenZooming={false} keepBuffer={4} />
 
             <MapController fit={fit} focus={focus} markers={markerRefs} />
-            <JourneyCamera target={currentLatLng} previous={previousLatLng} active={!!journey} offsetY={isDesktop ? 0 : 140} fitPlaces={fit.places} />
+            <JourneyCamera target={currentLatLng} previous={previousLatLng} active={!!journey} offsetY={isDesktop ? 0 : 190} fitPlaces={fit.places} />
             {lifeMarker && <Marker position={lifeMarker} icon={lifeIcon} interactive={false} keyboard={false} />}
 
             {journey && journeyPath.length >= 2 && (

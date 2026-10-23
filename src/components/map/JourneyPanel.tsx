@@ -28,7 +28,7 @@ export default function JourneyPanel({ step, quote, color, variant }: {
   return (
     <article className={`wg-journey-card bg-white ${panel ? '' : 'border border-gray-400 shadow-md'}`} aria-live="polite">
       {image && (
-        <div className={`relative w-full bg-neutral-950 ${panel ? 'aspect-[4/3] max-h-[40vh]' : 'h-32'}`}>
+        <div className={`relative w-full bg-neutral-950 ${panel ? 'aspect-[4/3] max-h-[40vh]' : 'h-28'}`}>
           <Image src={image} alt={title} fill sizes={panel ? '(min-width: 1280px) 400px, 368px' : '100vw'} className="object-contain" loader={s3ImageLoader} />
         </div>
       )}
@@ -36,11 +36,11 @@ export default function JourneyPanel({ step, quote, color, variant }: {
         <p className={`font-semibold tabular-nums leading-none ${panel ? 'text-3xl' : 'text-xl'}`} style={{ color }}>{step.year}</p>
         <h3 className={`mt-1.5 text-gray-950 leading-snug ${panel ? 'text-xl' : 'text-base'}`}>{title}</h3>
         <p className="text-sm text-gray-500">{subtitle}</p>
-        {body && <p className={`mt-2 text-gray-700 leading-relaxed ${panel ? 'text-[15px] line-clamp-5' : 'text-sm line-clamp-3'}`}>{body}</p>}
+        {body && <p className={`mt-2 text-gray-700 leading-relaxed ${panel ? 'text-[15px] line-clamp-5' : 'text-sm line-clamp-2'}`}>{body}</p>}
 
         {quote && (
           <figure className={`border-l-2 pl-3 ${panel ? 'mt-3' : 'mt-2'}`} style={{ borderColor: color }}>
-            <blockquote className={`italic text-gray-800 leading-relaxed ${panel ? 'text-[15px] line-clamp-6' : 'text-sm line-clamp-3'}`}>
+            <blockquote className={`italic text-gray-800 leading-relaxed ${panel ? 'text-[15px] line-clamp-6' : 'text-sm line-clamp-2'}`}>
               « {quote[locale]} »
             </blockquote>
             <figcaption className="mt-1 text-xs text-gray-500">
