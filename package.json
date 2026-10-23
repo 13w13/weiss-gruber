@@ -19,7 +19,7 @@
     "leaflet-fullscreen": "^1.0.2",
     "leaflet.fullscreen": "^4.0.0",
     "lucide-react": "^0.456.0",
-    "next": "^15.5.28",
+    "next": "^16.4.3",
     "papaparse": "^5.5.3",
     "react": "19.2.9",
     "react-dom": "19.2.9",
