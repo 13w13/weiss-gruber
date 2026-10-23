@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, MapPin, Map as MapIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Map as MapIcon, Play } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import type { Plugin } from 'yet-another-react-lightbox';
 import Lightbox from 'yet-another-react-lightbox';
@@ -17,6 +17,9 @@ import { IMAGE_BASE_URL } from '@/lib/images';
 import { optimizedImageUrl, s3ImageLoader } from '@/lib/imageLoader';
 import { getWorks } from '@/lib/works';
 import { SITE_URL } from '@/lib/site';
+import { glassFor } from '@/lib/glass';
+import { formatTimestamp, interviewUrl, type InterviewQuote } from '@/lib/journey';
+import interviewQuotes from '../../../../data/interview_quotes.json';
 import { LOCALES, localePrefix, toLocale, useLocale, useT } from '@/i18n';
 import PageMeta from '@/components/layout/PageMeta'
 import SiteHeader from '@/components/layout/SiteHeader'
@@ -25,8 +28,9 @@ import SiteFooter from '@/components/layout/SiteFooter'
 // Le composant pour la page de détail
 interface Neighbour { id: string; title: string; year: string }
 
-export default function VitrailDetail({ work, prev, next, nextMainImage, position, total }: {
+export default function VitrailDetail({ work, prev, next, nextMainImage, position, total, quote }: {
   work: Vitrail;
+  quote: InterviewQuote | null;
   prev: Neighbour | null;
   next: Neighbour | null;
   nextMainImage?: string | null;
@@ -722,6 +726,22 @@ export default function VitrailDetail({ work, prev, next, nextMainImage, positio
               </p>
             )}
 
+            {/* Ce qu'elle en dit dans l'interview filmée par son fils */}
+            {quote && (
+              <figure className="mb-8 md:mb-10 border-l-2 pl-4 md:pl-5" style={{ borderColor: glassFor(work.year) }}>
+                <blockquote className="italic text-base md:text-lg text-gray-800 leading-relaxed">
+                  « {quote[locale]} »
+                </blockquote>
+                <figcaption className="mt-2 text-sm text-gray-500">
+                  {t.map.quoteCredit}{' '}
+                  <a href={interviewUrl(quote.seconds)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline underline-offset-2 hover:text-gray-900">
+                    <Play className="w-3 h-3" fill="currentColor" aria-hidden="true" />
+                    {t.map.listenAt(formatTimestamp(quote.seconds))}
+                  </a>
+                </figcaption>
+              </figure>
+            )}
+
             <div className="space-y-3 md:space-y-4 mb-8 md:mb-12">
               {!work.text_fr && work.description_fr && (
                 <p className="text-gray-800 leading-relaxed">
@@ -857,6 +877,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
       nextMainImage: nextWork?.main_image ?? null,
       position: index + 1,
       total: works.length,
+      quote: (interviewQuotes as InterviewQuote[]).find((q) => q.anchor === work.id) ?? null,
     },
   };
 };

@@ -17,18 +17,9 @@ import { LIFE_MILESTONES, excerpt, orderJourney, stepLatLng, type InterviewQuote
 import { optimizedImageUrl } from '@/lib/imageLoader';
 import interviewQuotes from '../../../data/interview_quotes.json';
 import { useLocale, useT } from '@/i18n';
+import { GLASS, glassFor } from '@/lib/glass';
 
-// Couleurs de verre par décennie : cobalt, émeraude, améthyste, jaune d'argent, rubis, opalescent
-const GLASS: Record<number, string> = {
-  1950: '#1f4e9c',
-  1960: '#2f7d5b',
-  1970: '#6b4c9a',
-  1980: '#c8962e',
-  1990: '#a3263a',
-  2000: '#5f8fb8',
-};
 const LEAD = '#2a2a2a';
-const glassFor = (year?: string) => GLASS[decadeOf(year) ?? 0] ?? '#7a7a7a';
 
 // Option ajoutée par leaflet.fullscreen, absente des types de react-leaflet
 const FULLSCREEN_OPTION = { fullscreenControl: true } as Record<string, unknown>;
