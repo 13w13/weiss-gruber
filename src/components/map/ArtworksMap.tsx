@@ -11,6 +11,7 @@ import type { Vitrail } from '@/types/images';
 import { IMAGE_BASE_URL } from '@/lib/images';
 import { s3ImageLoader } from '@/lib/imageLoader';
 import { decadeOf, matchesQuery } from '@/lib/text';
+import OtherVitrailLink from '@/components/layout/OtherVitrailLink';
 
 const DECADE_COLORS: Record<number, string> = {
   1950: '#2563eb',
@@ -394,6 +395,7 @@ export default function ArtworksMap({ works }: { works: Vitrail[] }) {
             .
           </p>
         )}
+        <OtherVitrailLink className="mt-4" />
       </section>
 
       <style jsx global>{`

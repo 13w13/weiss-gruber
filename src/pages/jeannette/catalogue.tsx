@@ -9,6 +9,7 @@ import { s3ImageLoader } from '@/lib/imageLoader';
 import { getWorks } from '@/lib/works';
 import { decadeOf, matchesQuery } from '@/lib/text';
 import PageMeta from '@/components/layout/PageMeta'
+import OtherVitrailLink from '@/components/layout/OtherVitrailLink'
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 
@@ -83,6 +84,7 @@ export default function CatalogueRaisonne({ works }: { works: Vitrail[] }) {
             <p className="text-xs md:text-sm text-gray-600 italic">
               Ce catalogue recense les vitraux photographiés et documentés. Il ne constitue pas une liste exhaustive de l&apos;œuvre, mais présente les réalisations principales.
             </p>
+            <OtherVitrailLink className="mt-3" />
           </div>
 
           {/* Recherche, filtres et tri */}
